@@ -8,7 +8,7 @@ namespace RegisterLogin.Controllers
     [ApiController]
     public class getGameInfoController : Controller
     {
-        [HttpGet]
+        [HttpPost]
         public getGameInfoResponse Get([FromBody] getGameInfoRequest req)
         {
             GameDetailHelper gd = new GameDetailHelper();
