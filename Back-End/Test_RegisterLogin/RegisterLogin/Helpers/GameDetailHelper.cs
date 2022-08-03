@@ -4,7 +4,7 @@ using getGameInfo.Models;
 using getGameName.Models;
 using System;
 
-namespace GameDetail
+namespace GameDetail.Helpers
 {
     public class GameDetailHelper
     {

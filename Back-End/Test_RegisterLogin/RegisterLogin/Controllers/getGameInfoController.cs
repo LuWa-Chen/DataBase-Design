@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using getGameInfo.Models;
-using GameDetail;
+using GameDetail.Helpers;
 
-namespace RegisterLogin.Controllers
+namespace getGameInfo.Controllers
 {
     [Route("api/getGameInfo")]
     [ApiController]

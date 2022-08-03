@@ -1057,23 +1057,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\12580\\.nuget\\packages\\": {},
-    "C:\\软件\\Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\26067\\.nuget\\packages\\": {},
+    "D:\\VisualStudio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\12580\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+      "projectUniqueName": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
       "projectName": "RegisterLogin",
-      "projectPath": "C:\\Users\\12580\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
-      "packagesPath": "C:\\Users\\12580\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\12580\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
+      "projectPath": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+      "packagesPath": "C:\\Users\\26067\\.nuget\\packages\\",
+      "outputPath": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\软件\\Visual Studio\\Shared\\NuGetPackages"
+        "D:\\VisualStudio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\12580\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\26067\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1131,7 +1131,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.410\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

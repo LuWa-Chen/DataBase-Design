@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using getGameName.Models;
-using GameDetail;
+using GameDetail.Helpers;
 
 namespace getGameName.Controllers
 {
