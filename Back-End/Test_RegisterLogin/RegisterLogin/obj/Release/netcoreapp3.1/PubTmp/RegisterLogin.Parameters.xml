@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="backend" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\12580\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\作业相关\\DB\ principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
   </parameter>
 </parameters>

@@ -1,9 +1,10 @@
 ﻿using System;
 using Oracle.ManagedDataAccess.Client;
-using GameNews.Models;
-namespace News.Helpers
+using UserInfo.Models;
+
+namespace UserInfo.Helpers
 {
-    public class NewsHelper
+    public class UserInfoHelper
     {
         public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
@@ -23,16 +24,16 @@ namespace News.Helpers
                 Console.WriteLine(e);
             }
         }
-        public GameNewsResponse getGameNews(GameNewsRequest req)
+        public UserInfoResponse getUserInfo(UserInfoRequest req)
         {
             openConn();
-            GameNewsResponse resp = new GameNewsResponse();
+            UserInfoResponse resp = new UserInfoResponse();
             OracleCommand cmd = con.CreateCommand();
 
-            cmd.CommandText = "select POST_COVER,POST_TITLE,POST_TIME,CONTENT_TEXT from GAME_POST where GAME_ID = '" + req.game_id + "' AND POST_INDEX =" + req.post_index;
+            cmd.CommandText = "select PASSWORD,NAME,STATUS,GAME_NUM,EMAIL,BIRTHDAY,INTRO,PROFILE_PHOTO,AREA from GAME_USER where ID = '" + req.id + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
-                resp.result = 0;       //查找游戏id不存在
+                resp.result = 0;       //查找id不存在
             else
             {
                 try
@@ -40,10 +41,15 @@ namespace News.Helpers
                     //查找成功，赋值变量
                     if (reader.Read())
                     {
-                        resp.post_cover = reader[0].ToString();
-                        resp.post_title = reader[1].ToString();
-                        resp.post_time = reader[2].ToString();
-                        resp.content_text = reader[3].ToString();
+                        resp.password = reader[0].ToString();
+                        resp.name = reader[1].ToString();
+                        resp.status = System.Convert.ToInt32(reader[2].ToString());
+                        resp.game_num = System.Convert.ToInt32(reader[3].ToString());
+                        resp.email = reader[4].ToString();
+                        resp.birthday = (reader[5].ToString()).Split(" ")[0];
+                        resp.intro = reader[6].ToString();
+                        resp.profile_photo = reader[7].ToString();
+                        resp.area = reader[8].ToString();
                         resp.result = 1;
                     }
                 }
