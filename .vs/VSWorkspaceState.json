@@ -4,8 +4,9 @@
     "\\Back-End",
     "\\Back-End\\Test_RegisterLogin",
     "\\Back-End\\Test_RegisterLogin\\RegisterLogin",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Controllers",
     "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers"
   ],
-  "SelectedNode": "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers\\UserInfoHelper.cs",
+  "SelectedNode": "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Controllers\\GameDetailController.cs",
   "PreviewInSolutionExplorer": false
 }
