@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {}
+    "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {}
   },
   "projects": {
-    "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {
+    "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+        "projectUniqueName": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
         "projectName": "RegisterLogin",
-        "projectPath": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
-        "packagesPath": "C:\\Users\\26067\\.nuget\\packages\\",
-        "outputPath": "D:\\作业相关\\DB principle\\大项目\\开发\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
+        "projectPath": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+        "packagesPath": "C:\\Users\\LHC-PC\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\VisualStudio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\26067\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\LHC-PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -75,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

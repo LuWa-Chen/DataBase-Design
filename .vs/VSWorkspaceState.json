@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Back-End",
+    "\\Back-End\\Test_RegisterLogin",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers"
   ],
-  "SelectedNode": "\\RegisterLogin.sln",
+  "SelectedNode": "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers\\UserInfoHelper.cs",
   "PreviewInSolutionExplorer": false
 }
