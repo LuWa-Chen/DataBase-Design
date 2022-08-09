@@ -103,8 +103,7 @@ namespace RegisterLogin.Helpers
                 }
                 else
                 {
-                    cmd.CommandText = "INSERT INTO GAME_USER VALUES('" + id + "', '', '" + req.password + "', '" + req.username + "', 1, 0, '" + req.email + "', " +
-                                "'', '', '', '" + req.area + "', '" + req.time + "')";
+                    cmd.CommandText = $"INSERT INTO GAME_USER VALUES('{id}', '{req.password}', '{req.username}', 1, 0, '{req.email}', '', '', '', '{req.area}', '{req.time}')";
                     cmd.ExecuteNonQuery();
                     resp.result = 0;
                     resp.message = "注册成功！";
