@@ -53,3 +53,32 @@ namespace RegisterLogin
     "result": 1,
 }
 */
+
+/*{
+    "game_features":[
+        '单人',
+        '线上玩家对战',
+        '完全支持控制器',
+        '成就',
+        '集换式卡牌',
+    ],
+    "minimum_configuration":[
+        '12 GB RAM',
+        'NVIDIA GEFORCE GTX 1060 3 GB',
+        '60 GB',
+        'INTEL CORE I5-8400',
+        'Windows 10',
+    ],
+    "recommended_configuration":[
+        'Windows 10',
+        'NVIDIA GEFORCE GTX 1070 8 GB',
+        '60 GB',
+        'INTEL CORE I7-8700K',
+        'Windows 10/11',
+    ],
+    "ui_language":['简体中文','英语','日语'],
+    "sound_language":['英语'],
+    "text_language":['简体中文','英语','日语'],
+    "result":1,
+}
+*/
