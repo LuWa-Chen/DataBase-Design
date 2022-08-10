@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        private const int MAX_CMT_NUM = 5;         //the upperbound number of comments fetched at a time
+        private const int MAX_CMT_NUM = 10;         //the upperbound number of comments fetched at a time
         public void openConn()
         {
             try
