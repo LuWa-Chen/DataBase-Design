@@ -224,3 +224,4 @@ C:\Users\LHC-PC\source\repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLog
 C:\Users\LHC-PC\source\repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Release\netcoreapp3.1\RegisterLogin.dll
 C:\Users\LHC-PC\source\repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Release\netcoreapp3.1\RegisterLogin.pdb
 C:\Users\LHC-PC\source\repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Release\netcoreapp3.1\RegisterLogin.genruntimeconfig.cache
+C:\Users\12580\Source\Repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLogin\RegisterLogin\bin\Release\netcoreapp3.1\references.json

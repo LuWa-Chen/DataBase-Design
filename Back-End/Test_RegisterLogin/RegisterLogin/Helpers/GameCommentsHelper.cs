@@ -27,7 +27,7 @@ namespace RegisterLogin.Helpers
             }
         }
 
-        public Dictionary<string, bool> GetMyView(string comment_id, string user_id)
+        public int GetMyView(string comment_id, string user_id)
         {
             OracleCommand subcmd = con.CreateCommand();
             subcmd.CommandText = $"SELECT LIKE_CMT FROM COMMENT_LIKES WHERE USER_ID={user_id} AND COMMENT_ID={comment_id}";
@@ -41,7 +41,7 @@ namespace RegisterLogin.Helpers
             my_view["good"] = (view == 1);
             my_view["bad"] = (view == -1);
 
-            return my_view;
+            return view;
         }
 
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
@@ -63,17 +63,17 @@ namespace RegisterLogin.Helpers
                     Dictionary<string, dynamic> comment = new Dictionary<string, dynamic>();
 
                     comment["creator_id"] = reader[0].ToString();
+                    
+                    comment["rate"] = int.Parse(reader[1].ToString());
+                    comment["date"] = reader[2].ToString();
+                    comment["content"] = reader[3].ToString();
 
-                    comment["detail"] = new Dictionary<string, dynamic>();
-                    comment["detail"]["rate"] = int.Parse(reader[1].ToString());
-                    comment["detail"]["date"] = reader[2].ToString();
-                    comment["detail"]["content"] = reader[3].ToString();
+                    comment["good_count"] = int.Parse(reader[4].ToString());
+                    comment["bad_count"] = int.Parse(reader[5].ToString());
 
-                    comment["rate"] = new Dictionary<string, dynamic>();
-                    comment["rate"]["good_count"] = int.Parse(reader[4].ToString());
-                    comment["rate"]["bad_count"] = int.Parse(reader[5].ToString());
-
-                    comment["my_view"] = GetMyView(reader[6].ToString(), req.user_id);
+                    int view = GetMyView(reader[6].ToString(), req.user_id);
+                    comment["good"] = (view == 1);
+                    comment["bad"] = (view == -1);
                     resp.comment_list.Add(comment);
                 }
 
