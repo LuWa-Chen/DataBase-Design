@@ -27,7 +27,7 @@ namespace RegisterLogin.Helpers
             }
         }
 
-        public int GetMyView(string comment_id, string user_id)
+        public Dictionary<string, bool> GetMyView(string comment_id, string user_id)
         {
             OracleCommand subcmd = con.CreateCommand();
             subcmd.CommandText = $"SELECT LIKE_CMT FROM COMMENT_LIKES WHERE USER_ID={user_id} AND COMMENT_ID={comment_id}";
@@ -36,7 +36,12 @@ namespace RegisterLogin.Helpers
             int view = 0;
             if (reader.Read())
                 view = int.Parse(reader[0].ToString());
-            return view;
+
+            Dictionary<string, bool> my_view = new Dictionary<string, bool>();
+            my_view["good"] = (view == 1);
+            my_view["bad"] = (view == -1);
+
+            return my_view;
         }
 
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
@@ -51,8 +56,6 @@ namespace RegisterLogin.Helpers
                 /* fetch top MAX_CMT_NUM comments order by likes */
                 cmd.CommandText = $"SELECT USER_ID, RATING, COMMENT_DATE, CONTENT, AGREE_NUM, DISAGREE_NUM, COMMENT_ID " +
                     $"FROM COMMENTS WHERE GAME_ID='{req.game_id}' AND ROWNUM<={MAX_CMT_NUM} ORDER BY AGREE_NUM DESC";
-                /*                cmd.CommandText = $"SELECT USER_ID, RATING, COMMENT_DATE, CONTENT, AGREE_NUM, DISAGREE_NUM, COMMENT_ID " +
-                    $"FROM COMMENTS WHERE GAME_ID='{req.game_id}'";*/
                 reader = cmd.ExecuteReader();     
 
                 while (reader.Read())
@@ -75,7 +78,6 @@ namespace RegisterLogin.Helpers
                 }
 
                 resp.result = 1;
-
             }
             catch (Exception e)
             {
