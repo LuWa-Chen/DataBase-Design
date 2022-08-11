@@ -34,7 +34,7 @@ namespace RegisterLogin.Helpers
             UserProfileResponse resp = new UserProfileResponse();
             OracleCommand cmd = con.CreateCommand();
 
-            cmd.CommandText = "SELECT NAME,AREA,BIRTHDAY,INTRO FROM GAME_USER WHERE ID = '" + req.id + "'";
+            cmd.CommandText = "SELECT NAME,AREA,BIRTHDAY,INTRO FROM GAME_USER WHERE ID = '" + req.id + "'AND ID <> '" + req.id +"'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
