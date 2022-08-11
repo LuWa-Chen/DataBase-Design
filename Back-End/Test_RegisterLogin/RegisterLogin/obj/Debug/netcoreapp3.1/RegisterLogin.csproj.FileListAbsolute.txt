@@ -282,3 +282,4 @@ D:\作业相关\DB principle\大项目\开发\new_design\Back-End\Test_RegisterL
 D:\作业相关\DB principle\大项目\开发\new_design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Debug\netcoreapp3.1\RegisterLogin.dll
 D:\作业相关\DB principle\大项目\开发\new_design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Debug\netcoreapp3.1\RegisterLogin.pdb
 D:\作业相关\DB principle\大项目\开发\new_design\Back-End\Test_RegisterLogin\RegisterLogin\obj\Debug\netcoreapp3.1\RegisterLogin.genruntimeconfig.cache
+C:\Users\LHC-PC\Source\Repos\LuWa-Chen\DataBase-Design\Back-End\Test_RegisterLogin\RegisterLogin\bin\Debug\netcoreapp3.1\references.json

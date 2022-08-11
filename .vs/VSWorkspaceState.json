@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Back-End",
+    "\\Back-End\\Test_RegisterLogin",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Controllers",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers",
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Models"
   ],
-  "SelectedNode": "\\RegisterLogin.sln",
+  "SelectedNode": "\\Back-End\\Test_RegisterLogin\\RegisterLogin.sln",
   "PreviewInSolutionExplorer": false
 }
