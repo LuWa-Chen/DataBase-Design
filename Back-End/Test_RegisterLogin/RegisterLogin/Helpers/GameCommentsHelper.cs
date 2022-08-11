@@ -44,6 +44,41 @@ namespace RegisterLogin.Helpers
             return view;
         }
 
+        public void GetUserInfo(string uid, string game_id, Dictionary<string, dynamic> comment)
+        {
+            OracleCommand usercmd = con.CreateCommand();
+            OracleDataReader reader;
+
+            /* get profile photo, name, game_num */
+            usercmd.CommandText = $"SELECT PROFILE_PHOTO, NAME, GAME_NUM FROM GAME_USER WHERE ID='{uid}'";
+            reader = usercmd.ExecuteReader();
+            if (reader.Read())
+            {
+                comment["head"] = reader[0].ToString();
+                comment["name"] = reader[1].ToString();
+                comment["id"] = uid;
+                comment["game_num"] = int.Parse(reader[2].ToString());
+            }
+
+            /* get comment_num */
+            usercmd.CommandText = $"SELECT COUNT(USER_ID) FROM COMMENTS WHERE USER_ID='{uid}' AND GAME_ID='{game_id}'";
+            reader = usercmd.ExecuteReader();
+            if (reader.Read())
+                comment["comment_num"] = int.Parse(reader[0].ToString());
+
+            /* get access time */
+            usercmd.CommandText = $"SELECT ORDER_TIME, USER_ID FROM GAME_ORDER WHERE USER_ID='{uid}' AND GAME_ID='{game_id}'";
+            reader = usercmd.ExecuteReader();
+            if (reader.Read())
+                comment["access_time"] = reader[0].ToString();
+
+            /* get if game is accessed via cdk */
+            usercmd.CommandText = $"SELECT VIA_CDK, USER_ID FROM OWNERSHIP WHERE USER_ID='{uid}' AND GAME_ID='{game_id}'";
+            reader = usercmd.ExecuteReader();
+            if (reader.Read())
+                comment["via_cdk"] = int.Parse(reader[0].ToString());
+        }
+
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
         {
             openConn();
@@ -62,8 +97,9 @@ namespace RegisterLogin.Helpers
                 {
                     Dictionary<string, dynamic> comment = new Dictionary<string, dynamic>();
 
-                    comment["creator_id"] = reader[0].ToString();
-                    
+                    //comment["creator_id"] = reader[0].ToString();
+                    GetUserInfo(reader[0].ToString(), req.game_id, comment);
+
                     comment["rate"] = int.Parse(reader[1].ToString());
                     comment["date"] = reader[2].ToString();
                     comment["content"] = reader[3].ToString();

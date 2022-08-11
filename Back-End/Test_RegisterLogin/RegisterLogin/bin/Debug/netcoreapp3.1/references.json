@@ -15,7 +15,15 @@
             //   gamedTime:'196.1',
             //   gamedTimeComment:'181.5',
             // },
-            "creator_id": "0000000001",
+            //"creator_id": "0000000001",
+            "head": "h1.jpg",
+            "name": "111111",
+            "id": "0000000016",
+            "game_num": 100,
+            "comment_num": 9,
+            "access_time": "124.5",
+            "via_cdk": 1,
+
             //评论详情
             //分别是 rate 1表示好评 2表示差评 、评论日期 、 评论内容    
             "detail": {
