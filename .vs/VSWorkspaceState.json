@@ -4,10 +4,7 @@
     "\\Back-End",
     "\\Back-End\\Test_RegisterLogin",
     "\\Back-End\\Test_RegisterLogin\\RegisterLogin",
-    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Controllers",
-    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers",
-    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Models"
+    "\\Back-End\\Test_RegisterLogin\\RegisterLogin\\Helpers"
   ],
-  "SelectedNode": "\\Back-End\\Test_RegisterLogin\\RegisterLogin.sln",
   "PreviewInSolutionExplorer": false
 }
