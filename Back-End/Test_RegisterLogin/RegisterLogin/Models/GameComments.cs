@@ -20,6 +20,7 @@ namespace RegisterLogin.Models
     public class GameCommentsResponse
     {
         public int comment_num { get; set; }
+        public bool is_end { get; set; }
         public List<Dictionary<string, dynamic>> comment_list { get; set; } = new List<Dictionary<string, dynamic>>();
         public int result { get; set; }
     }

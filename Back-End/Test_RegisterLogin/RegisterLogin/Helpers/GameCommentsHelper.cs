@@ -79,7 +79,7 @@ namespace RegisterLogin.Helpers
                 comment["via_cdk"] = int.Parse(reader[0].ToString());
         }
 
-        public string GetFilterSql(GameCommentsRequest req)
+        public string[] GetFilterSql(GameCommentsRequest req)
         {
             string commandText = $"SELECT USER_ID, RATING, COMMENT_DATE, CONTENT, AGREE_NUM, DISAGREE_NUM, COMMENT_ID, ROW_NUMBER() OVER (ORDER BY {(req.comment_type == 1 ? "AGREE_NUM DESC": "COMMENT_DATE DESC")}) R ";
             if (req.filter_2 == 0)
@@ -127,9 +127,13 @@ namespace RegisterLogin.Helpers
             }
 
             commandText += filter;
-            commandText = $"SELECT USER_ID, RATING, COMMENT_DATE, CONTENT, AGREE_NUM, DISAGREE_NUM, COMMENT_ID FROM ({commandText}) ";
-            commandText += $"WHERE R BETWEEN {MAX_CMT_NUM * (req.page_no - 1) + 1} AND {MAX_CMT_NUM * req.page_no} ";
-            return commandText;
+
+            string command1 = $"SELECT USER_ID, RATING, COMMENT_DATE, CONTENT, AGREE_NUM, DISAGREE_NUM, COMMENT_ID FROM ({commandText}) ";
+            command1 += $"WHERE R BETWEEN {MAX_CMT_NUM * (req.page_no - 1) + 1} AND {MAX_CMT_NUM * req.page_no} ";
+
+            string command2 = $"SELECT COUNT(USER_ID) FROM ({commandText})";
+            string[] sqls = { command1, command2 };
+            return sqls;
         }
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
         {
@@ -137,11 +141,13 @@ namespace RegisterLogin.Helpers
             GameCommentsResponse resp = new GameCommentsResponse();
             OracleCommand cmd = con.CreateCommand();
             OracleDataReader reader;
-            resp.comment_num = 0;
+            resp.result = 0;
 
             try
             {
-                cmd.CommandText = GetFilterSql(req);
+                /* basic steps */
+                string[] commands = GetFilterSql(req);
+                cmd.CommandText = commands[0];      //get basic sql
                 reader = cmd.ExecuteReader();     
 
                 while (reader.Read())
@@ -162,15 +168,24 @@ namespace RegisterLogin.Helpers
                     comment["bad"] = (view == -1);
                     resp.comment_list.Add(comment);
 
-                    resp.comment_num++;
+                    resp.result++;
                 }
 
-                resp.result = 1;
+                /* check is the last page or not */
+                cmd.CommandText = commands[1];
+                reader = cmd.ExecuteReader();
+                resp.is_end = false;
+                if (reader.Read())
+                {
+                    resp.comment_num = int.Parse(reader[0].ToString());
+                    if (resp.comment_num <= MAX_CMT_NUM * req.page_no)
+                        resp.is_end = true;
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                resp.result = 0;
+                resp.result = -1;
             }
 
             return resp;
