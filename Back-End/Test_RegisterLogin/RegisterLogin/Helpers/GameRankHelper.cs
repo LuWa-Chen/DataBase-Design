@@ -113,6 +113,60 @@ namespace RegisterLogin.Helpers
                 }
                 return resp;
             }
+            else if (req.Rank_name == "recommend")
+            {
+                cmd.CommandText = "SELECT ID FROM (SELECT * FROM GAME ORDER BY TOT_DEAL_NUM DESC,LIKE_NUM DESC) WHERE ROWNUM <='" + req.Number + "'";
+                OracleDataReader reader3 = cmd.ExecuteReader();
+
+                if (!reader3.HasRows)
+                    resp.result = 0;       //查找游戏id不存在
+                else
+                {
+                    try
+                    {
+                        //查找成功，赋值变量
+                        while (reader3.Read())
+                        {
+                            resp.id_list.Add(reader3[0].ToString());
+                        }
+                        resp.result = 1;
+                        return resp;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        resp.result = 0;
+                    }
+                }
+                return resp;
+            }
+            else if (req.Rank_name == "later")
+            {
+                cmd.CommandText = "SELECT ID FROM (SELECT * FROM GAME WHERE (SYSDATE + INTERVAL '30' DAY)>= PUBLISH_DATE AND PUBLISH_DATE>SYSDATE) WHERE ROWNUM <='" + req.Number + "'";
+                OracleDataReader reader4 = cmd.ExecuteReader();
+
+                if (!reader4.HasRows)
+                    resp.result = 0;       //查找游戏id不存在
+                else
+                {
+                    try
+                    {
+                        //查找成功，赋值变量
+                        while (reader4.Read())
+                        {
+                            resp.id_list.Add(reader4[0].ToString());
+                        }
+                        resp.result = 1;
+                        return resp;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        resp.result = 0;
+                    }
+                }
+                return resp;
+            }
             else
             {
                 resp.result = 0;
