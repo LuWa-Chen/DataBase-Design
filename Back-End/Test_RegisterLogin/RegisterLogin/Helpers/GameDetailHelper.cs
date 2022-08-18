@@ -10,7 +10,7 @@ namespace GameDetail.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openGameNameConn(ref getGameNameResponse resp)
         {
             try
             {
@@ -22,13 +22,36 @@ namespace GameDetail.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
+            }
+        }
+
+        public void openGameInfoConn(ref getGameInfoResponse resp)
+        {
+            try
+            {
+                con.Open();
+                Console.WriteLine("Successfully connected to Oracle Database");
+                Console.WriteLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Connection Failed!");
+                Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
 
         public getGameNameResponse findGameName(getGameNameRequest req)
         {
-            openConn();
             getGameNameResponse resp = new getGameNameResponse();
+            resp.result = 0;
+            openGameNameConn(ref resp);
+            if (resp.result == -2)
+                return resp;
+           
             OracleCommand cmd = con.CreateCommand();
 
             cmd.CommandText = "SELECT NAME FROM GAME WHERE ID = '" + req.game_id + "'";
@@ -50,15 +73,19 @@ namespace GameDetail.Helpers
                     resp.result = -1;
                 }
             }
-
+            con.Close();
             return resp;
         }
+
         public getGameInfoResponse findGameInfo(getGameInfoRequest req)
         {
-            openConn();
             getGameInfoResponse resp = new getGameInfoResponse();
+            resp.result = 0;
+            openGameInfoConn(ref resp);
+            if (resp.result == -2)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
-
             cmd.CommandText = "select name,PUBLISH_DATE,PRICE,COVER,GENERAL_INTRO,tag from game natural join game_tags where id = '" + req.game_id + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -90,6 +117,7 @@ namespace GameDetail.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

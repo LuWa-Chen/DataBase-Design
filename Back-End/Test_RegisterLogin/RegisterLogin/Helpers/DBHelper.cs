@@ -13,7 +13,7 @@ namespace RegisterLogin.Helpers
         public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openLoginConn(ref LoginResponse resp)
         {
             try
             {
@@ -25,6 +25,25 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
+            }
+        }
+
+        public void openRegisterConn(ref RegisterResponse resp)
+        {
+            try
+            {
+                con.Open();
+                Console.WriteLine("Successfully connected to Oracle Database");
+                Console.WriteLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Connection Failed!");
+                Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
 
@@ -39,10 +58,13 @@ namespace RegisterLogin.Helpers
 
         public LoginResponse checkLogin(LoginRequest req)
         {
-            openConn();
             LoginResponse resp = new LoginResponse();
-            OracleCommand cmd = con.CreateCommand();
+            resp.result = 0;
+            openLoginConn(ref resp);
+            if (resp.result == -2)      //connection fail, return 
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "SELECT PASSWORD FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -64,22 +86,26 @@ namespace RegisterLogin.Helpers
                     }
                 }
             }
-
+            con.Close();
             return resp;
         }
 
         public RegisterResponse register(RegisterRequest req)
         {
-            openConn();
             RegisterResponse resp = new RegisterResponse();
-            OracleCommand cmd = con.CreateCommand();
+            resp.result = 0;
+            openRegisterConn(ref resp);
+            if (resp.result == -2)      //connection fail, return 
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "SELECT NAME FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 resp.result = 1;
                 resp.message = "该email已绑定账号！";
+                con.Close();
                 return resp;
             }
 
@@ -117,6 +143,7 @@ namespace RegisterLogin.Helpers
                 resp.message = "注册失败！";
             }
 
+            con.Close();
             return resp;
         }
     }

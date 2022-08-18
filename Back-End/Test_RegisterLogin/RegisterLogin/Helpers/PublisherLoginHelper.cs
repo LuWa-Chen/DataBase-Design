@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(ref PublisherLoginResponse resp)
         {
             try
             {
@@ -23,14 +23,18 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                con.Close();
+                resp.result = -2;
             }
         }
         public PublisherLoginResponse publisherLogin(PublisherLoginRequest req)
         {
-            openConn();
             PublisherLoginResponse resp = new PublisherLoginResponse();
-            OracleCommand cmd = con.CreateCommand();
+            openConn(ref resp);
+            if (resp.result == -2)
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = $"SELECT PASSWORD FROM PUBLISHER WHERE EMAIL='{req.email}'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -45,7 +49,8 @@ namespace RegisterLogin.Helpers
                         resp.result = 1;    //密码错误
                 }
             }
-            
+
+            con.Close();
             return resp;
         }
     }

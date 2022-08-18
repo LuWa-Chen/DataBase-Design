@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(GameConfigurationResponse resp)
         {
             try
             {
@@ -23,13 +23,19 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close();
             }
         }
         
         public GameConfigurationResponse getGameConfiguration(GameConfigurationRequest req)
         {
-            openConn();
             GameConfigurationResponse resp = new GameConfigurationResponse();
+            resp.result = 0;
+            openConn(resp);
+            if (resp.result == -1)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
             OracleDataReader reader;
 
@@ -41,6 +47,7 @@ namespace RegisterLogin.Helpers
                 if (!reader.HasRows)    //ID not exist
                 {
                     resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 while (reader.Read())   //ID exists, get tags
@@ -53,6 +60,7 @@ namespace RegisterLogin.Helpers
                 if (!reader.HasRows)    //ID not exist
                 {
                     resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 else if (reader.Read())  //ID exists, get tags
@@ -69,6 +77,7 @@ namespace RegisterLogin.Helpers
                 if (!reader.HasRows)    //ID not exist
                 {
                     resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 while (reader.Read())
@@ -84,7 +93,7 @@ namespace RegisterLogin.Helpers
                 Console.WriteLine(e);
                 resp.result = 0;
             }
-
+            con.Close();
             return resp;
         }
     }

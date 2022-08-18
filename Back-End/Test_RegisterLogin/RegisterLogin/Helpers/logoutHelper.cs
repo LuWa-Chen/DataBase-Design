@@ -8,7 +8,7 @@ namespace logout.Helpers
         public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(logoutResponse resp)
         {
             try
             {
@@ -20,12 +20,18 @@ namespace logout.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close();
             }
         }
         public logoutResponse logout(logoutRequest req)
         {
-            openConn();
             logoutResponse resp = new logoutResponse();
+            resp.result = 0;
+            openConn(resp);
+            if (resp.result == -1)
+                return resp;
+            
             int cen = 0;
             OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "UPDATE GAME_USER SET STATUS = 0 WHERE ID = '"+req.id+"'";
@@ -52,6 +58,7 @@ namespace logout.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

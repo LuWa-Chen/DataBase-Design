@@ -8,7 +8,7 @@ namespace PublishComment.Helpers
         public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(PublishCommentResponse resp)
         {
             try
             {
@@ -20,6 +20,8 @@ namespace PublishComment.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
         public int HasNoPublished(PublishCommentRequest req, PublishCommentResponse resp)
@@ -87,8 +89,11 @@ namespace PublishComment.Helpers
         }
         public PublishCommentResponse PublishComment(PublishCommentRequest req)
         {
-            openConn();
             PublishCommentResponse resp = new PublishCommentResponse();
+            resp.result = 0;
+            openConn(resp);
+            if (resp.result == -2)
+                return resp;
 
             int pnb = HasNoPublished(req, resp);
             if (pnb == 0)//若用户已经发表过评论
@@ -97,7 +102,10 @@ namespace PublishComment.Helpers
             string nowid = "";
             nowid = getNextID(req, resp);
             if (nowid == "")//增加comment_id失败
+            {
+                con.Close();
                 return resp;
+            }                
 
             int cen = 0;
             OracleCommand cmd = con.CreateCommand();
@@ -127,6 +135,7 @@ namespace PublishComment.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

@@ -12,7 +12,7 @@ namespace RegisterLogin.Helpers
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
         private const int MAX_CMT_NUM = 8;         //the upperbound number of comments fetched at a time
-        public void openConn()
+        public void openConn(ref GameCommentsResponse resp)
         {
             try
             {
@@ -24,6 +24,8 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close();
             }
         }
 
@@ -137,8 +139,12 @@ namespace RegisterLogin.Helpers
         }
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
         {
-            openConn();
             GameCommentsResponse resp = new GameCommentsResponse();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -1)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
             OracleDataReader reader;
             resp.result = 0;
@@ -188,6 +194,7 @@ namespace RegisterLogin.Helpers
                 resp.result = -1;
             }
 
+            con.Close();
             return resp;
         }
     }

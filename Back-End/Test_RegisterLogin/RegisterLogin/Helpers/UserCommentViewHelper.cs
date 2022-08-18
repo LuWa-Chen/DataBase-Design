@@ -88,11 +88,17 @@ namespace UserCommentView.Helpers
 
             string comment_id = findCommentID(req, resp);
             if (comment_id == null)//错误情况
+            {
+                con.Close();
                 return resp;
+            }                
 
             int like_cmt = hasUserComment(req, resp, comment_id);
             if (like_cmt == -2)
+            {
+                con.Close();
                 return resp;//错误情况
+            }                
 
             string newview = "";
             if (req.comment_view == 1)
@@ -103,6 +109,7 @@ namespace UserCommentView.Helpers
             {
                 resp.result = 0;
                 resp.response = "输入了错误的comment_view！";
+                con.Close();
                 return resp;
             }
 
@@ -118,7 +125,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "取消操作失败1!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -127,7 +135,8 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 cmd.CommandText = "UPDATE COMMENTS SET " + newview + "= " + newview + "-1 WHERE COMMENT_ID = '" + comment_id + "'";
@@ -139,7 +148,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "取消操作失败2!";
-                        resp.result = 0;       
+                        resp.result = 0;    
+                        con.Close();
                         return resp;
                     }
                     else//取消操作成功
@@ -155,9 +165,11 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
+                con.Close();
                 return resp;
             }
             else if (like_cmt == 0)//没有点过赞/踩，则新增数据
@@ -171,7 +183,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "新增操作失败1!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -180,7 +193,8 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 cmd.CommandText = "UPDATE COMMENTS SET " + newview + "= " + newview + "+1 WHERE COMMENT_ID = '" + comment_id + "'";
@@ -192,7 +206,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "新增操作失败2!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                     else//取消操作成功
@@ -208,9 +223,11 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
+                con.Close();
                 return resp;
             }
             else//点过踩/赞，但此时点了另一个，则取消上一个，新增下一个
@@ -229,7 +246,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "修改操作失败1!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -238,7 +256,8 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 cmd.CommandText = "insert into COMMENT_LIKES values('" + req.user_id + "','" + comment_id + "'," + req.comment_view + ")";
@@ -250,7 +269,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "修改操作失败2!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -259,7 +279,8 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 cmd.CommandText = "UPDATE COMMENTS SET " + lastview + "= " + lastview + "-1 WHERE COMMENT_ID = '" + comment_id + "'";
@@ -271,7 +292,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "修改操作失败3!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -280,7 +302,8 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
                 cmd.CommandText = "UPDATE COMMENTS SET " + newview + "= " + newview + "+1 WHERE COMMENT_ID = '" + comment_id + "'";
@@ -292,7 +315,8 @@ namespace UserCommentView.Helpers
                         cmd.CommandText = "ROLLBACK";
                         cen = cmd.ExecuteNonQuery();
                         resp.response = "修改操作失败4!";
-                        resp.result = 0;       
+                        resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                     else//取消操作成功
@@ -308,9 +332,11 @@ namespace UserCommentView.Helpers
                     cmd.CommandText = "ROLLBACK";
                     cen = cmd.ExecuteNonQuery();
                     resp.response = e.Message;
-                    resp.result = 0;       
+                    resp.result = 0;
+                    con.Close();
                     return resp;
                 }
+                con.Close();
                 return resp;
             }
         }

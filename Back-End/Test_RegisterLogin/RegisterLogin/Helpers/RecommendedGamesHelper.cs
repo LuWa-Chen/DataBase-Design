@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(RecommendedGamesResponse resp)
         {
             try
             {
@@ -23,16 +23,20 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = 0;
+                con.Close();
             }
         }
 
         public RecommendedGamesResponse getRecommendedGames(RecommendedGamesRequest req)
         {
-            openConn();
             RecommendedGamesResponse resp = new RecommendedGamesResponse();
+            resp.result = 1;
+            openConn(resp);
+            if (resp.result == 0)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
-
-
             cmd.CommandText = "SELECT TAG FROM GAME_TAGS WHERE ID='" + req.game_id + "' AND TAG IN(SELECT TAG FROM (SELECT USER_ID,TAG FROM OWNERSHIP, GAME_TAGS WHERE OWNERSHIP.GAME_ID=GAME_TAGS.ID) WHERE USER_ID='" + req.user_id + "')";  //搜索当前游戏与用户已购买游戏相同的TAG
             OracleDataReader reader = cmd.ExecuteReader();
 
@@ -57,6 +61,7 @@ namespace RegisterLogin.Helpers
                             break;
                     }
                     resp.result = 1;
+                    con.Close();
                     return resp;
                 }
                 catch (Exception e)
@@ -90,6 +95,7 @@ namespace RegisterLogin.Helpers
                             break;
                     }
                     resp.result = 1;
+                    con.Close();
                     return resp;
                 }
                 catch (Exception e)
@@ -98,6 +104,7 @@ namespace RegisterLogin.Helpers
                     resp.result = 0;
                 }
             }
+            con.Close();
             return resp;
         }
     }

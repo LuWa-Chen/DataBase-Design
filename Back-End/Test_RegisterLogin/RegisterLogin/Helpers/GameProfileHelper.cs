@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(ref GameProfileResponse resp)
         {
             try
             {
@@ -23,13 +23,19 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close(); 
             }
         }
 
         public GameProfileResponse getGameProfile(GameProfileRequest req)
         {
-            openConn();
             GameProfileResponse resp = new GameProfileResponse();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -1)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
             OracleDataReader reader;
 
@@ -65,6 +71,7 @@ namespace RegisterLogin.Helpers
                 resp.result = 0;
             }
 
+            con.Close();
             return resp;
         }
     }

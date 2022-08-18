@@ -189,6 +189,7 @@ namespace PublisherGameInfo.Helpers
             string PublisherID = getPublisherID(req.publisher, resp);
             if(PublisherID == "")//查找发行商错误
             {
+                con.Close();
                 return resp;
             }
 
@@ -196,6 +197,7 @@ namespace PublisherGameInfo.Helpers
             count = getPublisherGameCount(PublisherID, resp);
             if(count == -1||count == 0)//统计数量错误或发行商无游戏
             {
+                con.Close();
                 return resp;
             }
 
@@ -227,6 +229,7 @@ namespace PublisherGameInfo.Helpers
                     resp.response = e.Message;
                 }
             }
+            con.Close();
             return resp;
         }
     }

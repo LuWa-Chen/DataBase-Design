@@ -9,7 +9,7 @@ namespace News.Helpers
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
 
-        public void openConn()
+        public void openConn(ref GameNewsResponse resp)
         {
             try
             {
@@ -21,14 +21,19 @@ namespace News.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
         public GameNewsResponse getGameNews(GameNewsRequest req)
         {
-            openConn();
             GameNewsResponse resp = new GameNewsResponse();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -2)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
-
             cmd.CommandText = "select POST_COVER,POST_TITLE,POST_TIME,CONTENT_TEXT from GAME_POST where GAME_ID = '" + req.game_id + "' AND POST_INDEX =" + req.post_index;
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -53,6 +58,7 @@ namespace News.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(ref UserGameInfoResponse resp)
         {
             try
             {
@@ -23,15 +23,20 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
 
         public UserGameInfoResponse getUserGameInfo(UserGameInfoRequest req)
         {
-            openConn();
             UserGameInfoResponse resp = new UserGameInfoResponse();
-            OracleCommand cmd = con.CreateCommand();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -2)
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "SELECT GAME_ID FROM OWNERSHIP WHERE USER_ID='" + req.id + "'";
             OracleDataReader reader0 = cmd.ExecuteReader();
             if (!reader0.HasRows)
@@ -64,6 +69,7 @@ namespace RegisterLogin.Helpers
                     else                    
                     {
                         resp.result = 0;
+                        con.Close();
                         return resp;
                     }
                 }
@@ -73,6 +79,7 @@ namespace RegisterLogin.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

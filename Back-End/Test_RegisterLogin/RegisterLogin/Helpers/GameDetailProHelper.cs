@@ -11,7 +11,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(ref GameDetailProResponse resp)
         {
             try
             {
@@ -23,15 +23,20 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close();
             }
         }
 
         public GameDetailProResponse getGameDetailPro(GameDetailProRequest req)
         {
-            openConn();
             GameDetailProResponse resp = new GameDetailProResponse();
-            OracleCommand cmd = con.CreateCommand();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -1)
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = string.Format("SELECT NAME, PUBLISH_DATE, PRICE, PUBLISHER_ID FROM GAME WHERE ID={0}", req.game_id);
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -54,10 +59,10 @@ namespace RegisterLogin.Helpers
                         else                    //pid不存在
                         {
                             resp.result = 0;
+                            con.Close();
                             return resp;
                         }
                     }
-
 
                     /* 查找相关资源 */
                     //查找discount
@@ -96,6 +101,7 @@ namespace RegisterLogin.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }

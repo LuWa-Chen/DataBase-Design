@@ -13,7 +13,7 @@ namespace RegisterLogin.Helpers
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn()
+        public void openConn(FriendsListResponse resp)
         {
             try
             {
@@ -25,15 +25,20 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
+                con.Close();
             }
         }
 
         public FriendsListResponse getFriendsList(FriendsListRequest req)
         {
-            openConn();
             FriendsListResponse resp = new FriendsListResponse();
+            resp.result = 0;
+            openConn(resp);
+            if (resp.result == -1)
+                return resp;
+            
             OracleCommand cmd = con.CreateCommand();
-
             cmd.CommandText = "SELECT FRIENDB_ID FROM FRIENDSHIP WHERE FRIENDA_ID='" + req.id + "'";
             OracleDataReader reader0 = cmd.ExecuteReader();
             cmd.CommandText = "SELECT FRIENDA_ID FROM FRIENDSHIP WHERE FRIENDB_ID='" + req.id + "'";
@@ -74,6 +79,7 @@ namespace RegisterLogin.Helpers
                 }
 
                 resp.result = 1;
+                con.Close();
                 return resp;
             }
             catch (Exception e)
@@ -82,6 +88,7 @@ namespace RegisterLogin.Helpers
                 resp.result = 0;
             }
 
+            con.Close();
             return resp;
         }
     }

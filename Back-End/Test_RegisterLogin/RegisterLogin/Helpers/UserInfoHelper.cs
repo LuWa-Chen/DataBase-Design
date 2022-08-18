@@ -10,7 +10,7 @@ namespace UserInfo.Helpers
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
 
-        public void openConn()
+        public void openConn(ref UserInfoResponse resp)
         {
             try
             {
@@ -22,14 +22,19 @@ namespace UserInfo.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -2;
+                con.Close();
             }
         }
         public UserInfoResponse getUserInfo(UserInfoRequest req)
         {
-            openConn();
             UserInfoResponse resp = new UserInfoResponse();
-            OracleCommand cmd = con.CreateCommand();
+            resp.result = 0;
+            openConn(ref resp);
+            if (resp.result == -2)
+                return resp;
 
+            OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "select PASSWORD,NAME,STATUS,GAME_NUM,EMAIL,BIRTHDAY,INTRO,PROFILE_PHOTO,AREA from GAME_USER where ID = '" + req.id + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -59,6 +64,7 @@ namespace UserInfo.Helpers
                     resp.result = -1;
                 }
             }
+            con.Close();
             return resp;
         }
     }
