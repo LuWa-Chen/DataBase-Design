@@ -129,7 +129,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath+"Cover"+fileext, FileMode.Create);
+            stream = new FileStream(filepath+ "\\Cover" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
@@ -143,7 +143,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath + "anCover" + fileext, FileMode.Create);
+            stream = new FileStream(filepath + "\\anCover" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
@@ -157,7 +157,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath + "background" + fileext, FileMode.Create);
+            stream = new FileStream(filepath + "\\background" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
@@ -171,7 +171,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath + "Intro" + fileext, FileMode.Create);
+            stream = new FileStream(filepath + "\\Intro" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
@@ -185,7 +185,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath + "LOGO" + fileext, FileMode.Create);
+            stream = new FileStream(filepath + "\\LOGO" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
@@ -201,7 +201,7 @@ namespace publishgame.Helpers
             {
                 Directory.CreateDirectory(filepath);
             }
-            stream = new FileStream(filepath + "Source" + fileext, FileMode.Create);
+            stream = new FileStream(filepath + "\\Source" + fileext, FileMode.Create);
             await file.CopyToAsync(stream);
             stream.Close();
 
