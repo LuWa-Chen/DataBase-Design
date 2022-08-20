@@ -96,7 +96,6 @@ namespace publishgame.Helpers
         {
             OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "SELECT ID FROM PUBLISHER WHERE PUBLISHER_NAME = '" + hreq.Form["publisher"] + "'";
-            Console.WriteLine(cmd.CommandText);
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {

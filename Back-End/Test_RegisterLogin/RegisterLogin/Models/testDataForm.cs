@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+
 namespace testDataForm.Models
 {
     public class testDataFormRequest
@@ -19,5 +21,9 @@ namespace testDataForm.Models
         public string LogoPicSrc { get; set; }
         public string ProgramSrc { get; set; }
         public double size { get; set; }
+    }
+    public class MultiSrc
+    {
+        public List<string> Src { get; set; } = new List<string>();
     }
 }
