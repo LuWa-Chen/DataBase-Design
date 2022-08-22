@@ -65,25 +65,24 @@ namespace RegisterLogin.Helpers
                 return resp;
 
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT PASSWORD FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
+            cmd.CommandText = "SELECT PASSWORD, NAME FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
             OracleDataReader reader = cmd.ExecuteReader();
+            
             if (!reader.HasRows)
                 resp.result = -1;       //邮箱不存在
             else
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
                     string pwd = reader[0].ToString();
                     if (pwd == req.password)
                     {
                         resp.result = 0;    //成功登录
-                        break;
-                    }
+                        resp.name = reader[1].ToString();
+                    }            
                     else
-                    {
                         resp.result = 1;    //密码错误
-                        break;
-                    }
+
                 }
             }
             con.Close();
