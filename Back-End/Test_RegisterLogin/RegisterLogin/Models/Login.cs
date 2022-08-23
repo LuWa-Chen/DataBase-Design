@@ -11,6 +11,7 @@ namespace RegisterLogin.Models
     public class LoginResponse
     {
         public string name { get; set; }
+        public string id { get; set; }
         public int result { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace RegisterLogin.Helpers
                 return resp;
 
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT PASSWORD, NAME FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
+            cmd.CommandText = "SELECT PASSWORD, NAME, ID FROM GAME_USER WHERE EMAIL = '" + req.email + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             
             if (!reader.HasRows)
@@ -77,8 +77,9 @@ namespace RegisterLogin.Helpers
                     string pwd = reader[0].ToString();
                     if (pwd == req.password)
                     {
-                        resp.result = 0;    //成功登录
+                        resp.result = 0;    //成功登录                        
                         resp.name = reader[1].ToString();
+                        resp.id = reader[2].ToString();
                     }            
                     else
                         resp.result = 1;    //密码错误
