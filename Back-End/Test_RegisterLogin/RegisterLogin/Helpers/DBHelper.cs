@@ -10,7 +10,9 @@ namespace RegisterLogin.Helpers
 {
     public class DBHelper
     {
+        public const string BASIC_NAME = "BASIC_USER";
         public const int ID_LEN = 10;
+
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
         public void openLoginConn(ref LoginResponse resp)
@@ -47,13 +49,58 @@ namespace RegisterLogin.Helpers
             }
         }
 
-        public string calcID(int tot_num)
+        public int SetBasicUID(string uid)
         {
-            string id = (tot_num + 1).ToString();
-            string zeros = "0000000000";
-            string id_str = zeros.Substring(0, ID_LEN - id.Length) + id;
+            int result = 0;
+            string new_id = (int.Parse(uid) + 1).ToString("d10");
 
-            return id_str;
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = $"UPDATE GAME_USER SET ID='{new_id}' WHERE NAME='{BASIC_NAME}'";
+
+            try
+            {
+                result = cmd.ExecuteNonQuery();
+                cmd.CommandText = result == 0 ? "ROLLBACK" : "COMMIT";
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                cmd.CommandText = "ROLLBACK";
+                cmd.ExecuteNonQuery();
+            }
+            return result;
+        }
+
+        public string calcID()
+        {
+            OracleCommand command = con.CreateCommand();
+            command.CommandText = $"SELECT ID FROM GAME_USER WHERE NAME='{BASIC_NAME}'";
+            string uid = "";
+            OracleDataReader reader;
+
+            try
+            {
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                    uid = reader[0].ToString();
+                int rslt = SetBasicUID(uid);
+                if (rslt == 0)
+                {
+                    command.CommandText = "ROLLBACK";       //update failed 
+                    uid = "";
+                }
+                else
+                    command.CommandText = "COMMIT";
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                uid = "";
+            }
+
+            return uid;
         }
 
         public LoginResponse checkLogin(LoginRequest req)
@@ -111,15 +158,6 @@ namespace RegisterLogin.Helpers
 
             try
             {
-                string id = "";
-                cmd.CommandText = "SELECT COUNT(ID) FROM GAME_USER";
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    id = calcID(int.Parse(reader[0].ToString()));
-                    break;
-                }
-
                 cmd.CommandText = string.Format("SELECT ID FROM GAME_USER WHERE NAME = '{0}'", req.username);
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows)
@@ -129,6 +167,14 @@ namespace RegisterLogin.Helpers
                 }
                 else
                 {
+                    string id = calcID();
+                    if (id == "")
+                    {
+                        resp.result = -2;
+                        resp.message = "连接故障";
+                        con.Close();
+                        return resp;
+                    }
                     cmd.CommandText = $"INSERT INTO GAME_USER VALUES('{id}', '{req.password}', '{req.username}', 1, 0, '{req.email}', '', '', '', '{req.area}', '{req.time}')";
                     cmd.ExecuteNonQuery();
                     resp.result = 0;
