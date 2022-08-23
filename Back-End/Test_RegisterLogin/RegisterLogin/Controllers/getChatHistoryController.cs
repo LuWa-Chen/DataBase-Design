@@ -12,7 +12,7 @@ namespace getChatHistory.Controllers
         public getChatHistoryResponse Get([FromBody] getChatHistoryRequest req)
         {
             ChatHelper nh = new ChatHelper();
-            getChatHistoryResponse resp = nh.getChat(req);
+            getChatHistoryResponse resp = nh.getChat(req); 
 
             return resp;
         }
