@@ -119,6 +119,30 @@ namespace RegisterLogin.Helpers
             saveFile(DEFAULT_PROFILE_PHOTO_PATH, dir);
         }
 
+        public int SetUserStatus(string uid)
+        {
+            int ret = 0;
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = $"UPDATE GAME_USER SET STATUS=1 WHERE ID='{uid}'";
+
+            try
+            {
+                ret = cmd.ExecuteNonQuery();
+                if (ret == 0)
+                    cmd.CommandText = "ROLLBACK";
+                else
+                    cmd.CommandText = "COMMIT";
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ret = 0;
+            }
+
+            return ret;
+        }
+
         public LoginResponse checkLogin(LoginRequest req)
         {
             LoginResponse resp = new LoginResponse();
@@ -140,9 +164,15 @@ namespace RegisterLogin.Helpers
                     string pwd = reader[0].ToString();
                     if (pwd == req.password)
                     {
-                        resp.result = 0;    //成功登录                        
-                        resp.name = reader[1].ToString();
-                        resp.id = reader[2].ToString();
+                        string uid = reader[2].ToString();
+                        if (SetUserStatus(uid) == 1)
+                        {
+                            resp.result = 0;    //成功登录                        
+                            resp.name = reader[1].ToString();
+                            resp.id = uid;
+                        }
+                        else
+                            resp.result = -2;
                     }            
                     else
                         resp.result = 1;    //密码错误
