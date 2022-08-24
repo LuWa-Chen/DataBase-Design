@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using RegisterLogin.Models;
+using System.IO;
 
 namespace RegisterLogin.Helpers
 {
@@ -103,6 +104,21 @@ namespace RegisterLogin.Helpers
             return uid;
         }
 
+        public void saveFile(string filePath, string destPath, string newFileName = "ProfilePhoto.jpg")
+        {
+            FileInfo file = new FileInfo(filePath);
+            file.CopyTo($"{destPath}\\{newFileName}", true);
+        }
+
+        public void CreateUserDir(string uid)
+        {
+            string dir = $"C:\\ExGame-Asset\\User\\{uid}";
+            const string DEFAULT_PROFILE_PHOTO_PATH = "C:\\ExGame-Asset\\User\\DEFAULT\\ProfilePhoto.jpg";
+            if (!Directory.Exists(dir))//若文件夹不存在则新建文件夹   
+                Directory.CreateDirectory(dir); //新建文件夹
+            saveFile(DEFAULT_PROFILE_PHOTO_PATH, dir);
+        }
+
         public LoginResponse checkLogin(LoginRequest req)
         {
             LoginResponse resp = new LoginResponse();
@@ -177,6 +193,7 @@ namespace RegisterLogin.Helpers
                     }
                     cmd.CommandText = $"INSERT INTO GAME_USER VALUES('{id}', '{req.password}', '{req.username}', 1, 0, '{req.email}', '', '', '', '{req.area}', '{req.time}')";
                     cmd.ExecuteNonQuery();
+                    CreateUserDir(id);
                     resp.result = 0;
                     resp.message = "注册成功！";
                 }

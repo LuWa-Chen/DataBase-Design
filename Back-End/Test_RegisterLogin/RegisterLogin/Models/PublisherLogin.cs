@@ -14,5 +14,6 @@ namespace RegisterLogin.Models
     public class PublisherLoginResponse
     {
         public int result { get; set; }
+        public string id { get; set; }
     }
 }
