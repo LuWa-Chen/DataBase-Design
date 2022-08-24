@@ -41,6 +41,7 @@ namespace Chat.Helpers
             OracleDataReader reader = cmd.ExecuteReader();
 
             ChatHistory ch;
+            ChatText ct;
 
             if (!reader.HasRows)
             {
@@ -55,8 +56,10 @@ namespace Chat.Helpers
                     while (reader.Read())
                     {
                         ch = new ChatHistory();
+                        ct = new ChatText();
                         ch.date = reader[0].ToString();
-                        ch.text = reader[1].ToString();
+                        ct.text = reader[1].ToString();
+                        ch.text = ct;
                         if (reader[2].ToString() == req.id_A)
                             ch.mine = true;
                         else

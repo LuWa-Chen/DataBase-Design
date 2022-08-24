@@ -15,8 +15,12 @@ namespace Chat.Models
     public class ChatHistory
     {
         public string date { get; set; }
-        public string text { get; set; }
+        public ChatText text { get; set; }
         public bool mine { get; set; }
+    }
+    public class ChatText
+    {
+        public string text { get; set; }
     }
     public class postChatHistoryRequest
     {
