@@ -45,7 +45,7 @@ namespace RegisterLogin.Helpers
             file = req.files.Files["AvatarPicSrc"];
             filename = file.FileName;
             fileext = Path.GetExtension(filename);
-            filepath = "C:\\ExGame-Asset\\User\\" + req.id + "\\ProfilePhoto";
+            filepath = "C:\\ExGame-Asset\\User\\" + req.id;
             ap.AvatarPicSrc = "User/" + req.id + "/ProfilePhoto" + fileext;
             if (!Directory.Exists(filepath))
             {
