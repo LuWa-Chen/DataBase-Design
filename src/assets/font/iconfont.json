@@ -1,0 +1,44 @@
+{
+  "id": "3554782",
+  "name": "臻Game",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15391363",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "12188359",
+      "name": "好友",
+      "font_class": "haoyou",
+      "unicode": "e7fe",
+      "unicode_decimal": 59390
+    },
+    {
+      "icon_id": "1413447",
+      "name": "账户",
+      "font_class": "zhanghu",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "10939153",
+      "name": "简介",
+      "font_class": "jianjie",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "18165267",
+      "name": "锁,密码,锁定",
+      "font_class": "lock-full",
+      "unicode": "e881",
+      "unicode_decimal": 59521
+    }
+  ]
+}
