@@ -9,9 +9,19 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.8.3",
+    "element-ui": "^2.15.9",
+    "jwchat": "^1.0.10",
+    "qrcodejs2": "^0.0.2",
+    "swiper": "^5.4.5",
     "vue": "^2.6.14",
-    "vue-router": "^3.5.1"
+    "vue-image-crop-upload": "^3.0.3",
+    "vue-layer": "^1.2.5",
+    "vue-resource": "^1.5.3",
+    "vue-router": "^3.5.1",
+    "vue-star-rating": "^1.7.0",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -20,10 +30,13 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "css-loader": "^6.7.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
+    "style-loader": "^3.3.1",
+    "vue-particles": "^1.0.9",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {

@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+"swiper": "^8.3.2"
+"vue-awesome-swiper": "^5.0.1"
