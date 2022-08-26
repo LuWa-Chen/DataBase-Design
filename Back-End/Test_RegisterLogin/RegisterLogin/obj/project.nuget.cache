@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "59H/YDVdHQWoVmidTqGOJPB7gsPbDjTD/osFgQGT6yTOQAYpRFreLk2T2RMn43KaE6ySQxY9BLKwh2f28kbXNw==",
+  "dgSpecHash": "KLp8e0JpnO8mebG0yCmofV/4OcT1luJfTeIT+7VXG8yLe7csQih3nh+bKPjIQzil/Jru2vHevC7NMWJbLqwUXw==",
   "success": true,
   "projectFilePath": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\LHC-PC\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.4\\microsoft.netcore.platforms.5.0.4.nupkg.sha512",
     "C:\\Users\\LHC-PC\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\LHC-PC\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
-    "C:\\Users\\LHC-PC\\.nuget\\packages\\oracle.manageddataaccess.core\\3.21.61\\oracle.manageddataaccess.core.3.21.61.nupkg.sha512",
+    "C:\\Users\\LHC-PC\\.nuget\\packages\\oracle.manageddataaccess.core\\3.21.70\\oracle.manageddataaccess.core.3.21.70.nupkg.sha512",
     "C:\\Users\\LHC-PC\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.0\\system.configuration.configurationmanager.6.0.0.nupkg.sha512",
     "C:\\Users\\LHC-PC\\.nuget\\packages\\system.diagnostics.performancecounter\\6.0.0\\system.diagnostics.performancecounter.6.0.0.nupkg.sha512",
     "C:\\Users\\LHC-PC\\.nuget\\packages\\system.directoryservices\\5.0.0\\system.directoryservices.5.0.0.nupkg.sha512",
