@@ -13,10 +13,10 @@ namespace RegisterLogin.Controllers
     public class PublisherRegisterController : Controller
     {
         [HttpPost]
-        public PublisherRegisterResponse Post([FromBody] PublisherRegisterRequest req)
+        public PublisherRegisterResponse Post([FromForm] PublisherRegisterRequest req)
         {
             PublisherRegisterHelper helper = new PublisherRegisterHelper();
-            PublisherRegisterResponse resp = helper.publisherRegister(req);
+            PublisherRegisterResponse resp = helper.publisherRegister(req, Request);
 
             return resp;
         }

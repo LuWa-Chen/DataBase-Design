@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RegisterLogin.Models;
 using Oracle.ManagedDataAccess.Client;
+using RegisterLogin.Models;
+
 
 namespace RegisterLogin.Helpers
 {
-    public class PublisherLoginHelper
+    public class UserIDGetHelper
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
-        public void openConn(ref PublisherLoginResponse resp)
+        public void OpenConn(UserIDGetResponse resp)
         {
             try
             {
@@ -23,35 +24,36 @@ namespace RegisterLogin.Helpers
             {
                 Console.WriteLine("Connection Failed!");
                 Console.WriteLine(e);
+                resp.result = -1;
                 con.Close();
-                resp.result = -2;
             }
         }
-        public PublisherLoginResponse publisherLogin(PublisherLoginRequest req)
+
+        public UserIDGetResponse GetUID(UserIDGetRequest req)
         {
-            PublisherLoginResponse resp = new PublisherLoginResponse();
-            openConn(ref resp);
-            if (resp.result == -2)
+            UserIDGetResponse resp = new UserIDGetResponse();
+            resp.result = 0;
+            OpenConn(resp);
+            if (resp.result == -1)
                 return resp;
 
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = $"SELECT PASSWORD, ID, PUBLISHER_NAME FROM PUBLISHER WHERE EMAIL='{req.email}'";
-            OracleDataReader reader = cmd.ExecuteReader();
-            if (!reader.HasRows)
-                resp.result = -1;       //邮箱不存在
-            else
+            cmd.CommandText = $"SELECT ID FROM GAME_USER WHERE NAME='{req.user_name}'";
+            try
             {
-                if (reader.Read())
+                OracleDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows && reader.Read())
                 {
-                    if (reader[0].ToString() == req.password)
-                    {
-                        resp.result = 0;    //成功登录
-                        resp.id = reader[1].ToString();
-                        resp.name = reader[2].ToString();
-                    }
-                    else
-                        resp.result = 1;    //密码错误
+                    resp.user_id = reader[0].ToString();
+                    resp.result = 1;
                 }
+                else
+                    resp.result = 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                resp.result = -1;
             }
 
             con.Close();
