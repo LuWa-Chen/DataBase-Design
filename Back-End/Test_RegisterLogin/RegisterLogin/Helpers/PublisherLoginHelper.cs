@@ -35,7 +35,7 @@ namespace RegisterLogin.Helpers
                 return resp;
 
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = $"SELECT PASSWORD, ID FROM PUBLISHER WHERE EMAIL='{req.email}'";
+            cmd.CommandText = $"SELECT PASSWORD, ID, PUBLISHER_NAME FROM PUBLISHER WHERE EMAIL='{req.email}'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
                 resp.result = -1;       //邮箱不存在
@@ -47,6 +47,7 @@ namespace RegisterLogin.Helpers
                     {
                         resp.result = 0;    //成功登录
                         resp.id = reader[1].ToString();
+                        resp.name = reader[2].ToString();
                     }
                     else
                         resp.result = 1;    //密码错误
