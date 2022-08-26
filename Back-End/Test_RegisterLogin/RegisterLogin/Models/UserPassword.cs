@@ -8,6 +8,7 @@ namespace RegisterLogin.Models
     public class UserPasswordRequest
     {
         public string id { get; set; }
+        public string password_old { get; set; }
         public string password { get; set; }
     }
 

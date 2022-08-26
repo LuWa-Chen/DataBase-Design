@@ -51,10 +51,26 @@ namespace RegisterLogin.Helpers
                 try
                 {
                     //查找成功，赋值变量
-                    cmd.CommandText = "UPDATE GAME_USER SET PASSWORD='" + req.password + "' WHERE ID ='" + req.id + "'";
-                    cmd.ExecuteNonQuery();
-                    resp.result = 1;
-                    resp.message = "修改成功！";
+                    cmd.CommandText = "SELECT PASSWORD FROM GAME_USER WHERE ID = '" + req.id + "'";
+                    OracleDataReader reader1 = cmd.ExecuteReader();
+
+                    if (reader1.Read())
+                    {
+                        string pwd = reader1[0].ToString();
+
+                        if (pwd == req.password_old)
+                        {
+                            cmd.CommandText = "UPDATE GAME_USER SET PASSWORD='" + req.password + "' WHERE ID ='" + req.id + "'";
+                            cmd.ExecuteNonQuery();
+                            resp.result = 1;
+                            resp.message = "修改成功！";
+                        }
+                        else
+                        {
+                            resp.result = -2;
+                            resp.message ="密码错误。";
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
