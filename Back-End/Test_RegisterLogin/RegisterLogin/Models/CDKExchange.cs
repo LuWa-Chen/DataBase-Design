@@ -9,6 +9,7 @@ namespace RegisterLogin.Models
     {
         public string user_id { get; set; }
         public string cdk_value { get; set; }
+        public string order_time { get; set; }
     }
     public class CDKExchangeResponse
     {
