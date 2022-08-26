@@ -67,7 +67,7 @@ namespace RegisterLogin.Helpers
             }
 
             /* add game to user library */
-            int ret = utils.AddGame(req.game_id, req.user_id, con);
+            int ret = utils.AddGame(req.game_id, req.user_id, 0, con);
             if (ret != 1)
                 resp.result = -1;
             else

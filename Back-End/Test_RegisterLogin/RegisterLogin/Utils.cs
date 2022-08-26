@@ -96,13 +96,13 @@ namespace RegisterLogin
             return ret;
         }
 
-        public int AddGame(string gid, string uid, OracleConnection con)
+        public int AddGame(string gid, string uid, int via_cdk, OracleConnection con)
         {
             int ret = 0;
             OracleCommand cmd = con.CreateCommand();
 
             /* add game to ownership */
-            cmd.CommandText = $"INSERT INTO OWNERSHIP VALUES('{uid}', '{gid}', 0)";
+            cmd.CommandText = $"INSERT INTO OWNERSHIP VALUES('{uid}', '{gid}', {via_cdk})";
             try
             {
                 ret = cmd.ExecuteNonQuery();
