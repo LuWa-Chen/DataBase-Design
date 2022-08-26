@@ -221,7 +221,7 @@ namespace RegisterLogin.Helpers
                         con.Close();
                         return resp;
                     }
-                    cmd.CommandText = $"INSERT INTO GAME_USER VALUES('{id}', '{req.password}', '{req.username}', 1, 0, '{req.email}', '', '', '', '{req.area}', '{req.time}')";
+                    cmd.CommandText = $"INSERT INTO GAME_USER VALUES('{id}', '{req.password}', '{req.username}', 1, 0, '{req.email}', '', '', 'C:\\ExGame-Asset\\User\\{id}', '{req.area}', '{req.time}')";
                     cmd.ExecuteNonQuery();
                     CreateUserDir(id);
                     resp.result = 0;
