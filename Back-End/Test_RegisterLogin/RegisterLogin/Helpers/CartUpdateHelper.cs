@@ -9,7 +9,6 @@ namespace RegisterLogin.Helpers
 {
     public class CartUpdateHelper
     {
-        public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
         public void openConn(CartUpdateResponse resp)
