@@ -9,6 +9,7 @@ namespace RegisterLogin.Helpers
 {
     public class CDKExchangeHelper
     {
+        public const string BASIC_UID = "BASICORDER";
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
         public void openConn(CDKExchangeResponse resp)
@@ -26,6 +27,79 @@ namespace RegisterLogin.Helpers
                 resp.result = -1;
                 con.Close();
             }
+        }
+
+        public int SetBasicOID(string oid)
+        {
+            int result = 0;
+            string new_id = (int.Parse(oid) + 1).ToString("d20");
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = $"UPDATE GAME_ORDER SET ID='{new_id}' WHERE USER_ID='{BASIC_UID}'";
+
+            try
+            {
+                result = cmd.ExecuteNonQuery();
+                cmd.CommandText = result == 0 ? "ROLLBACK" : "COMMIT";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                cmd.CommandText = "ROLLBACK";
+            }
+            cmd.ExecuteNonQuery();
+
+            return result;            
+        }
+
+        public string CalcOrderID()
+        {
+            OracleCommand command = con.CreateCommand();
+            command.CommandText = $"SELECT ID FROM GAME_ORDER WHERE USER_ID='{BASIC_UID}'";
+            string oid = "";
+            OracleDataReader reader;
+
+            try
+            {
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                    oid = reader[0].ToString();
+
+                if (SetBasicOID(oid) == 0)
+                    oid = "";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                oid = "";
+            }
+
+            return oid;
+        }
+
+        public int CreateOrder(string uid, string gid, string time, int method, double amount, string rid)
+        {
+            int ret = 0;
+            OracleCommand cmd = con.CreateCommand();
+            string oid = CalcOrderID();
+
+            if (oid == "")
+                return ret;     //create failed
+
+            cmd.CommandText = $"INSERT INTO GAME_ORDER VALUES('{oid}', '{uid}', '{gid}', to_date('{time}', 'yyyy-mm-dd hh24:mi:ss'), {method}, {amount}, '{rid}')";
+            try
+            {
+                ret = cmd.ExecuteNonQuery();
+                cmd.CommandText = ret == 0 ? "ROLLBACK" : "COMMIT";
+            }
+            catch (Exception e)
+            {
+                ret = 0;
+                Console.WriteLine(e);
+                cmd.CommandText = "ROLLBACK";
+            }
+            cmd.ExecuteNonQuery();
+
+            return ret;
         }
 
         public int ExpireCDK(string value)
@@ -104,7 +178,7 @@ namespace RegisterLogin.Helpers
                     }
 
                     /* set cdk invalid and add game to user lib */
-                    if (ExpireCDK(req.cdk_value) == 1 && utils.AddGame(gid, req.user_id, 1, con) == 1)
+                    if (ExpireCDK(req.cdk_value) == 1 && CreateOrder(req.user_id, gid, req.order_time, 0, 0, req.user_id) == 1 && utils.AddGame(gid, req.user_id, 1, con) == 1)
                         resp.result = 1;
                     else
                         resp.result = -2;
