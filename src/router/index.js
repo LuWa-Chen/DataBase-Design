@@ -18,10 +18,15 @@ const routes = [
     name:'GamePage',
     component: () => import( '@/views/GamePage')
   },
-  {//注册登录
+  {//用户注册登录
     path:'/userlogin',
     name:'Login',
     component: () => import( '@/views/LoginRegister')
+  },
+  {//发行商注册
+    path:'/publisher_register',
+    name:'P_Register',
+    component: () => import( '@/views/PublisherRegister')
   },
   {//搜索页面
     path:'/search',
@@ -34,7 +39,7 @@ const routes = [
     component: () => import( '@/views/GameDetail')
   },
   {//库界面游戏详情
-    path:'/library/gameinfo',
+    path:'/library_gameinfo',
     name:'GameInfo',
     component: () => import( '@/views/About'),
   },
@@ -47,6 +52,28 @@ const routes = [
     path:'/library/news',
     name:'News',
     component: () => import( '@/views/News'),
+  },
+  {
+    path: '/publisher',
+    name: 'PublisherPage',
+    component: () => import( '@/views/PublisherPage'),
+    children:[
+      {
+        path: '/selectgame',
+        name: 'SelectGame',
+        component: () => import( '@/views/SelectGame'),
+      },
+      {
+        path: '/discountgame',
+        name: 'DiscountGame',
+        component: () => import( '@/views/DiscountGame'),
+      },
+      {
+        path: '/publishgame',
+        name: 'PublishGame',
+        component: () => import( '@/views/PublishGame'),
+      }
+    ]
   },
   {//个人主页
     path: '/home',
@@ -72,6 +99,16 @@ const routes = [
         path: '/friends',
         name: 'friends',
         component: () => import( '@/views/FriendsList')
+      },
+      {
+        path: '/myOrder',
+        name: 'myOrder',
+        component: () => import( '@/views/MyOrder')
+      },
+      {
+        path: '/CDKey',
+        name: 'CDKey',
+        component: () => import( '@/views/CDKey')
       }
     ]
   }

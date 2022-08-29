@@ -7,6 +7,7 @@ import 'vue-layer/lib/vue-layer.css';
 import store from './store'
 import '../public/reset.css'
 import './assets/iconslab/iconfont.css'
+import './assets/font/iconfont.css';
 import VueResource from 'vue-resource'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

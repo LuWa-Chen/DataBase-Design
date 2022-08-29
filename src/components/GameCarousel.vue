@@ -18,7 +18,7 @@
                             <ul>
                                 <li v-for="(temp,index) in showNum" :key="index">
                                     <!--                                <span>{{this.mediaMap[index].coverPath}}</span>-->
-                                    <img class="media-list" v-if="launched===false" :ref="getID(index,'mask-')" :id="getID(index,'mask-')" :src="require('../../../ExGame-Asset/Game/0000000006/Exhibition/Photo/' +'logo.png')" width="103" height="60" @click="click2Choose(index)">
+                                    <img class="media-list" v-if="launched===false" :ref="getID(index,'mask-')" :id="getID(index,'mask-')" :src="require('../assets/logo.png')" width="103" height="60" @click="click2Choose(index)">
                                     <img class="media-list" v-if="launched===true" :ref="getID(index,'mask-')" :id="getID(index,'mask-')" :src="require('../../../ExGame-Asset/' + mediaMap[index].coverPath)" width="103" height="60" @click="click2Choose(index)">
                                     <img class="play-button" v-if="mediaMap[index].srcType===1" :id="getID(index-1,'pbutton-')" src="../assets/play-button.jpg" width="20" height="20" @click="click2Choose(index)" >
                                 </li>
@@ -53,7 +53,7 @@
                             </ul>
                         </div>
                         <router-link :to="{name:'ShoppingCart',params:{user_id:this.game_id}}">
-                            <a href="#">
+                            <a href="#" @click="click2Add()">
                                 加入购物车
                                 <span v-if="discount!==100" style="text-decoration: line-through;color: #aaaaaa">￥{{price}}</span>
                                 <span>&nbsp;￥{{price*discount/100}}</span>
@@ -179,6 +179,26 @@ export default {
                 alert('游戏明不能为空')
             }
         },
+        add2Cart:function (gid,op){
+            if(gid===null)
+            {
+                alert('id 不能为空')
+                return;
+            }
+            // var self = this;
+            this.$axios.post('api/shopingcart/modifyUserShoppingCart', {
+                user_id:'0000000001',
+                game_id:gid,
+                op_type:op
+            }).then( res => {
+                console.log('modify cart' + res.data.result)
+            }).catch( err => {
+                console.log(err);
+            })
+        },
+        click2Add:function (){
+          this.add2Cart('0000000003',1)
+        },
         init:function (){
             var that = this;
             var cut = this.videoList.length;
@@ -266,9 +286,9 @@ export default {
             console.log('-pos ' + this.anchorPos.toString())
             console.log('type' + this.mediaMap[this.anchorPos].srcType.toString())
             if(this.mediaMap[this.anchorPos].srcType===1)
-                this.$refs["main-player-1"].src = require('../../../ExGame-Asset/Game/' + this.getSourcePath(this.onPlay,this.mediaMap[this.anchorPos].srcType));
+                this.$refs["main-player-1"].src = require('../../../ExGame-Asset/' + this.getSourcePath(this.onPlay,this.mediaMap[this.anchorPos].srcType));
             else
-                this.$refs["main-player-2"].src = require('../../../ExGame-Asset/Game/' + this.getSourcePath(this.onPlay,this.mediaMap[this.anchorPos].srcType));
+                this.$refs["main-player-2"].src = require('../../../ExGame-Asset/' + this.getSourcePath(this.onPlay,this.mediaMap[this.anchorPos].srcType));
             this.onPlay--;
             document.getElementById(this.getID(this.onPlay + 1  - this.mediaStart ,'mask-')).style.border = '0px'
             document.getElementById(this.getID(this.onPlay  - this.mediaStart  ,'mask-')).style.border ='3px solid #eee'
@@ -296,9 +316,9 @@ export default {
             console.log('+pos ' + this.anchorPos.toString())
             console.log('type' + this.mediaMap[this.anchorPos].srcType.toString())
             if(this.mediaMap[this.anchorPos].srcType===1)
-                this.$refs["main-player-1"].src = require('../../../ExGame-Asset/Game/'+ this.getSourcePath(this.onPlay + 2,this.mediaMap[this.anchorPos].srcType));
+                this.$refs["main-player-1"].src = require('../../../ExGame-Asset/'+ this.getSourcePath(this.onPlay + 2,this.mediaMap[this.anchorPos].srcType));
             else
-                this.$refs["main-player-2"].src = require('../../../ExGame-Asset/Game/' + this.getSourcePath(this.onPlay + 2,this.mediaMap[this.anchorPos].srcType));
+                this.$refs["main-player-2"].src = require('../../../ExGame-Asset/' + this.getSourcePath(this.onPlay + 2,this.mediaMap[this.anchorPos].srcType));
             console.log('----------')
             this.onPlay++;
             document.getElementById(this.getID(this.onPlay -1 - this.mediaStart ,'mask-')).style.border = '0px'

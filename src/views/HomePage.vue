@@ -3,24 +3,24 @@
   <div class = "home-page">
     <!-- 1.header头部 -->
     <game-page-header></game-page-header>
-    <!-- 2.content主体内容区 -->
     <vue-particles
-      color="#409EFF"
-      :particleOpacity="0.7"
-      :particlesNumber="50"
-      shapeType="star"
-      :particleSize="6"
-      linesColor="#409EFF"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.4"
-      :linesDistance="100"
-      :moveSpeed="1"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="true"
-      clickMode="repulse">
+        color="#409EFF"
+        :particleOpacity="0.7"
+        :particlesNumber="50"
+        shapeType="star"
+        :particleSize="6"
+        linesColor="#409EFF"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="100"
+        :moveSpeed="1"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="repulse">
     </vue-particles>
+    <!-- 2.content主体内容区 -->
     <div class="container">
       <div class="conculor content">
         <router-view></router-view>
@@ -54,6 +54,12 @@
           <li><router-link class="lead-button" active-class="active" :to="{name:'friends',params:{id:this.iframeData.id,name:this.iframeData.name,avatar:this.iframeData.profile_photo}}">
             <span class="iconfont icon-haoyou"></span>好友列表
           </router-link></li>
+          <li><router-link class="lead-button" active-class="active" :to="{name:'myOrder',params:{id:this.iframeData.id}}">
+            <span class="iconfont icon-dingdan"></span>我的订单
+          </router-link></li>
+          <li><router-link class="lead-button" active-class="active" :to="{name:'CDKey',params:{id:this.iframeData.id}}">
+            <span class="iconfont icon-duihuanjilu2"></span>CDK兑换
+          </router-link></li>
         </div>
         <button class="logout" @click="logout">登出</button>
       </div>
@@ -65,13 +71,13 @@
 import GamePageHeader from "@/views/GamePageHeader";
 export default {
   name: "home-page",
-  components: {
-      GamePageHeader
-    },
   provide(){
     return{
       updateAvatar: this.updateAvatar
     }
+  },
+  components: {
+    GamePageHeader
   },
   data(){
     return {
@@ -103,9 +109,7 @@ export default {
               case 1:
                 alert("登出成功！");
                 self.form.status = 0
-                this.$store.commit('changeValue_Name','');
-                this.$store.commit('changeValue_ID','');
-                this.$router.push({name:'GamePage'})
+                // this.$router.push({name:'login'})
                 break;
               case 0:
                 alert("登出失败！");
@@ -129,7 +133,7 @@ export default {
         .then( res => {
           switch(res.data.result){
             case 1:
-              alert("信息初始化成功！");
+              console.log("信息初始化成功！");
               break;
             case 0:
               alert("信息初始化失败！");
@@ -148,7 +152,6 @@ export default {
         .catch( err => {
           console.log(err);
         })
-    this.$router.push({name:'account',params:{id:this.iframeData.id}})
   }
 }
 </script>
@@ -158,126 +161,107 @@ export default {
 @import "../assets/sea_css/mixins.css";
 @import "../assets/sea_css/cards.css";
 @import "../assets/sea_css/variables.css";
-#particles-js {
-  width: 100%;
-  height: calc(100% - 100px);
-  position: absolute;
-}
-
-.home-page{
-  padding: 0;
-  background-color: #121212;
-  height: 1080px;
-}
-body{
-  min-width: 650px;
-  position: fixed;
-}
-/* 头部 */
-.header{
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background-color: #000000;
-  text-align: center;
-  font-weight: bold;
-  max-width: 104rem;
-  min-width: 76rem;
-  position: relative;
-}
-.header-text{
-  color: #FFFFFF;
-  font-size: 22px;
-  left: 100px;
-  position: absolute;
-}
-/* 主体 */
-.container{
-  padding: 0 0 0 300px;
-  overflow: hidden;
-  margin: 10px 200px 100px;
-  border-radius: 30px;
-  border: 8px solid #696969;
-  background-color: #c8c8c8;
-}
-.conculor{
-  float: left;
-  position: relative;
-}
-/*侧边栏*/
-.left{
-  width: 300px;
-  background-color: #F0F0F0;
-  margin-left: -100%;
-  left: -300px;
-  position: relative;
-}
-.head-portrait{
-  margin-top: 10px;
-  float: left;
-  width: 30%;
-}
-.head-portrait img{
-  width: 75%;
-  padding: 20px 0 20px 38px;
-}
-.head-text{
-  padding: 50px 0 0 30px;
-  word-break: break-all;
-  font-style: italic;
-  word-wrap: break-word;
-  box-sizing: border-box;
-  float: left;
-  color: #121212;
-}
-.side-choice{
-  width: 100%;
-  font-size: 18px;
-  font-weight: normal;
-  float: left;
-  list-style-type: none;
-  overflow: auto;
-}
-#account{
-  margin-top: 10px;
-}
-.active{
-  background-color: #DCDCDC;
-}
-li:hover{
-  background-color: #E3E7EA;
-}
-.lead-button{
-  margin: 0;
-  padding: 33px;
-  display: block;
-  color: #000;
-  text-align: center;
-  text-decoration: none;
-  border-bottom: 5px solid;
-  border-bottom-color: #F0F0F0;
-}
-
-.logout{
-  min-width: 60px;
-  margin: 31px 110px;
-  width: 30%;
-  height: 40px;
-  outline: none;
-  color: rgba(0,0,0,.87);
-  font-size: 0.9em;
-  cursor: pointer;
-  line-height: 1rem;
-  white-space: normal;
-  border: thin solid #c8c8c8;
-  box-sizing: border-box;
-  border-radius: 2px;
-  background-color: #fff;
-}
-.logout:hover{
-  background-color: #F5F5F5;
-}
-.content{
-  width: 100%;
-}
+  #particles-js {
+    width: 100%;
+    height: calc(100% - 100px);
+    position: absolute;
+  }
+  .home-page{
+    padding: 0;
+    background-color: #121212;
+    height: 1080px;
+  }
+  body{
+    min-width: 650px;
+    position: fixed;
+  }
+  /* 主体 */
+  .container{
+    padding: 0 0 0 20%;
+    overflow: hidden;
+    margin: 3% 10% 4%;
+    border-radius: 30px;
+    border: 8px solid #c8c8c8;
+    background-color: #F7F7F7;
+  }
+  .conculor{
+    float: left;
+    position: relative;
+  }
+  /*侧边栏*/
+  .left{
+    width: 35%;
+    background-color: #F0F0F0;
+    margin-left: -100%;
+    left: -35%;
+    position: relative;
+  }
+  .head-portrait{
+    float: left;
+    width: 30%;
+  }
+  .head-portrait img{
+    height: 80px;
+    width: 80px;
+    object-fit: cover;/*图片完全填充*/
+    margin: 35px 0 20px 40px;
+    border: black solid 1px;
+    border-radius: 50%;
+  }
+  .head-text{
+    padding: 55px 0 0 50px;
+    word-break: break-all;
+    font-style: italic;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    float: left;
+    color: black
+  }
+  .side-choice{
+    width: 100%;
+    font-size: 18px;
+    font-weight: normal;
+    float: left;
+    list-style-type: none;
+    overflow: auto;
+  }
+  #account{
+    margin-top: 10px;
+  }
+  .active{
+    background-color: #DCDCDC;
+  }
+  li:hover{
+    background-color: #E3E7EA;
+  }
+  .lead-button{
+    margin: 0;
+    padding: 8%;
+    display: block;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+  }
+  .logout{
+    min-width: 60px;
+    margin: 15px 155px 25px;
+    width: 30%;
+    height: 40px;
+    outline: none;
+    color: rgba(0,0,0,.87);
+    font-size: 0.9em;
+    cursor: pointer;
+    line-height: 1rem;
+    white-space: normal;
+    border: thin solid #c8c8c8;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background-color: #fff;
+  }
+  .logout:hover{
+    background-color: #F5F5F5;
+  }
+  .content{
+    width: 100%;
+  }
 </style>
