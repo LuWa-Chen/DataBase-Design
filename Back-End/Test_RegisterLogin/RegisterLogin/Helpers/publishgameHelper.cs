@@ -100,7 +100,7 @@ namespace publishgame.Helpers
             if (!reader.HasRows)
             {
                 resp.result = 0;
-                resp.message = "该发行商未注册!";
+                resp.message = "该发行商("+ hreq.Form["publisher"] + ")未注册!";
                 return "";       //发行商没注册
             }
             else
