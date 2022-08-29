@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using RegisterLogin.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace RegisterLogin.Helpers
 {
@@ -87,7 +85,22 @@ namespace RegisterLogin.Helpers
             return pid;
         }
 
-        public async Task<string> SaveLogo(string pid, PublisherRegisterRequest req)
+        public void saveFile(string filePath, string destPath, string newFileName = "LOGO.jpg")
+        {
+            FileInfo file = new FileInfo(filePath);
+            file.CopyTo($"{destPath}\\{newFileName}", true);
+        }
+
+        public void CreatePublisherDir(string pid)
+        {
+            string dir = $"C:\\ExGame-Asset\\Publisher\\{pid}";
+            const string DEFAULT_PROFILE_PHOTO_PATH = "C:\\ExGame-Asset\\User\\DEFAULT\\ProfilePhoto.jpg";
+            if (!Directory.Exists(dir))//若文件夹不存在则新建文件夹   
+                Directory.CreateDirectory(dir); //新建文件夹
+            saveFile(DEFAULT_PROFILE_PHOTO_PATH, dir);
+        }
+
+        /*public async Task<string> SaveLogo(string pid, PublisherRegisterRequest req)
         {
             IFormFile file;
             //string filename, fileext;
@@ -106,9 +119,9 @@ namespace RegisterLogin.Helpers
             stream.Close();
 
             return logo_path;
-        }
+        }*/
 
-        public PublisherRegisterResponse publisherRegister(PublisherRegisterRequest req, HttpRequest hreq)
+        public PublisherRegisterResponse publisherRegister(PublisherRegisterRequest req)
         {
             PublisherRegisterResponse resp = new PublisherRegisterResponse();
             resp.result = 0;
@@ -119,7 +132,7 @@ namespace RegisterLogin.Helpers
             /* check repetition of email*/
             OracleCommand cmd = con.CreateCommand();
             OracleDataReader reader;
-            cmd.CommandText = $"SELECT PUBLISHER_NAME FROM PUBLISHER WHERE EMAIL='{hreq.Form["email"]}'";
+            cmd.CommandText = $"SELECT PUBLISHER_NAME FROM PUBLISHER WHERE EMAIL='{req.email}'";
             try
             {
                 reader = cmd.ExecuteReader();
@@ -141,7 +154,7 @@ namespace RegisterLogin.Helpers
             }
 
             /* check repetition of username */
-            cmd.CommandText = $"SELECT ID FROM PUBLISHER WHERE PUBLISHER_NAME='{hreq.Form["username"]}'";
+            cmd.CommandText = $"SELECT ID FROM PUBLISHER WHERE PUBLISHER_NAME='{req.username}'";
             try
             {
                 reader = cmd.ExecuteReader();
@@ -174,7 +187,8 @@ namespace RegisterLogin.Helpers
 
             /* create a publisher into the database */
             string logo_path = $"C:\\ExGame-Asset\\Publisher\\{pid}\\LOGO.jpg";
-            cmd.CommandText = $"INSERT INTO PUBLISHER VALUES('{pid}', '{hreq.Form["password"]}', '{hreq.Form["username"]}', '{logo_path}', '{hreq.Form["intro"]}', '{hreq.Form["email"]}', to_date('{hreq.Form["time"]}','yyyy-mm-dd'), '{hreq.Form["area"]}', '{hreq.Form["phonenum"]}')";
+            cmd.CommandText = $"INSERT INTO PUBLISHER VALUES('{pid}', '{req.password}', '{req.username}', '{logo_path}', '', '{req.email}', to_date('{req.time}','yyyy-mm-dd'), '{req.area}', '{req.phonenum}')";
+            //Console.WriteLine(cmd.CommandText);
             try
             {
                 int rslt = cmd.ExecuteNonQuery();
@@ -187,9 +201,10 @@ namespace RegisterLogin.Helpers
                 }
                 else
                 {
-                    string s = SaveLogo(pid, req).Result;
+                    //string s = SaveLogo(pid, req).Result;
                     cmd.CommandText = "COMMIT";
                     cmd.ExecuteNonQuery();
+                    CreatePublisherDir(pid);
                     resp.result = 0;
                     resp.message = "注册成功！";
                 }  

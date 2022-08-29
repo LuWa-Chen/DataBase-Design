@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Http;
 
 namespace RegisterLogin.Models
 {
     public class PublisherRegisterRequest
     {
-        public IFormCollection files { get; set; }
+        public string username { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
+        public string time { get; set; }
+        public string area { get; set; }
+        public string phonenum { get; set; }
     }
 
     public class PublisherRegisterResponse
