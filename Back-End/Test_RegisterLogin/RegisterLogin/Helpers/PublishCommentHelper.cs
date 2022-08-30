@@ -41,7 +41,7 @@ namespace PublishComment.Helpers
         public string getNextID(PublishCommentRequest req, PublishCommentResponse resp)
         {
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT COMMENT_ID FROM COMMENTS WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";
+            cmd.CommandText = "SELECT COMMENT_ID FROM COMMENTS WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000002'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
