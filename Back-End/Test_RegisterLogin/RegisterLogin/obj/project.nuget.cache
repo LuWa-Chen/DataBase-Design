@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/K9VFIKMog3owXOgLEvYNLrkkZn4RqrzJ+j1R83D9XMmF9utp50FHjFdAsXYbzLFF37vNlIiwbPdgYbLzfxUFA==",
+  "dgSpecHash": "s35Mp5FuxNNbvAEXT7uuaaHb7TUDDHRl/YFedwnXq467eG13wqY6e+xWq+DdDyon4V5fYS3adOoDr1VpeiqOYQ==",
   "success": true,
-  "projectFilePath": "D:\\作业相关\\DB principle\\大项目\\开发\\DB\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+  "projectFilePath": "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\26067\\.nuget\\packages\\microsoft.extensions.configuration\\6.0.1\\microsoft.extensions.configuration.6.0.1.nupkg.sha512",
     "C:\\Users\\26067\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",

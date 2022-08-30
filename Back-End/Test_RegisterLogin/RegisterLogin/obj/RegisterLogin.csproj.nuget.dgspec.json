@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {}
+    "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {
+    "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+        "projectUniqueName": "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
         "projectName": "RegisterLogin",
-        "projectPath": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
-        "packagesPath": "C:\\Users\\LHC-PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LHC-PC\\Source\\Repos\\LuWa-Chen\\DataBase-Design\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
+        "projectPath": "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\RegisterLogin.csproj",
+        "packagesPath": "C:\\Users\\26067\\.nuget\\packages\\",
+        "outputPath": "D:\\作业相关\\DB principle\\大项目\\开发\\newdb\\Back-End\\Test_RegisterLogin\\RegisterLogin\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LHC-PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\26067\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -59,7 +59,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -71,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
