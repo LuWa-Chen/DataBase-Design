@@ -12,7 +12,7 @@ namespace publishgame.Helpers
     {
         public const int ID_LEN = 10;
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
-        OracleConnection con = new OracleConnection(connString);
+        public OracleConnection con = new OracleConnection(connString);
         testDataFormResponse resp = new testDataFormResponse();
         public void openConn()
         {
@@ -316,6 +316,17 @@ namespace publishgame.Helpers
                 }
             }
         }
+        public int judgeString(string temp)
+        {
+            string[] templist = temp.Split("/");
+            for (int i = 0; i < temp.Length; i++)
+                if (temp[i] == ',' || temp[i] == ';')
+                    return 0;
+            for (int i = 0; i < templist.Length; i++)
+                if (templist[i].Length > 10)
+                    return 0;
+            return 1;
+        }
         public int existSource(HttpRequest hreq)
         {
             OracleCommand cmd = con.CreateCommand();
@@ -335,6 +346,20 @@ namespace publishgame.Helpers
         public testDataFormResponse PublishGame(testDataFormRequest req, HttpRequest hreq)
         {
             openConn();
+
+            if(judgeString(hreq.Form["tag"]) == 0)
+            {
+                resp.result = 0;
+                resp.message = "tag输入有误！";
+                return resp;
+            }
+
+            if (judgeString(hreq.Form["language"]) == 0)
+            {
+                resp.result = 0;
+                resp.message = "语言输入有误！";
+                return resp;
+            }
 
             if (HasNoPublished(hreq) == 0)
                 return resp;

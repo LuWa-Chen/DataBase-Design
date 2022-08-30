@@ -18,7 +18,7 @@ namespace publishgame.Controllers
             testDataFormResponse resp = new testDataFormResponse();
             publishgameHelper hp = new publishgameHelper();
             resp = hp.PublishGame(req, Request);
-
+            hp.con.Close();
             return resp;
         }
     }
