@@ -58,7 +58,7 @@ export default {
             url: 'api/user/editPassword',
             data: {
               id: this.form.id,
-              password_old: this.form.password_old,
+              password_old: this.password_old,
               password: this.form.password
             }
           })

@@ -1,7 +1,9 @@
+<!--1952168 张宇-->
 <template>
     <div class="canvas">
-        <div class="clearbox" style="display: flex">
-            <el-dialog width="350px"  :visible="dialogVisible" :modal-append-to-body='false' @close="dialogVisible = false">
+        <div style="width: 1055px;margin:100px auto;border-radius: 10px;background-color: #e0e0e0;overflow: hidden" class="clearbox">
+            <div class="clearbox" style="display: flex">
+            <el-dialog width="350px"  :visible="dialogVisible" :modal-append-to-body='false' @close="click2Close()">
                 <div slot="title" class="header-title">
                     <span> 臻Game 游戏购买 </span>
                 </div>
@@ -14,71 +16,92 @@
                     <img class="fl" :src="payIco.ico" height="18px">
                     <span>&nbsp;{{payIco.name}}扫码，支付&nbsp;<span style="font-size: 18px;font-weight: bolder">{{sum-sub}}</span>&nbsp;元</span>
                 </div>
-                <div class="qr-code clearbox" id="qrcode"> </div>
+                <span class="pay-done" v-if="this.sec<3">支付完成</span>
+                <div class="qr-code clearbox" id="qrcode" v-else> </div>
             </el-dialog>
         </div>
-       <div class="shopping-cart">
-           <div class="cart-head">
-               您已选择{{num}}款内容
-           </div>
-           <div class="cart-body">
-               <div style="height:  10px"></div>
-               <div class="no-game" v-if="gameList.length===0">
-                   <img src="../assets/imgs/empty-cart.jpg">
-                   <p>这里什么也没有~</p>
-               </div>
-               <ul>
-                   <li v-for="(game,index) in gameList" :key="index"  class="cart-content clearbox">
-                       <div class="fl" style="width: 40px;">
-                           <input :id="getID(index,'checkbox-')" type="checkbox" @click="click2Choose(index)" style="height: 100px;margin-left: 10px">
-                       </div>
-                       <div class="m-game fl">
-                           <div class="fl">
-                               <img :src=game.poster>
-                           </div>
-                           <div class="game-name fl" v-if="game.isDLC===false">
-                               <span >{{game.name}}</span>
-                           </div>
-                           <div class="game-name-dlc fl" v-if="game.isDLC===true">
-                               <span >{{game.name}}</span>
-                               <p>此DLC依赖本体才可运行，请先购买本体</p>
-                               <!--                                <a>前往购买</a>-->
-                           </div>
-                           <span class="game-price fr" v-if="game.discount!==100">￥{{game.price}}</span>
-                           <span class="game-discount fr">￥{{game.price * game.discount/100}}</span>
-                       </div>
-                       <span class="delete-button fr" @click="click2Delete(index)">移除</span>
-                   </li>
-               </ul>
-               <div style="height:  5px"></div>
-           </div>
-           <div class="cart-foot clearbox">
-               <div class="m-user">
-                   <span class="fl" style="font-size: 12px;color: #666666">购买至：</span>
-                   <div class="user-head fl">
-                       <img  :src="require('../assets/imgs/' + user.head)"  alt="" height="36" width="36" >
-                   </div>
-                   <div class="user-info fl">
-                       <span style="font-weight: bolder">{{user.name}}</span>
-                       <span style="color: #666666">（id：{{user_id}}）</span>
-                   </div>
-                   <div>
-                       {{num}}&nbsp;款内容合计：￥{{sum}}
-                   </div>
-               </div>
-               <div class="buy-info clearbox">
-                   <div class="fl">
-                       活动优惠￥ {{ sub }}
-                   </div>
-                   <div class="fr" style="width: 350px">
+            <div class="shopping-cart">
+                <div class="cart-head">
+                    您已选择{{num}}款内容
+                </div>
+                <div class="cart-body">
+                    <div style="height:  10px"></div>
+                    <div class="no-game" v-if="gameList.length===0">
+                        <img src="../assets/imgs/empty-cart.jpg">
+                        <p>这里什么也没有~</p>
+                    </div>
+                    <ul>
+                        <li v-for="(game,index) in gameList" :key="index"  class="cart-content clearbox">
+                            <div class="fl" style="width: 40px;">
+                                <input :id="getID(index,'checkbox-')" type="checkbox" @click="click2Choose(index)" style="height: 100px;margin-left: 10px">
+                            </div>
+                            <div class="m-game fl">
+                                <div class="fl">
+                                    <img :src="require('../../../ExGame-Asset/' + game.poster)">
+                                </div>
+                                <div class="game-name fl" v-if="game.isDLC===false">
+                                    <span >{{game.name}}</span>
+                                </div>
+                                <div class="game-name-dlc fl" v-if="game.isDLC===true">
+                                    <span >{{game.name}}</span>
+                                    <p>此DLC依赖本体才可运行，请先购买本体</p>
+                                    <!--                                <a>前往购买</a>-->
+                                </div>
+                                <span class="game-price fr" v-if="game.discount!==100">￥{{game.price}}</span>
+                                <span class="game-discount fr">￥{{game.price * game.discount/100}}</span>
+                            </div>
+                            <span class="delete-button fr" @click="click2Delete(index)">移除</span>
+                        </li>
+                    </ul>
+                    <div style="height:  5px"></div>
+                </div>
+                <div class="cart-foot clearbox">
+                    <div class="m-user clearbox">
+                        <span class="fl" style="font-size: 12px;color: #666666">购买至：</span>
+                        <div @click="click2OpenFriend()">
+                            <div class="user-head fl">
+                                <img  :src="require('../assets/imgs/' + user.head)"  alt="" height="36" width="36" >
+                            </div>
+                            <div class="user-info fl">
+<!--                                <span style="font-weight: bolder">{{user.name}}</span>-->
+<!--                                <span style="color: #666666">（id：{{user_id}}）</span>-->
+                                <div style="font-weight: bolder;width: 80px;display: inline-block;">{{user.name}}</div>
+                                <div style="color: #666666;display: inline;">（id：{{user.id}}）</div>
+                            </div>
+                        </div>
+                        <div>
+                            {{num}}&nbsp;款内容合计：￥{{sum}}
+                        </div>
+                    </div>
+                    <div id="s1" class="select-bar" style="z-index: 999;display: none;position: absolute">
+                        <p v-if="friendList.length===1">没有好友</p>
+                        <ul v-else>
+                            <li :id="getID(index+1,'s1l')" v-for="(friend,index) in friendList" :key="index" @click="click2ChooseFriend(index)" @mouseenter="onHover(getID(index+1,'s1l'))" @mouseleave="onLeave(getID(index+1,'s1l'))">
+                                <div class="friend-head fl">
+                                    <img  :src="require('../assets/imgs/' + friend.head)"  alt="" height="36" width="36" >
+                                </div>
+                                <div class="friend-info fl">
+                                    <div style="font-weight: bolder;width: 80px;display: inline-block;">{{friend.name}}</div>
+                                    <div style="color: #666666;display: inline;">（id：{{friend.id}}）</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="buy-info clearbox">
+                        <div class="fl">
+                            活动优惠￥ {{ sub }}
+                        </div>
+                        <div class="fr" style="width: 350px">
                         <span class="fl" style="font-size: 14px">
                             应付总金额：<span style="font-size: 20px;color: orange">￥{{sum-sub}}</span>
                         </span>
-                       <span class="buy-button fr" @click="click2Pay()">确认购买</span>
-                   </div>
-               </div>
-           </div>
-       </div>
+                            <span class="buy-button fr" @click="click2Pay()">确认购买</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 20px"></div>
+        </div>
     </div>
 </template>
 
@@ -94,9 +117,11 @@ export default {
             num:0,
             sub:0,
             dialogVisible:false,
+            sec:10,
             user:{
                 head:'h1.jpg',
                 name:'123456',
+                id:'1234567891',
             },
             payIco: {
                 name:"支付宝",
@@ -112,41 +137,75 @@ export default {
                     ico:require('../assets/imgs/wechat-pay.jpg')
                 }
             ],
-            chosenIndex:[false,false,false],
-            gameList:[
-                {
-                    id:'',
-                    poster:require("../assets/imgs/season_pass.jpg"),
-                    name:'ring',
-                    price:123,
-                    discount:80,
-                    isDLC:false,
-                },
-                {
-                    id:'',
-                    poster:require("../assets/imgs/season_pass.jpg"),
-                    name:'ring',
-                    price:1,
-                    discount:100,
-                    isDLC:true,
-                },
-                {
-                    id:'',
-                    poster:require("../assets/imgs/season_pass.jpg"),
-                    name:'ring',
-                    price:12,
-                    discount:100,
-                    isDLC:false,
-                },
+            chosenIndex:[],
+            gameList:[],
+            friendList:[
+
             ],
         }
     },
     mounted() {
-        console.log('+++++++++++++' + this.user_id)
+        // console.log('+++++++++++++' + this.user_id)
+        this.getData('0000000001')
+        this.getFriend('0000000012')
     },
     methods:{
         getID:function (index,pre){
             return pre + index.toString()
+        },
+        getData:function (uid){
+            if(uid.length===0)
+            {
+                alert('uid 不能为空')
+                return;
+            }
+            this.$axios.post('api/shopingcart/getUserShoppingCart', {
+                user_id: uid,
+            }).then( res => {
+                switch(res.data.result){
+                    case 1:
+                        console.log("购物车 请求成功");
+                        break;
+                    default:
+                        console.log('购物车 请求失败')
+                        break;
+                }
+                for(let i in res.data.game_list)
+                {
+                    console.log(res.data.game_list[i].id)
+                    if(res.data.game_list[i].poster[0]!=='G')
+                        continue
+                    console.log(res.data.game_list[i].poster)
+                    this.gameList.push({
+                        id:res.data.game_list[i].id,
+                        poster:res.data.game_list[i].poster,
+                        name:res.data.game_list[i].name,
+                        price:res.data.game_list[i].discount,
+                        discount:60,
+                        isDLC:res.data.game_list[i].is_dlc,
+                    })
+                    this.chosenIndex.push(false)
+                }
+            }).catch( err => {
+                console.log(err);
+            })
+        },
+        deleteData:function (gid,op){
+            if(gid===null)
+            {
+                alert('id 不能为空')
+                return;
+            }
+            // var self = this;
+            this.$axios.post('api/shopingcart/modifyUserShoppingCart', {
+                user_id:'0000000001',
+                game_id:gid,
+                op_type:op
+            }).then( res => {
+                console.log('modify cart' + res.data.result)
+            }).catch( err => {
+                console.log(err);
+            })
         },
         click2Choose:function (index){
             console.log(index)
@@ -167,9 +226,11 @@ export default {
                 this.sub-=this.gameList[index].price*(100-this.gameList[index].discount)/100;
                 box.checked  = false;
             }
+
         },
         click2Delete:function (index){
             console.log(index)
+            this.deleteData(this.gameList[index].id,2)
             if(this.chosenIndex[index] === true)
             {
                 this.chosenIndex[index] = false;
@@ -212,6 +273,7 @@ export default {
             if(this.num>0)
             {
                 this.dialogVisible = true;
+                this.getSencond()
                 setTimeout(this.click2ChoosePay,100,1)
             }
             else
@@ -220,7 +282,16 @@ export default {
             }
         },
         click2Close:function (){
-            this.$emit('click2Close')
+            this.dialogVisible = false;
+            this.sec = 10;
+            for(let i=0;i<this.gameList.length;i++)
+            {
+                if(this.chosenIndex[i]===true)
+                {
+                    console.log('success' + this.gameList[i].id)
+                    this.click2Delete(i)
+                }
+            }
         },
         click2ChoosePay:function (type){
             if(type===1)
@@ -240,6 +311,7 @@ export default {
                 document.getElementById('ali-pay').style.border = '#eeeeee  1px solid'
                 document.getElementById('ali-pay').style.backgroundColor = 'transparent'
             }
+            this.sec=10;
         },
         createQRcode (url) {
             var qrcode = document.getElementById("qrcode");
@@ -253,6 +325,83 @@ export default {
                 correctLevel : QRCode.CorrectLevel.H,
             });
         },
+        getSencond :function() {
+            const that = this
+            const interval = window.setInterval(function () {
+                --that.sec
+                if (that.sec === 0) {
+                    that.isDisabled = false
+                    window.clearInterval(interval)
+                    that.dialogVisible = false;
+                }
+            }, 1000)
+        },
+        click2OpenFriend:function (){
+            var id = 's1'
+            var ss  = document.getElementById(id)
+            if(ss.style.display === 'block')
+            {
+                ss.style.display = 'none'
+            }
+            else
+            {
+                ss.style.display = 'block';
+            }
+        },
+        click2ChooseFriend:function (index){
+            this.user = this.friendList[index]
+            var ss  = document.getElementById('s1')
+            if(ss.style.display === 'block')
+            {
+                ss.style.display = 'none'
+            }
+            else
+            {
+                ss.style.display = 'block';
+            }
+        },
+        onHover:function (id){
+            var it =  document.getElementById(id)
+            it.style.backgroundColor = '#e9e9e9'
+
+        },
+        onLeave:function (id){
+            var it =  document.getElementById(id)
+            it.style.backgroundColor = 'transparent';
+        },
+        getFriend:function (uid){
+            if(uid.length===0)
+            {
+                alert('uid 不能为空')
+                return;
+            }
+            this.$axios.post('api/user/getFriendsList', {
+                id: uid,
+            }).then( res => {
+                switch(res.data.result){
+                    case 1:
+                        console.log("好友 请求成功");
+                        break;
+                    default:
+                        console.log('好友 请求失败')
+                        break;
+                }
+                this.friendList.push(this.user)
+                for(let i in res.data.friends_list)
+                {
+                    console.log(res.data.friends_list[i].id + res.data.friends_list[i].profile_photo + '++++++')
+                    this.friendList.push(
+                        {
+                            head:'h1.jpg',
+                            name:res.data.friends_list[i].name,
+                            id:res.data.friends_list[i].id,
+                        }
+                    )
+                }
+            }).catch( err => {
+                console.log(err);
+            })
+        }
     }
 }
 </script>
@@ -279,13 +428,13 @@ ul, ol{
     position:fixed;
     width:100%;
     height:100vh;
-    background-color: #e0e0e0;
+    background-color: black;
     overflow: auto;
 }
 .shopping-cart{
     width: 1005px;
     min-height: 500px;
-    margin: 100px auto;
+    margin:  auto;
     /*border: black 2px solid;*/
 }
 .cart-head{
@@ -390,7 +539,7 @@ ul, ol{
     height: 60px;
     line-height: 60px;
     border-bottom: #aaaaaa 1px solid;
-    border-bottom-style: dotted;
+    border-bottom-style: dashed;
     width: 945px;
     margin: auto;
 }
@@ -406,6 +555,34 @@ ul, ol{
     margin-left: 10px;
     width: 670px;
 }
+.friend-head{
+    border:  white 2px solid;
+    width: 40px;
+    height: 40px;
+    margin-left: 7px;
+    border-radius:50%;
+    overflow:hidden;
+}
+.friend-info{
+    margin-left: 10px;
+    /*width: 200px;*/
+}
+.select-bar{
+    border: #aaaaaa 1px solid;
+    width: 300px;
+    border-radius: 8px;
+    align-items: center;
+    margin-left: 70px;
+    background-color: white;
+    box-shadow: darkgrey 1px 1px 1px 1px;
+}
+.select-bar li{
+    height: 40px;
+    /*font-size: 12px;*/
+    line-height:40px;
+    margin-top: 5px;
+}
+
 .buy-info{
     height: 60px;
     line-height: 60px;
@@ -427,6 +604,9 @@ ul, ol{
     -webkit-user-select:none ;
     -moz-user-select:none;
 }
+
+
+
 .header-title{
     text-align: center;
     height: 0;
@@ -479,4 +659,14 @@ ul, ol{
     margin-left: 55px;
     border: #e7e1cd 1px solid;
 }
+.pay-done{
+    display: inline-block;
+    height: 30px;
+    margin-top: 20px;
+    margin-left: 125px;
+    text-align: center;
+    line-height: 30px;
+    /*border: red 1px solid;*/
+}
+
 </style>

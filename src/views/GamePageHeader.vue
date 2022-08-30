@@ -1,12 +1,18 @@
 <template>
   <header>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/sea_css/index-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <div class="navbar">
       <div class="left-sec">
 <!--        <img src="../assets/sea_image/epic logo.png" alt="">-->
         <ul class="pc-navbar-list">
-          <li><router-link :to="{name:'GamePage'}"><a id="active" href="#">臻Game</a></router-link></li>
+          <router-link :to="{name:'GamePage'}"><li><a id="active" href="#">臻Game</a></li></router-link>
           <li><a href="#">FAQ & 帮助</a></li>
-          <li><a href="#">加入我们</a></li>
+          <router-link :to="{name:'P_Register' }" v-if="this.$store.state.isUser!='Publisher'"><li><a href="#">加入我们</a></li></router-link>
         </ul>
       </div>
 <!--      <div class="hamburger-menu" id="x-menu" onclick="openright()">-->
@@ -21,46 +27,60 @@
             <p>登录</p>
         </div>
         <div class="sign" @mouseenter="is_show_userinfo=true" @mouseleave="is_show_userinfo=false" v-else>
-          <i class="fas fa-user"></i>
+          <img :src="this.profile_photo" style="width:40px;height:40px;"/>
           <p>{{this.$store.state.userName}}</p>
           <div class="userinfo" v-if="is_show_userinfo">
             <div class="title">ID:{{this.$store.state.userID}}</div>
               <div class="swiper third-swipe">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide swiper-third">
+                    <div class="car-tuning" @click="ToPublisherPage" v-if="this.$store.state.isUser=='Publisher'">
+                      <div class="game-detail">
+                        <h66>形象主页</h66>
+                      </div>
+                    </div>
+                    <div class="car-tuning" @click="ToLibrary" v-else>
+                      <div class="game-detail">
+                        <h66>已购游戏</h66>
+                      </div>
+                    </div>
                     <div class="car-tuning" @click="ToAccount">
                       <div class="game-detail">
-                        <h6>账户信息</h6>
+                        <h66>账户信息</h66>
                       </div>
                     </div>
                     <div class="car-tuning" @click="ToProfile">
                       <div class="game-detail">
-                        <h6>个人简介</h6>
+                        <h66>个人简介</h66>
                       </div>
                     </div>
                     <div class="car-tuning" @click="ToSafety">
                       <div class="game-detail">
-                        <h6>安全设置</h6>
+                        <h66>安全设置</h66>
                       </div>
                     </div>
                     <div class="car-tuning" @click="ToFriends">
                       <div class="game-detail">
-                        <h6>好友列表</h6>
+                        <h66>好友列表</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToLibrary">
+                    <div class="car-tuning" @click="ToMyOrder">
                       <div class="game-detail">
-                        <h6>已购游戏</h6>
+                        <h66>我的订单</h66>
+                      </div>
+                    </div>
+                    <div class="car-tuning" @click="ToCDKey">
+                      <div class="game-detail">
+                        <h66>CDKey兑换</h66>
                       </div>
                     </div>
                     <div class="car-tuning" @click="Logout">
                       <div class="game-detail">
-                        <h6> 登出 </h6>
+                        <h66> 登出 </h66>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -80,7 +100,7 @@ export default {
   			userName:this.$store.state.userName,
   			userID:this.$store.state.userID,
   			is_show_userinfo:false,
-  			profile_photo: require('../../../ExGame-Asset/User/' + this.$store.state.userID +'/ProfilePhoto.jpg')
+  			profile_photo: require('../../../ExGame-Asset/' + this.$store.state.isUser +'/' + this.$store.state.userID + '/' + this.$store.state.logo_type)
 
   		}
   	},
@@ -103,32 +123,50 @@ export default {
       ToLibrary(){
           this.$router.push({name:'Library'});
       },
+      ToMyOrder(){
+          this.$router.push({name:'myOrder'});
+      },
+      ToCDKey(){
+          this.$router.push({name:'CDKey'});
+      },
+      ToPublisherPage(){
+          this.$router.push({name:'PublisherPage'});
+      },
       Logout(){
-          const self = this;
-                self.$axios({
-                  method:'post',
-                  url: 'api/user/logout',
-                  data: {
-                    id:self.userID
-                  }
-                })
-                    .then( res => {
-                      switch(res.data.result){
-                        case 1:
-                          alert("登出成功！");
-                          this.$store.commit('changeValue_Name','');
-                          this.$store.commit('changeValue_ID','');
-                          this.$router.to(0);
-                          this.$router.push({name:'GamePage'})
-                          break;
-                        case 0:
-                          alert("登出失败！");
-                          break;
-                      }
-                    })
-                    .catch( err => {
-                      console.log(err);
-                    })
+          if(this.$store.state.isUser == 'Publisher'){
+             this.$store.commit('changeValue_Name','');
+             this.$store.commit('changeValue_ID','');
+             this.$store.commit('change_flag','');
+             this.$router.to(0);
+             this.$router.push({name:'GamePage'})
+          }
+          else{
+            const self = this;
+               self.$axios({
+                 method:'post',
+                 url: 'api/user/logout',
+                 data: {
+                   id:self.userID
+                 }
+               })
+               .then( res => {
+                 switch(res.data.result){
+                   case 1:
+                     alert("登出成功！");
+                     this.$store.commit('changeValue_Name','');
+                     this.$store.commit('changeValue_ID','');
+                     this.$router.to(0);
+                     this.$router.push({name:'GamePage'})
+                     break;
+                   case 0:
+                     alert("登出失败！");
+                     break;
+                 }
+               })
+               .catch( err => {
+                 console.log(err);
+               })
+          }
       }
     }
 }
@@ -137,162 +175,4 @@ export default {
 <style scoped>
 @import "../assets/sea_css/index-style.css";
 
-/* 购物车 */
-.header-area .uer-info {
-  position: absolute;
-  /*float: right;*/
-  top: 10px;
-  right: 120px;
-  display: inline-block;
-  border: 1px solid #999;
-  height: 34px;
-  width: 80px;
-  line-height: 34px;
-  /*padding: 0 20px;*/
-
-}
-.header-area .uer-info .user-info-header {
-  position: absolute;
-  top: 0.5px;
-  right: 0.5px;
-  width: 80px;
-  height: 30px;
-  /*background-color: red;*/
-  /*border: 1px solid #999;*/
-}
-.header-area .uer-info:hover .user-info-header {
-  background-color: #fff;
-  border-bottom: 1px solid #fff;
-  z-index: 20;
-}
-.header-area .uer-info .user-info-header span:first-child {
-  margin-left: 10px;
-  color: #129934;
-}
-.header-area .uer-info .shopping-cart-icon {
-  display: inline-block;
-  width: 22.2px;
-  height: 19.2px;
-  /*background-color: red;*/
-  /*margin-top: */
-  position: absolute;
-  top: 5px;
-  right: 20px;
-  /*background:  url('../../assets/img/app-header/icons/shopping-cart.png') no-repeat;*/
-  background-size: 22.2px 19.2px;
-  background-position: 0 0;
-}
-.header-area .uer-info .shopping-cart-number {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
-  /*background-color: red;*/
-  font-size: 10px;
-  font-weight: bold;
-  color: #12ab34;
-  position: absolute;
-  top: 0px;
-  right: 19px;
-}
-.header-area .uer-info .user-info-list {
-  /*box-sizing: border-box;*/
-  position: absolute;
-  top: 30px;
-  right: -1px;
-  width: 460px;
-  background-color: #fff;
-  border: 1px solid #999;
-  font-size: 14px;
-  z-index: 10;
-  /*background-color: red;*/
-}
-.header-area .uer-info .user-info-list ul {
-  min-height: 100px;
-  max-height: 320px;
-  overflow: auto;
-}
-.header-area .uer-info .user-info-list .product-item {
-  box-sizing: border-box;
-  height: 80px;
-  /*width: */
-  padding: 5px;
-  border-bottom: 1px solid #eee;
-  position: relative;
-}
-.header-area .uer-info .user-info-list .product-item:hover {
-  background-color: #eee;
-}
-.header-area .uer-info .user-info-list .product-item img {
-  box-sizing: border-box;
-  width: 70px;
-  height: 70px;
-  border: 1px solid #eee;
-}
-.header-area .uer-info .user-info-list .product-item .product-info {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin: 5px 95px;
-  /*margin-bottom: 5px;*/
-  height: 60px;
-  line-height: 20px;
-  /*background-color: red;*/
-  overflow: hidden;
-}
-.header-area .uer-info .user-info-list .product-item .product-number {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 20px;
-  line-height: 20px;
-  /*background-color: red;*/
-}
-.header-area .uer-info .user-info-list .product-item .product-number .price {
-  color: red;
-}
-.header-area .uer-info .user-info-list .product-item .delete-product {
-  float: right;
-  margin-right: 10px;
-  /*font-size: 14px;*/
-}
-.header-area .uer-info .user-info-list .product-item .delete-product:hover {
-  cursor: pointer;
-  color: red;
-
-}
-.header-area .uer-info .user-info-list .total {
-  padding: 0 20px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #eee;
-  /*position: absolute;*/
-  bottom: 0;
-  left: 0;
-}
-.header-area .uer-info .user-info-list .total span {
-  margin: 0 10px;
-}
-.header-area .uer-info .user-info-list .total span:nth-child(3) {
-  float: right;
-  display: inline-block;
-  background-color: #12ab34;
-  height: 20px;
-  line-height: 20px;
-  padding: 5px 10px;
-  /*padding: 5px;*/
-  color: #fff;
-  font-weight: bold;
-  border-radius: 2px;
-  margin: 5px 20px;
-}
-.header-area .uer-info .user-info-list .total span:nth-child(3):hover {
-  cursor: pointer;
-}
-.header-area .uer-info .user-info-list .has-nothing {
-  text-align: center;
-  margin-top: 35px;
-  /*background-color: red;*/
-}
 </style>

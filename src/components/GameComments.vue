@@ -1,3 +1,4 @@
+<!--1952168 张宇-->
 <template>
     <div class="bb">
         <div style="width: 1005px;margin: auto;">
@@ -156,6 +157,9 @@
                 <div class="more-comments clearbox" @click="getMoreComments()" v-show="commentNum>0&&this.isEnd===false">
                     <span > 查看更多测评 <i class="icon-downarrow"></i></span>
                 </div>
+                <div class="end-comments clearbox" v-if="commentNum>0&&this.isEnd===true" >
+                    <span>已经到尽头了...</span>
+                </div>
             </div>
         </div>
         <div style="height: 20px"></div>
@@ -245,6 +249,7 @@ export default {
             console.log(this.curId.toString() + '+++++')
             this.curId = index;
             this.pgn =1;
+            this.commentNum = 0
             this.getData(this.game_id,'0000000001',1,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
             setTimeout(this.init,600);
             setTimeout(this.pic,610);
@@ -909,6 +914,18 @@ a{
     width: 1000px;
     margin: auto auto 50px auto;
 }
+.end-comments{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+    color: #666666;
+    border-radius: 5px;
+    width: 1000px;
+    margin: auto auto 20px auto;
+}
+
 .more-comments:hover{
     background-color: rgb(240, 240, 240 );
 }

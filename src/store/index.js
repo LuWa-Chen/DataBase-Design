@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userID:'',
-    userName:''
+    userName:'',
+    isUser:'',
+    logo_type:''
   },
   getters: {
   },
@@ -16,7 +18,19 @@ export default new Vuex.Store({
     },
     changeValue_ID(state,newVal){
       state.userID = newVal
-    }
+    },
+    change_flag(state,newVal){
+      state.isUser = newVal
+      if(newVal=='User'){
+        state.logo_type = 'ProfilePhoto.jpg'
+      }
+      else if(newVal=="Publisher"){
+        state.logo_type = 'LOGO.jpg'
+      }
+      else{
+        state.logo_type = ''
+      }
+    },
   },
   actions: {
   },

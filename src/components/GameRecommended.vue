@@ -1,7 +1,7 @@
+<!--1952168 张宇-->
 <template>
     <div style="width: 1055px;height:280px;margin: auto;border-radius: 10px;background-color: #e0e0e0" class="clearbox">
     <div class="m-recommended clearbox">
-
             <div class="m-tt fl">推荐</div>
             <ul style="margin: auto;width: 1000px;" class="clearbox">
                 <li v-for="(game,index) in gameList" :key="index">

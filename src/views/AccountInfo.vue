@@ -43,7 +43,7 @@
 <script>
 import 'babel-polyfill'
 import myUpload from 'vue-image-crop-upload/upload-2.vue'
-import { showLoading, hideLoading } from '@/components/LoadingSet/loading.js'
+import { showLoading, hideLoading } from '@/components/LoadingSet/loading.js';
 export default {
   name: "AccountInfo",
   inject: ['updateAvatar'],
@@ -57,7 +57,7 @@ export default {
         game_num: 0,
       },
       iframeData:{
-        id: this.$store.state.userID
+        id: this.$route.params.id
       }
     }
   },
@@ -101,7 +101,7 @@ export default {
             switch (res.data.result) {
               case 1:
                 console.log("头像上传成功！");
-                this.$router.go(0);
+                location.reload()
                 break;
               case 0:
                 console.log("头像上传失败！");
@@ -130,7 +130,7 @@ export default {
               console.log("获取账户信息成功！");
               self.form.email = res.data.email
               self.form.game_num = res.data.game_num
-              self.imgUrl = require('../../../ExGame-Asset/User/'+ this.$store.state.userID + '/ProfilePhoto.jpg')
+              self.imgUrl = require('../../../ExGame-Asset/User/'+ self.iframeData.id + '/ProfilePhoto.jpg')
               break;
             case 0:
               console.log("获取账户信息失败！");

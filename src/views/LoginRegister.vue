@@ -72,7 +72,8 @@ export default{
 			form:{
 				username:'',
 				useremail:'',
-				userpwd:''
+				userpwd:'',
+				isUser:'User'
 			}
 		}
 	},
@@ -103,6 +104,7 @@ export default{
 						    console.log(res)
 							this.$store.commit('changeValue_Name',res.data.name);
 							this.$store.commit('changeValue_ID',res.data.id);
+							this.$store.commit('change_flag',this.form.isUser);
 							this.$router.push({name:'GamePage'});
 							alert("登录成功！");
 							break;
