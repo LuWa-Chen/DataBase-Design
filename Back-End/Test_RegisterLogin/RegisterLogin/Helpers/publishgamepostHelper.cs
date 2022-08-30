@@ -33,16 +33,11 @@ namespace publishgamepost.Helpers
             OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "SELECT MAX(POST_INDEX) FROM GAME_POST WHERE GAME_ID = '" + gameID + "'";
             OracleDataReader reader = cmd.ExecuteReader();
-            if (!reader.HasRows)
-            {
+            reader.Read();
+            if (reader[0].ToString() == "")
                 return 0;
-            }
-            else
-            {
-                reader.Read();
-                int NextIndex = System.Convert.ToInt32(reader[0].ToString()) + 1;
-                return NextIndex;
-            }
+            int NextIndex = System.Convert.ToInt32(reader[0].ToString()) + 1;
+            return NextIndex;
         }
         public async Task<string> FileSave(string NextID,int NextIndex , publishgamepostRequest req)
         {
