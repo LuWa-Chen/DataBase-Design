@@ -3,6 +3,7 @@ namespace PublisherGameInfo.Models
 {
     public class PublisherGameDetail
     {
+        public string game_id { get; set; }
         public string game_name { get; set; }
         public string publish_date { get; set; }
         public double pre_price { get; set; }
