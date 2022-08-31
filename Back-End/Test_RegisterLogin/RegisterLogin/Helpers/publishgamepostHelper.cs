@@ -66,12 +66,12 @@ namespace publishgamepost.Helpers
             openConn();
 
             int NextIndex = getNextIndex(hreq.Form["GameID"]);
+            Console.WriteLine(req.files.Files.Count);
             string tdp = FileSave(hreq.Form["GameID"], NextIndex, req).Result;
 
             int cen = 0;
             OracleCommand cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO GAME_POST VALUES(" + NextIndex + ",'" + hreq.Form["GameID"] + "','" + tdp + "','" + hreq.Form["PostTitle"] + "',to_date('" + DateTime.Now.ToString("yyyy-MM-dd") + "','yyyy-mm-dd'),'" + hreq.Form["Content"] + "')";
-            Console.WriteLine(cmd.CommandText);
             try
             {
                 cen = cmd.ExecuteNonQuery();
