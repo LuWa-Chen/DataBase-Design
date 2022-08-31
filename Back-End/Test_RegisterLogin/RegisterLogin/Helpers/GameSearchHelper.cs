@@ -45,6 +45,10 @@ namespace RegisterLogin.Helpers
                 case 2:
                     rank = "PUBLISH_DATE DESC";
                     break;
+                case 3:
+                    if (req.game_or_publisher == 0)
+                        rank = $"sys.utl_match.edit_distance_similarity(name, '{req.name}') DESC";
+                    break;
                 default:
                     break;
             }
