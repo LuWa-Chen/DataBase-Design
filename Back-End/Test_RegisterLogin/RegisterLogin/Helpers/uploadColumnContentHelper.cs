@@ -287,6 +287,7 @@ namespace RegisterLogin.Helpers
                         cmd.CommandText = "INSERT INTO COLUMN_PHOTOS VALUES('" + resp.column_id + "','" + ap.Pic9Src + "')";
                         cmd.ExecuteNonQuery();
                     }
+
                     resp.result = 1;
                 }
                 catch (Exception e)

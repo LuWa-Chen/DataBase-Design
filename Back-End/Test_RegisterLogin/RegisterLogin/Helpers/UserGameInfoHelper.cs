@@ -64,7 +64,7 @@ namespace RegisterLogin.Helpers
                         num++;
                     }
                     resp.game_num= num;
-                    if (num != 0)          
+                    if (num >= 0)          
                         resp.result = 1;
                     else                    
                     {
@@ -76,7 +76,7 @@ namespace RegisterLogin.Helpers
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    resp.result = -1;
+                    resp.result = 0;
                 }
             }
             con.Close();
