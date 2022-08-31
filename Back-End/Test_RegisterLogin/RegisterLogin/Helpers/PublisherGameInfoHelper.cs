@@ -163,6 +163,7 @@ namespace PublisherGameInfo.Helpers
                     //查找成功，赋值变量
                     if (reader.Read())
                     {
+                        pgd.game_id = GameID;
                         pgd.game_name = reader[0].ToString();
                         pgd.publish_date = reader[1].ToString();
                         pgd.pre_price = System.Convert.ToDouble(reader[2].ToString());
