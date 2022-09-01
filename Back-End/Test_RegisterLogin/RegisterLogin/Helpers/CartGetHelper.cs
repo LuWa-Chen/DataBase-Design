@@ -60,7 +60,7 @@ namespace RegisterLogin.Helpers
                         game["name"] = sub_reader[0].ToString();
                         game["poster"] = sub_reader[1].ToString();
                         game["price"] = double.Parse(sub_reader[2].ToString());
-                        game["discount"] = double.Parse(sub_reader[3].ToString()) * 100;
+                        game["discount"] = double.Parse(sub_reader[3].ToString());
                         game["is_dlc"] = int.Parse(sub_reader[4].ToString()) == 1 ? true : false;
 
                         resp.game_list.Add(game);

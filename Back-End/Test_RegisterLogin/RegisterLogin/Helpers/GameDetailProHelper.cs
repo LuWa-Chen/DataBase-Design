@@ -69,7 +69,7 @@ namespace RegisterLogin.Helpers
                     cmd.CommandText = string.Format("SELECT DISCOUNT_RATE FROM DISCOUNT WHERE GAME_ID={0}", req.game_id);
                     reader = cmd.ExecuteReader();
                     if (reader.Read())
-                        resp.discount = double.Parse(reader[0].ToString()) * 100.0;
+                        resp.discount = double.Parse(reader[0].ToString());
 
                     // 查找publisher
                     cmd.CommandText = string.Format("SELECT PUBLISHER_NAME FROM PUBLISHER WHERE ID={0}", pid);
