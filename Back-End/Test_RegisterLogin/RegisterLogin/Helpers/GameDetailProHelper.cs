@@ -66,10 +66,12 @@ namespace RegisterLogin.Helpers
 
                     /* 查找相关资源 */
                     //查找discount
-                    cmd.CommandText = string.Format("SELECT DISCOUNT_RATE FROM DISCOUNT WHERE GAME_ID={0}", req.game_id);
+                    cmd.CommandText = string.Format("SELECT DISCOUNT_RATE FROM DISCOUNT WHERE GAME_ID={0} AND start_time <= (select sysdate from dual) and end_time >= (select sysdate from dual)", req.game_id);
                     reader = cmd.ExecuteReader();
-                    if (reader.Read())
-                        resp.discount = double.Parse(reader[0].ToString()) * 100.0;
+                    if (!reader.HasRows)
+                        resp.discount = 1;
+                    else if (reader.Read())
+                        resp.discount = double.Parse(reader[0].ToString());
 
                     // 查找publisher
                     cmd.CommandText = string.Format("SELECT PUBLISHER_NAME FROM PUBLISHER WHERE ID={0}", pid);
@@ -94,6 +96,12 @@ namespace RegisterLogin.Helpers
                     reader = cmd.ExecuteReader();
                     while (reader.Read())
                         resp.tag_list.Add(reader[0].ToString());
+
+                    //获取is_launched
+                    cmd.CommandText = $"SELECT FUN_IS_AVAILABLE('{req.game_id}') FROM DUAL";
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                        resp.is_launched = int.Parse(reader[0].ToString()) > 0 ? true : false;
                 }
                 catch (Exception e)
                 {

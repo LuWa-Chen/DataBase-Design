@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Back-End",
+    "\\Back-End\\Test_RegisterLogin"
   ],
+  "SelectedNode": "\\Back-End\\Test_RegisterLogin",
   "PreviewInSolutionExplorer": false
 }

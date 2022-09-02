@@ -41,7 +41,7 @@ namespace PublishComment.Helpers
         public string getNextID(PublishCommentRequest req, PublishCommentResponse resp)
         {
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT COMMENT_ID FROM COMMENTS WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000002'";
+            cmd.CommandText = "SELECT COMMENT_ID FROM COMMENTS WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -55,7 +55,7 @@ namespace PublishComment.Helpers
                 string NextID = reader[0].ToString();
                 int outid = System.Convert.ToInt32(NextID);
                 outid += 1;
-                string AddID = outid.ToString("00000000000000000000");
+                string AddID = outid.ToString("00000000000");
 
                 int cen = 0;
                 cmd.CommandText = "UPDATE COMMENTS SET COMMENT_ID = '"+ AddID + "' WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";

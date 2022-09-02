@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using Oracle.ManagedDataAccess.Client;
-using GameNews.Models;
-namespace News.Helpers
+using PublisherInfo.Models;
+using System;
+
+namespace PublisherInfo.Helpers
 {
-    public class NewsHelper
+    public class PublisherInfoHelper
     {
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
-        OracleConnection con = new OracleConnection(connString);
-
-        public void openConn(ref GameNewsResponse resp)
+        public OracleConnection con = new OracleConnection(connString);
+        PublisherInfoResponse resp = new PublisherInfoResponse();
+        public void openConn()
         {
             try
             {
@@ -19,48 +21,39 @@ namespace News.Helpers
             catch (Exception e)
             {
                 Console.WriteLine("Connection Failed!");
-                Console.WriteLine(e);
                 resp.result = -1;
-                con.Close();
+                resp.message = e.Message;
             }
         }
-        public GameNewsResponse getGameNews(GameNewsRequest req)
+        public PublisherInfoResponse getPublisherInfo(PublisherInfoRequest req)
         {
-            GameNewsResponse resp = new GameNewsResponse();
-            resp.result = 0;
-            openConn(ref resp);
-            if (resp.result == -1)
-                return resp;
-            gamenew gn;
-            
+            openConn();
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "select POST_COVER,POST_TITLE,POST_TIME,CONTENT_TEXT from GAME_POST where GAME_ID = '" + req.game_id + "'";
+            cmd.CommandText = "SELECT TELEPHONE,INTRO_TEXT,EMAIL,AREA FROM PUBLISHER WHERE ID = '" + req.id + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
                 resp.result = 0;       //查找游戏id不存在
-                resp.message = "该游戏无推送";
+                resp.message = "查找发行商id不存在";
             }
             else
             {
                 try
                 {
                     //查找成功，赋值变量
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        gn = new gamenew();
-                        gn.post_cover = reader[0].ToString();
-                        gn.post_title = reader[1].ToString();
-                        gn.post_time = reader[2].ToString();
-                        gn.content_text = reader[3].ToString();
-                        resp.gn.Add(gn);
+                        resp.phone_number = reader[0].ToString();
+                        resp.intro = reader[1].ToString();
+                        resp.email = reader[2].ToString();
+                        resp.area = reader[3].ToString();
+                        resp.result = 1;
                     }
-                    resp.result = 1;
                 }
                 catch (Exception e)
                 {
                     resp.message = e.Message;
-                    resp.result = 0;
+                    resp.result = -1;
                 }
             }
             con.Close();
