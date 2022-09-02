@@ -96,6 +96,12 @@ namespace RegisterLogin.Helpers
                     reader = cmd.ExecuteReader();
                     while (reader.Read())
                         resp.tag_list.Add(reader[0].ToString());
+
+                    //获取is_launched
+                    cmd.CommandText = $"SELECT FUN_IS_AVAILABLE('{req.game_id}') FROM DUAL";
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                        resp.is_launched = int.Parse(reader[0].ToString()) > 0 ? true : false;
                 }
                 catch (Exception e)
                 {

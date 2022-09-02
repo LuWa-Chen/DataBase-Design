@@ -21,6 +21,7 @@ namespace RegisterLogin.Models
         public List<string> image_list { get; set; } = new List<string>();
         public List<string> video_list { get; set; } = new List<string>();
         public List<string> tag_list { get; set; } = new List<string>();
+        public bool is_launched { get; set; }
         public int result { get; set; }
     }
 }
