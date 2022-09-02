@@ -45,6 +45,25 @@ namespace RegisterLogin.Helpers
             }
             return gid;
         }
+
+        public int IsOnSale(DiscountPublishRequest req, string gid)
+        {
+            int rslt = 0;
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = $"SELECT FUNCTION_IS_ON_SALE('{gid}', to_date('{req.start_date}', 'yyyy-mm-dd'), to_date('{req.end_date}', 'yyyy-mm-dd')) FROM DUAL";
+            try
+            {
+                OracleDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                    rslt = int.Parse(reader[0].ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                rslt = -1;
+            }
+            return rslt;
+        }
         
         public DiscountPublishResponse PublishDiscount(DiscountPublishRequest req)
         {
@@ -54,6 +73,7 @@ namespace RegisterLogin.Helpers
             if (resp.result == -1)
             {
                 resp.message = "连接失败！";
+                resp.result = -1;
                 return resp;
             }
 
@@ -72,6 +92,21 @@ namespace RegisterLogin.Helpers
             else if (gid == "ERROR")
             {
                 resp.message = "连接失败！";
+                resp.result = -1;
+                return resp;
+            }
+
+            int on_sale = IsOnSale(req, gid);
+            if (on_sale == -1)
+            {
+                resp.message = "连接失败！";
+                resp.result = -1;
+                return resp;
+            }
+            else if (on_sale > 0)
+            {
+                resp.message = "该时段内游戏已有促销活动，无法添加！";
+                resp.result = 0;
                 return resp;
             }
 
@@ -80,6 +115,7 @@ namespace RegisterLogin.Helpers
             try
             {
                 cmd.ExecuteNonQuery();
+                resp.result = 1;
                 resp.message = "发布成功！";
             }
             catch (Exception e)
