@@ -55,7 +55,7 @@ namespace PublishComment.Helpers
                 string NextID = reader[0].ToString();
                 int outid = System.Convert.ToInt32(NextID);
                 outid += 1;
-                string AddID = outid.ToString("00000000000000000000");
+                string AddID = outid.ToString("00000000000");
 
                 int cen = 0;
                 cmd.CommandText = "UPDATE COMMENTS SET COMMENT_ID = '"+ AddID + "' WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";
