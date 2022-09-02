@@ -9,6 +9,7 @@ namespace RegisterLogin.Helpers
 {
     public class PostOrderHelper
     {
+        public const string BASIC_UID = "BASICORDER";
         public static string connString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=139.196.222.196)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;User ID=c##ysjyyds;Password=DBprinciple2022;";
         OracleConnection con = new OracleConnection(connString);
         public void OpenConn(PostOrderResponse resp)
@@ -28,6 +29,80 @@ namespace RegisterLogin.Helpers
             }
         }
 
+        public int SetBasicOID(string oid)
+        {
+            int result = 0;
+            string new_id = (int.Parse(oid) + 1).ToString("d20");
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = $"UPDATE GAME_ORDER SET ID='{new_id}' WHERE USER_ID='{BASIC_UID}'";
+
+            try
+            {
+                result = cmd.ExecuteNonQuery();
+                cmd.CommandText = result == 0 ? "ROLLBACK" : "COMMIT";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                cmd.CommandText = "ROLLBACK";
+            }
+            cmd.ExecuteNonQuery();
+
+            return result;
+        }
+
+        public string CalcOrderID()
+        {
+            OracleCommand command = con.CreateCommand();
+            command.CommandText = $"SELECT ID FROM GAME_ORDER WHERE USER_ID='{BASIC_UID}'";
+            string oid = "";
+            OracleDataReader reader;
+
+            try
+            {
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                    oid = reader[0].ToString();
+
+                if (SetBasicOID(oid) == 0)
+                    oid = "";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                oid = "";
+            }
+
+            return oid;
+        }
+
+        public int CreateOrder(string uid, string gid, int method, double amount, string rid,ref string order_id)
+        {
+            int ret = 0;
+            OracleCommand cmd = con.CreateCommand();
+            string oid = CalcOrderID();
+
+            if (oid == "")
+                return ret;     //create failed
+
+            cmd.CommandText = $"INSERT INTO GAME_ORDER VALUES('{oid}', '{uid}', '{gid}',SYSDATE, {method}, {amount}, '{rid}')";
+            try
+            {
+                ret = cmd.ExecuteNonQuery();
+                cmd.CommandText = ret == 0 ? "ROLLBACK" : "COMMIT";
+                order_id = oid;
+            }
+            catch (Exception e)
+            {
+                ret = 0;
+                Console.WriteLine(e);
+                cmd.CommandText = "ROLLBACK";
+            }
+            cmd.ExecuteNonQuery();
+
+            return ret;
+        }
+
         public PostOrderResponse PostOrder(PostOrderRequest req)
         {
             PostOrderResponse resp = new PostOrderResponse();
@@ -39,22 +114,12 @@ namespace RegisterLogin.Helpers
             try
             {
                 OracleCommand cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT ID FROM GAME_ORDER";
-                OracleDataReader reader = cmd.ExecuteReader();
-                if (!reader.HasRows)
-                {
-                    resp.order_id = "0000000001";
-                }
-                else
-                {
-                    while (reader.Read())
-                    {
-                        resp.order_id = (int.Parse(reader[0].ToString()) + 1).ToString("d10");
-                    }
-                }
 
-                cmd.CommandText = "INSERT INTO GAME_ORDER VALUES('" + resp.order_id + "','" + req.user_id + "','" + req.game_id + "',SYSDATE,'" + req.via_cdk + "','" + req.pay_amount + "','" + req.recept_id + "')";
-                cmd.ExecuteNonQuery();
+                string oid="";
+
+                CreateOrder(req.user_id, req.game_id, req.via_cdk, req.pay_amount, req.recept_id,ref oid);
+
+                resp.order_id=oid;
 
                 cmd.CommandText = "SELECT ORDER_TIME FROM GAME_ORDER WHERE ID='" + resp.order_id + "'";
                 OracleDataReader reader1 = cmd.ExecuteReader();
