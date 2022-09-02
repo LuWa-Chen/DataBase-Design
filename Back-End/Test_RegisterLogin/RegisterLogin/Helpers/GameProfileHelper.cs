@@ -42,7 +42,7 @@ namespace RegisterLogin.Helpers
             try
             {
                 /* get profile of subject */
-                cmd.CommandText = $"SELECT COVER, GENERAL_INTRO FROM GAME WHERE ID='{req.game_id}'";
+                cmd.CommandText = $"SELECT COVER, SPECIFIC_INTRO FROM GAME WHERE ID='{req.game_id}'";
                 reader = cmd.ExecuteReader();
 /*                if (!reader.HasRows)
                 {

@@ -10,7 +10,7 @@ namespace RegisterLogin.Models
         public string user_id { get; set; }
         public string game_id { get; set; }
         public int via_cdk { get; set; }
-        public int pay_amount { get; set; }
+        public double pay_amount { get; set; }
         public string recept_id { get; set; }
 
     }
