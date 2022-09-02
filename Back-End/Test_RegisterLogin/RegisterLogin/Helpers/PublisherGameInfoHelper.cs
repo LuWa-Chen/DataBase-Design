@@ -62,8 +62,8 @@ namespace PublisherGameInfo.Helpers
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
-                resp.result = 0;       //统计发行商游戏数量时错误
-                resp.response = "统计发行商游戏数量时错误！";
+                resp.result = 1;       //统计发行商游戏数量时错误
+                resp.response = "发行商无游戏";
             }
             else
             {
