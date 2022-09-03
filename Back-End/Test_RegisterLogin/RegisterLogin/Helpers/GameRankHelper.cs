@@ -97,7 +97,10 @@ namespace RegisterLogin.Helpers
             }
             else if(req.Rank_name=="praise")
             {
-                cmd.CommandText = "SELECT ID FROM (SELECT * FROM GAME ORDER BY LIKE_NUM DESC) WHERE ROWNUM <='" + req.Number + "'";
+
+
+
+                cmd.CommandText = "SELECT ID FROM (SELECT ID, (LIKE_NUM/(LIKE_NUM+DISLIKE_NUM+1)) AS LIKE_RATE FROM GAME ORDER BY LIKE_RATE DESC )WHERE ROWNUM <='" + req.Number + "'";
                 OracleDataReader reader2 = cmd.ExecuteReader();
 
                 if (!reader2.HasRows)
