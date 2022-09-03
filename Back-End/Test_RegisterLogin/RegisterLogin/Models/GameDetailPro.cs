@@ -12,6 +12,7 @@ namespace RegisterLogin.Models
 
     public class GameDetailProResponse
     {
+        public string RateResult { get; set; }
         public string game_name { get; set; }
         public string publish_date { get; set; }
         public double price { get; set; }
