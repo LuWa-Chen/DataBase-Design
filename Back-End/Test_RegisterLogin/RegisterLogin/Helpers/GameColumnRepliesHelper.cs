@@ -69,8 +69,8 @@ namespace GameColumnReplies.Helpers
             }
             catch (Exception e)
             {
-                resp.message = e.Message;
-                resp.result = 0;
+                postresp.message = e.Message;
+                postresp.result = 0;
                 return 0;
             }
 
@@ -82,8 +82,8 @@ namespace GameColumnReplies.Helpers
             }
             catch (Exception e)
             {
-                resp.message = e.Message;
-                resp.result = 0;
+                postresp.message = e.Message;
+                postresp.result = 0;
                 return 0;
             }
         }
@@ -92,9 +92,6 @@ namespace GameColumnReplies.Helpers
             resp.result = 0;
             openConn();
             if (resp.result == -1)
-                return resp;
-
-            if (UpdateNum(req.column_id) == 0)
                 return resp;
 
             string name = "";
@@ -143,6 +140,9 @@ namespace GameColumnReplies.Helpers
             resp.result = 0;
             openConn();
             if (resp.result == -1)
+                return postresp;
+
+            if (UpdateNum(req.column_id) == 0)
                 return postresp;
 
             OracleCommand cmd = con.CreateCommand();
