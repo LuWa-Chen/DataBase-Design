@@ -27,7 +27,7 @@ namespace PublishComment.Helpers
         public int HasNoPublished(PublishCommentRequest req, PublishCommentResponse resp)
         {
             OracleCommand cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT RATING FROM COMMENTS WHERE USER_ID = '"+req.user_id+"' AND GAME_ID = '"+req.game_id+"'";
+            cmd.CommandText = "SELECT RATING FROM COMMENTS WHERE USER_ID = '" + req.user_id + "' AND GAME_ID = '" + req.game_id + "'";
             OracleDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
                 return 1;       //说明无评论
@@ -58,7 +58,7 @@ namespace PublishComment.Helpers
                 string AddID = outid.ToString("00000000000");
 
                 int cen = 0;
-                cmd.CommandText = "UPDATE COMMENTS SET COMMENT_ID = '"+ AddID + "' WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";
+                cmd.CommandText = "UPDATE COMMENTS SET COMMENT_ID = '" + AddID + "' WHERE USER_ID = 'testuser0' AND GAME_ID = '0000000001'";
                 cen = cmd.ExecuteNonQuery();
                 if (cen == 0)
                 {
@@ -87,6 +87,39 @@ namespace PublishComment.Helpers
                 return NextID;
             }
         }
+        public int UpdateCommentNum(string game_id, int like, PublishCommentResponse resp)
+        {
+            OracleCommand cmd = con.CreateCommand();
+            int cen = 0;
+            string stringlike;
+            if (like >= 3)
+                stringlike = "LIKE_NUM";
+            else
+                stringlike = "DISLIKE_NUM";
+            cmd.CommandText = "UPDATE GAME SET " + stringlike + " = " + stringlike + " + 1 WHERE ID = '" + game_id + "'";
+            cen = cmd.ExecuteNonQuery();
+
+            if (cen == 0)
+            {
+                cmd.CommandText = "ROLLBACK";
+                cen = cmd.ExecuteNonQuery();
+                resp.result = -1;  //修改失败
+                resp.messsage = "修改comment记录失败";
+            }
+            try
+            {
+                cmd.CommandText = "COMMIT";
+                cen = cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                cmd.CommandText = "ROLLBACK";
+                cen = cmd.ExecuteNonQuery();
+                resp.messsage = e.Message.ToString();
+                resp.result = -1;
+            }
+            return 1;
+        }
         public PublishCommentResponse PublishComment(PublishCommentRequest req)
         {
             PublishCommentResponse resp = new PublishCommentResponse();
@@ -96,8 +129,11 @@ namespace PublishComment.Helpers
                 return resp;
 
             int pnb = HasNoPublished(req, resp);
-            if (pnb == 0)//若用户已经发表过评论
+            if (pnb == 0)
+            {
+                con.Close();
                 return resp;
+            }//若用户已经发表过评论
 
             string nowid = "";
             nowid = getNextID(req, resp);
@@ -105,7 +141,13 @@ namespace PublishComment.Helpers
             {
                 con.Close();
                 return resp;
-            }                
+            }
+
+            if (UpdateCommentNum(req.game_id, req.rating, resp) == 0)
+            {
+                con.Close();
+                return resp;
+            }
 
             int cen = 0;
             OracleCommand cmd = con.CreateCommand();

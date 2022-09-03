@@ -121,12 +121,16 @@ namespace RegisterLogin.Helpers
 
                 resp.order_id=oid;
 
+                cmd.CommandText = "UPDATE GAME SET TOT_DEAL_NUM=TOT_DEAL_NUM+1 WHERE ID='" + req.game_id + "'";
+                cmd.ExecuteNonQuery();
+
                 cmd.CommandText = "SELECT ORDER_TIME FROM GAME_ORDER WHERE ID='" + resp.order_id + "'";
                 OracleDataReader reader1 = cmd.ExecuteReader();
                 if (reader1.Read())
                 {
                     resp.order_time = reader1[0].ToString();
                 }
+
                 resp.result = 1;
             }
             catch (Exception e)
