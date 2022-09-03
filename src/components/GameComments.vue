@@ -93,8 +93,8 @@
                             <div class="m-comment fl">
                                 <div class="comment-creator fl">
                                     <div class="user-head">
-                                        <img  :src="require('../assets/imgs/' + comment.user.head)"  alt="" height="60" width="60" >
-                                    </div>
+                                         <img  :src="require('../../../ExGame-Asset/User/' + comment.user.uid+ '/ProfilePhoto.jpg')"  alt="" height="60" width="60" >
+                                     </div>
                                     <div class="user-info">
                                         <p>{{comment.user.name}}</p>
                                         <p>账户内拥有{{comment.user.gameNum}}项产品</p>
@@ -203,9 +203,9 @@ export default {
         }
     },
     mounted() {
-        this.getData(this.game_id,'0000000001',1,1,0,0,0);
-        setTimeout(this.init,600);
-        setTimeout(this.pic,610);
+        this.getData(this.game_id,this.$store.state.userID,1,1,0,0,0);
+        setTimeout(this.init,3500);
+        setTimeout(this.pic,3600);
     },
     methods:{
         click2Choose(index){
@@ -233,7 +233,7 @@ export default {
             this.filters[i-1].cur  = ii-1;
             this.click2Choose(i)
             this.pgn =1;
-            this.getData(this.game_id,'0000000001',1,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
+            this.getData(this.game_id,this.$store.state.userID,1,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
             setTimeout(this.init,600);
             setTimeout(this.pic,610);
             // this.comments = this.funFilter(this.comments,i,ii);
@@ -250,7 +250,7 @@ export default {
             this.curId = index;
             this.pgn =1;
             this.commentNum = 0
-            this.getData(this.game_id,'0000000001',1,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
+            this.getData(this.game_id,this.$store.state.userID,1,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
             setTimeout(this.init,600);
             setTimeout(this.pic,610);
             // this.pic();
@@ -260,7 +260,7 @@ export default {
             if(this.isEnd===false)
             {
                 this.pgn++;
-                this.getData(this.game_id,'0000000001',this.pgn,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
+                this.getData(this.game_id,this.$store.state.userID,this.pgn,this.curId+1,this.filters[0].cur,this.filters[1].cur,this.filters[2].cur);
                 setTimeout(this.apd,1000);
                 setTimeout(this.pic,1010);
             }
@@ -274,7 +274,7 @@ export default {
             }
             if(uid.length===0)
             {
-                alert('uid 不能为空')
+                //alert('uid 不能为空')
                 return;
             }
             console.log('getData')
@@ -441,6 +441,7 @@ export default {
         },
         pic:function ()
         {
+            console.log('pic')
             for(let i=0; i<this.comments.length; i++)
             {
                 // console.log(this.comments[i].myChoice.good)
@@ -522,7 +523,7 @@ export default {
                     document.getElementById(this.getRateID(index+1,'rate-ico-1-',pos)).style.backgroundColor ='transparent';
                     comment[index].rate.goodCount--;
                 }
-                this.sendRate(this.game_id,'0000000008',comment[index].user.uid,1)
+                this.sendRate(this.game_id,this.$store.state.userID,comment[index].user.uid,1)
             }
             else if(type===2)
             {
@@ -543,7 +544,7 @@ export default {
                     document.getElementById(this.getRateID(index+1,'rate-ico-2-',pos)).style.backgroundColor = 'transparent';
                     comment[index].rate.badCount--;
                 }
-                this.sendRate(this.game_id,'0000000008',comment[index].user.uid,-1)
+                this.sendRate(this.game_id,this.$store.state.userID,comment[index].user.uid,-1)
             }
             else{
                 console.log('rate not found err')
@@ -581,6 +582,7 @@ a{
     margin: auto;
     border-radius: 10px;
     background-color: #c0c0c0;
+    color:black;
 }
 .line4{
     position: relative;

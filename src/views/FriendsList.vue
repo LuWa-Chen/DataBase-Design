@@ -28,12 +28,12 @@
             fixed
             prop="id"
             label="用户id"
-            width="120">
+            width="200">
         </el-table-column>
         <el-table-column
             prop="profile_photo"
             label="头像"
-            width="120">
+            width="144">
           <template slot-scope="scope">
             <img :src="scope.row.profile_photo" width="60" height="60" @error="defImg" alt="头像"/>
           </template>
@@ -41,7 +41,7 @@
         <el-table-column
             prop="name"
             label="昵称"
-            width="110">
+            width="350">
         </el-table-column>
         <el-table-column
             prop="status"
@@ -55,9 +55,8 @@
           </template>
         </el-table-column>
         <el-table-column
-            fixed="right"
             label="操作"
-            width="173">
+            width="250">
           <!-- 查看按钮 -->
           <template slot-scope="scope">
             <el-button
@@ -105,7 +104,7 @@ export default {
         id: ''
       },
       iframeData:{
-        id: this.$route.params.id
+        id: this.$store.state.userID
       },
       listData:[],
       form:{

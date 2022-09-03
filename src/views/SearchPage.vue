@@ -18,6 +18,7 @@
   <!--左上角搜索栏-->
   <div class="search-bar">
     <i class="fas fa-search search-icon-mobile"></i>
+
     <div class="search-bar-main">
       <div class="search-div">
         <i class="fas fa-search search-icon-pc" @click="search()"></i>
@@ -26,11 +27,10 @@
         </form>
 
       </div>
-      <ul>
-        <li><a href="#">发现</a></li>
-        <li><a href="#">个人</a></li>
-        <li><a href="#">库</a></li>
-      </ul>
+      <select id="choice" style="background-color: #2a2a2a; color: #e0e0e0">
+        <option>按游戏名称搜索</option>
+        <option>按发行厂商搜索</option>
+      </select>
     </div>
   </div>
 
@@ -41,10 +41,10 @@
           <div class="icon-text">
             <h6>筛选</h6>
             <ul>
-              <li id="is_dlc_li" style="background-color: #2a2a2a; "><a id="is_dlc_a" href="#" style="color: #F0F0F0;cursor: pointer;" @click="switchOption(is_dlc)">DLC</a></li>
+              <li id="is_dlc_li" style="background-color: #2a2a2a; "><a id="is_dlc_a" href="#" style="color: #F0F0F0;cursor: pointer;" @click="switchDLC()">DLC</a></li>
             </ul>
             <ul>
-              <li id="is_on_sale"><a href="#" @click="switchOption(is_on_sale)">折扣</a></li>
+              <li id="is_on_sale"><a href="#" @click="switchSale">折扣</a></li>
             </ul>
           </div>
 
@@ -54,13 +54,13 @@
           <div class="icon-text">
             <h6>排序方式</h6>
             <ul>
-              <li id="price_rank"><a href="#" @click="switchCondition(1)">价格</a></li>
+              <li id="price_rank"><a href="#" @click="switchCondition(0)">价格</a></li>
             </ul>
             <ul>
-              <li id="sale_rank"><a href="#" @click="switchCondition(2)">销量</a></li>
+              <li id="sale_rank"><a href="#" @click="switchCondition(1)">销量</a></li>
             </ul>
             <ul>
-              <li id="time_rank"><a href="#" @click="switchCondition(3)">发布时间</a></li>
+              <li id="time_rank"><a href="#" @click="switchCondition(2)">发布时间</a></li>
             </ul>
 
           </div>
@@ -73,7 +73,7 @@
         <div class="free-text-button">
 
         </div>
-        <div class="car-tuning" v-for="index in search_list.length" :key="index">
+        <div class="car-tuning" v-for="index in search_list.length" :key="index" style="cursor: pointer" @click="jumpGame(search_list[index - 1])">
           <div class="container">
             <div class="box">
           <img :src="require('../../../ExGame-Asset/Game/' + search_cover[index - 1])" alt="">
@@ -81,9 +81,9 @@
             <h6>{{ search_game_name[index - 1] }}</h6>
             <p class="new-epic-button">新品</p>
             <div>
-              <p class="p-sale-button">-20%</p>
-              <p class="sale-price-">{{ search_price[index - 1] }}</p>
-              <p class="sale-price">{{ search_price[index - 1] }}</p>
+              <p class="p-sale-button" v-if="search_discount[index-1]<1">-{{100-search_discount[index-1]*100}}%</p>
+              <p class="sale-price-" v-if="search_discount[index-1]<1">{{ search_price[index - 1] }}</p>
+              <p class="sale-price">¥{{numFilter(search_price[index - 1] * search_discount[index - 1])}}</p>
             </div>
           </div>
             </div>
@@ -120,11 +120,15 @@
       <h6 class="rec-text">即将上架</h6>
       <div class="swiper-wrapper">
         <div class="swiper-slide swiper-fourth" v-for="index in later.length" :key="index" style="cursor: pointer" @click="jumpGame(later[index - 1])">
+          <div class="container">
+            <div class="box">
           <img :src="require('../../../ExGame-Asset/Game/' + later_cover[index - 1])" alt="">
           <div class="game-detail">
             <h6>{{later_game_name[index - 1]}}</h6>
             <div>
               <p class="grey-text">¥{{later_price[index - 1]}}</p>
+            </div>
+          </div>
             </div>
           </div>
         </div>
@@ -161,10 +165,11 @@ export default {
       search_game_name:[],
       search_cover:[],
       search_price:[],
+      search_discount:[],
       is_dlc: 2,
       is_on_sale: 2,
       game_or_publisher: 0,
-      rank_condition: 0,
+      rank_condition: 3,
       search_page:1,
       all_page:-1,
 
@@ -189,8 +194,14 @@ export default {
       this.game_or_publisher = 1;
     }
 
-    this.search_name = this.$route.query.search_name
-    this.searchGame(this.search_name);
+    this.search_name = this.$route.query.search_name;
+    if (this.search_name === '')
+    {
+      alert("请输入内容");
+    }
+    else {
+      this.searchGame(this.search_name);
+    }
 
     //buttom list取数据
     this.getGameRank("recommend", 4, this.recommend, this.recommend_game_name, this.recommend_price, this.recommend_cover);
@@ -198,34 +209,53 @@ export default {
 
   },
   methods:{
+    numFilter(value) {
+      return parseFloat(value).toFixed(2);
+    },
     jumpGame(game_id) {
       console.log('跳转到' + game_id +'detail');
       // alert('跳转到' + game_id +'detail');
       this.$router.push({name:'GameDetail', query: {game_id:game_id}});
     },
-    switchOption(option){
-      if (option==1){
-        option=0;
+    switchDLC(){
+      if (this.is_dlc===1){
+        this.is_dlc=0;
       }
       else{
-        option=1;
+        this.is_dlc=1;
       }
-      this.search();
+      this.searchGame(this.search_name);
+    },
+    switchSale(){
+      if (this.is_on_sale===1){
+        this.is_on_sale=0;
+      }
+      else{
+        this.is_on_sale=1;
+      }
+      this.searchGame(this.search_name);
     },
     switchCondition(condition){
       this.rank_condition = condition;
-      this.search();
+      this.searchGame(this.search_name);
     },
 
     search(){
       let a = document.getElementById("searchtext").value;
+      let search_choice = document.getElementById("choice").value;
+      if (search_choice==='按游戏名称搜索')
+        this.game_or_publisher = 0;
+      else
+        this.game_or_publisher = 1;
+
+
       if (a != null)
         this.search_name = a;
       else {
-        alert("请输入搜索内容")
+        alert("请输入搜索内容");
         return;
       }
-      this.searchGame(a);
+      this.searchGame(this.search_name);
     },
 
     async searchGame(name){
@@ -255,7 +285,7 @@ export default {
             let i;
             switch (res.data.result){
               case 0:
-                alert("查询不到该游戏");
+                // alert("查询不到该游戏");
                 break;
               case -1:
                 alert("searchGame数据库连接失败");
@@ -278,14 +308,14 @@ export default {
       if (this.search_list == null)
         return;
 
-      this.getGameInfo(this.search_list, this.search_game_name, this.search_price)
+      this.getGameInfo(this.search_list, this.search_game_name, this.search_price, this.search_discount)
       let i;
       for(i of this.search_list){
         this.search_cover.push(i + '/Cover/anCover.jpg');
       }
 
     },
-    getGameInfo(game_id, game_name, price){
+    getGameInfo(game_id, game_name, price, discount){
       const self = this;
       let i;
       self.$axios({
@@ -299,7 +329,7 @@ export default {
             switch (res.data.result){
               case 0:
                 console.log(res.data.result);
-                alert("search申请数据失败");
+                // alert("search申请数据失败");
                 break;
               case -1:
                 alert("search数据库端出现问题，请联系管理人员");
@@ -318,6 +348,12 @@ export default {
                 {
                   console.log('search get  ' + res.data.price[i])
                   price.push(res.data.price[i]) ;
+                }
+
+                for(i in res.data.discount)
+                {
+                  console.log('search get  ' + res.data.discount[i])
+                  discount.push(res.data.discount[i]) ;
                 }
 
                 break;

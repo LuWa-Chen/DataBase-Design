@@ -6,6 +6,23 @@
   <div class="top-text">
 
     <div class="top_intro">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
       <font color="white" class="exltext">请发行商用户依次按照要求填写和上传要发行游戏的相关内容</font>
     </div>
     <br>
@@ -53,14 +70,14 @@
 
       <select class="input5" v-model="form.AGE" name="fruit">
         <option value="">请选择游戏分级</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
       </select>
     </span>
     <br>
@@ -76,8 +93,8 @@
       <font color="white" class="exltext">发布内容是否为DLC(必填)</font>
       <select class="input8" v-model="form.isDLC" name="fruit">
         <option value="">发布内容是否为DLC</option>
-        <option value="1">是</option>
-        <option value="0">否</option>
+        <option value=1>是</option>
+        <option value=0>否</option>
       </select>
     </div>
     <div>
@@ -217,6 +234,7 @@
       </el-upload>
     </div>
     <br>
+    <el-button @click="upload">点击上传游戏相关内容</el-button>
 
 
 
@@ -352,7 +370,15 @@
     </div>
     <div>
       <br>
-      <el-button @click="upload">点击上传所有内容</el-button>
+      <el-button @click="upload1">点击上传游戏轮播资源</el-button>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <font color="black" class="exltext">i</font>
     </div>
   </div>
   </div>
@@ -364,8 +390,8 @@
 
 export default {
   name: "Publishgame",
-  data(){
-    return  {
+  data() {
+    return {
       action: 'https://jsonplaceholder.typicode.com/posts/',
       mode: {},
       modeList: [],
@@ -411,33 +437,33 @@ export default {
       modeList17: [],
       mode18: {},
       modeList18: [],
-      check1:0,
-      check2:0,
-      num0:1,
-      num1:1,
-      form:{
-        name:'',
-        basicalinfo:'',
-        normalinfo:'',
-        publisher:this.$store.state.userName,
-        date:'',
-        language:'',
-        price:0.0,
+      check1: 0,
+      check2: 0,
+      num0: 1,
+      num1: 1,
+      form: {
+        name: '',
+        basicalinfo: '',
+        normalinfo: '',
+        publisher: this.$store.state.userName,
+        date: '',
+        language: '',
+        price: 0.0,
         tag_array: [],//用于CheckBox的选中事件
-        AGE:0,
-        SourceGameID:'',
-        isDLC:0,
-        tag:'',//真正传递给后端的tag内容
-        MIN_MEMORY:'',
-        MIN_CARD:'',
-        MIN_DISK:'',
-        MIN_PROCESSOR:'',
-        MIN_OS:'',
-        REC_MEMORY:'',
-        REC_CARD:'',
-        REC_DISK:'',
-        REC_PROCESSOR:'',
-        REC_OS:'',
+        AGE: 0,
+        SourceGameID: '',
+        isDLC: 0,
+        tag: '',//真正传递给后端的tag内容
+        MIN_MEMORY: '',
+        MIN_CARD: '',
+        MIN_DISK: '',
+        MIN_PROCESSOR: '',
+        MIN_OS: '',
+        REC_MEMORY: '',
+        REC_CARD: '',
+        REC_DISK: '',
+        REC_PROCESSOR: '',
+        REC_OS: '',
 
       }
     }
@@ -445,114 +471,111 @@ export default {
   },
 
   methods: {
-    transform:function (){
-      this.form.tag=this.form.tag_array.toString()
+    transform: function () {
+      this.form.tag = this.form.tag_array.toString()
     },
-    modeUpload: function(item) {
+    modeUpload: function (item) {
       // console.log(item.file);
       this.mode = item.file
     },
-    modeUpload1: function(item) {
+    modeUpload1: function (item) {
       // console.log(item.file);
       this.mode1 = item.file
     },
-    modeUpload2: function(item) {
+    modeUpload2: function (item) {
       // console.log(item.file);
       this.mode2 = item.file
     },
-    modeUpload3: function(item) {
+    modeUpload3: function (item) {
       // console.log(item.file);
       this.mode3 = item.file
     },
-    modeUpload5: function(item) {
+    modeUpload5: function (item) {
       // console.log(item.file);
       this.mode5 = item.file
     },
-    modeUpload01: function(item) {
+    modeUpload01: function (item) {
       // console.log(item.file);
       this.mode01 = item.file
     },
-    modeUpload02: function(item) {
+    modeUpload02: function (item) {
       // console.log(item.file);
       this.mode02 = item.file
     },
-    modeUpload03: function(item) {
+    modeUpload03: function (item) {
       // console.log(item.file);
       this.mode03 = item.file
     },
-    modeUpload04: function(item) {
+    modeUpload04: function (item) {
       // console.log(item.file);
       this.mode04 = item.file
     },
-    modeUpload05: function(item) {
+    modeUpload05: function (item) {
       // console.log(item.file);
       this.mode05 = item.file
     },
-    modeUpload06: function(item) {
+    modeUpload06: function (item) {
       // console.log(item.file);
       this.mode06 = item.file
     },
-    modeUpload07: function(item) {
+    modeUpload07: function (item) {
       // console.log(item.file);
       this.mode07 = item.file
     },
-    modeUpload08: function(item) {
+    modeUpload08: function (item) {
       // console.log(item.file);
       this.mode08 = item.file
     },
-    modeUpload6: function(item) {
+    modeUpload6: function (item) {
       // console.log(item.file);
       this.mode6 = item.file
     },
-    modeUpload11: function(item) {
+    modeUpload11: function (item) {
       // console.log(item.file);
       this.mode11 = item.file
     },
-    modeUpload12: function(item) {
+    modeUpload12: function (item) {
       // console.log(item.file);
       this.mode12 = item.file
     },
-    modeUpload13: function(item) {
+    modeUpload13: function (item) {
       // console.log(item.file);
       this.mode13 = item.file
     },
-    modeUpload14: function(item) {
+    modeUpload14: function (item) {
       // console.log(item.file);
       this.mode14 = item.file
     },
-    modeUpload15: function(item) {
+    modeUpload15: function (item) {
       // console.log(item.file);
       this.mode15 = item.file
     },
-    modeUpload16: function(item) {
+    modeUpload16: function (item) {
       // console.log(item.file);
       this.mode16 = item.file
     },
-    modeUpload17: function(item) {
+    modeUpload17: function (item) {
       // console.log(item.file);
       this.mode17 = item.file
     },
-    modeUpload18: function(item) {
+    modeUpload18: function (item) {
       // console.log(item.file);
       this.mode18 = item.file
     },
-    publish0: function()
-    {
-      this.num0=this.num0+1;
+    publish0: function () {
+      this.num0 = this.num0 + 1;
     },
-    publish1: function()
-    {
-      this.num1=this.num1+1;
+    publish1: function () {
+      this.num1 = this.num1 + 1;
     },
-    upload: function()
-    {
+    upload: function () {
       let fd = new FormData()
       fd.append('MainPicSrc', this.mode)//主封面资源
-      fd.append('AssPicSrc',this.mode1)
-      fd.append('BacPicSrc',this.mode2)
-      fd.append('ConPicSrc',this.mode3)
-      fd.append('LogoPicSrc',this.mode5)
-      fd.append('ProgramSrc',this.mode6)
+      fd.append('AssPicSrc', this.mode1)
+      fd.append('BacPicSrc', this.mode2)
+      fd.append('ConPicSrc', this.mode3)
+      fd.append('LogoPicSrc', this.mode5)
+      fd.append('ProgramSrc', this.mode6)
       fd.append('price', this.form.price)
       fd.append('name', this.form.name)
       fd.append('publisher', this.form.publisher)
@@ -561,35 +584,32 @@ export default {
       fd.append('normalinfo', this.form.normalinfo)
       fd.append('date', this.form.date)
       fd.append('language', this.form.language)
-      fd.append('AGE',this.form.AGE)
-      fd.append('MIN_MEMORY',this.form.MIN_MEMORY)
-      fd.append('MIN_CARD',this.form.MIN_CARD)
-      fd.append('MIN_DISK',this.form.MIN_DISK)
-      fd.append('MIN_PROCESSOR',this.form.MIN_PROCESSOR)
-      fd.append('MIN_OS',this.form.MIN_OS)
-      fd.append('REC_MEMORY',this.form.REC_MEMORY)
-      fd.append('REC_CARD',this.form.REC_CARD)
-      fd.append('REC_PROCESSOR',this.form.REC_PROCESSOR)
-      fd.append('REC_OS',this.form.REC_OS)
-      fd.append('isDLC',this.form.isDLC)
-      fd.append('SourceGameID',this.form.SourceGameID)
-      fd.append('publisher',this.form.publisher)
-      this.$axios( {
+      fd.append('AGE', this.form.AGE)
+      fd.append('MIN_MEMORY', this.form.MIN_MEMORY)
+      fd.append('MIN_CARD', this.form.MIN_CARD)
+      fd.append('MIN_DISK', this.form.MIN_DISK)
+      fd.append('MIN_PROCESSOR', this.form.MIN_PROCESSOR)
+      fd.append('MIN_OS', this.form.MIN_OS)
+      fd.append('REC_MEMORY', this.form.REC_MEMORY)
+      fd.append('REC_CARD', this.form.REC_CARD)
+      fd.append('REC_PROCESSOR', this.form.REC_PROCESSOR)
+      fd.append('REC_OS', this.form.REC_OS)
+      fd.append('isDLC', this.form.isDLC)
+      fd.append('SourceGameID', this.form.SourceGameID)
+      this.$axios({
         url: 'api/publisher/publishgame',
-        data: {
-          fd,
-        },
+        data: fd,
         method: 'post',
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: {'Content-Type': 'multipart/form-data'},
       })
           .then(res => {
             switch (res.data.result) {
               case 1:
+
                 alert("上传成功！");
                 break;
               case 0:
+                alert(res.data.message);
                 alert("上传失败！");
                 break;
               case -1:
@@ -597,23 +617,23 @@ export default {
                 break;
             }
           })
+    },
+    upload1: function () {
       let fd2 = new FormData()
-      fd2.append('name',this.form.name)
-      fd2.append('num',this.num0)
-      fd2.append('category',0)
-      fd2.append('Src1',this.mode01)
-      fd2.append('Src2',this.mode02)
-      fd2.append('Src3',this.mode03)
-      fd2.append('Src4',this.mode04)
-      fd2.append('Src5',this.mode05)
-      fd2.append('Src6',this.mode06)
-      fd2.append('Src7',this.mode07)
-      fd2.append('Src8',this.mode08)
-      this.$axios( {
+      fd2.append('name', this.form.name)
+      fd2.append('num', this.num0-1)
+      fd2.append('category', 0)
+      fd2.append('Src1', this.mode01)
+      fd2.append('Src2', this.mode02)
+      fd2.append('Src3', this.mode03)
+      fd2.append('Src4', this.mode04)
+      fd2.append('Src5', this.mode05)
+      fd2.append('Src6', this.mode06)
+      fd2.append('Src7', this.mode07)
+      fd2.append('Src8', this.mode08)
+      this.$axios({
         url: 'api/publisher/publishgameMultiSrc',
-        data: {
-          fd2,
-        },
+        data: fd2,
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -625,6 +645,7 @@ export default {
                 alert("上传成功！");
                 break;
               case 0:
+                alert(res.data.message);
                 alert("上传失败！");
                 break;
               case -1:
@@ -633,22 +654,20 @@ export default {
             }
           })
       let fd3 = new FormData()
-      fd3.append('name',this.form.name)
-      fd3.append('num',this.num1)
-      fd3.append('category',1)
-      fd3.append('Src1',this.mode11)
-      fd3.append('Src2',this.mode12)
-      fd3.append('Src3',this.mode13)
-      fd3.append('Src4',this.mode14)
-      fd3.append('Src5',this.mode15)
-      fd3.append('Src6',this.mode16)
-      fd3.append('Src7',this.mode17)
-      fd3.append('Src8',this.mode18)
-      this.$axios( {
+      fd3.append('name', this.form.name)
+      fd3.append('num', this.num1-1)
+      fd3.append('category', 1)
+      fd3.append('Src1', this.mode11)
+      fd3.append('Src2', this.mode12)
+      fd3.append('Src3', this.mode13)
+      fd3.append('Src4', this.mode14)
+      fd3.append('Src5', this.mode15)
+      fd3.append('Src6', this.mode16)
+      fd3.append('Src7', this.mode17)
+      fd3.append('Src8', this.mode18)
+      this.$axios({
         url: 'api/publisher/publishgameMultiSrc',
-        data: {
-          fd3,
-        },
+        data: fd3,
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -660,6 +679,7 @@ export default {
                 alert("上传成功！");
                 break;
               case 0:
+                alert(res.data.message);
                 alert("上传失败！");
                 break;
               case -1:
@@ -668,10 +688,11 @@ export default {
             }
           })
     },
+
+
+    mounted: function () {
+
     },
-
-  mounted: function () {
-
   },
 }
 </script>
@@ -785,10 +806,11 @@ export default {
   position:relative;
   background-size:100% 100%;
 
+
 }
 .change_center
 {
-  position:absolute;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);
+  position:absolute;left:27%;-webkit-transform:translateX(-50%);transform:translateX(-50%);transform:scale(1.5);
 
 }
 .top-text{

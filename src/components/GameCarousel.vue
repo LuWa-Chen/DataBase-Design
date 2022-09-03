@@ -1,10 +1,21 @@
 <!--张宇 1952168-->
 <template>
     <div class="GameCarousel">
-        <div class="carousel-title">
-            {{gameName}}
+        <div>
+            <div class="carousel-title">
+                {{gameName}}
+<!--                <router-link :to="{name:'GameColumn',params:{game_id:this.game_id}}">-->
+                <router-link :to="{name:'GameColumn',query:{game_id:this.game_id}}">
+                    <a>
+                        <div class="to-column fr">
+                            <span>前往论坛</span>
+                        </div>
+                    </a>
+                </router-link>
+            </div>
+
         </div>
-        <div style="width: 1055px;margin: auto;border-radius: 10px;background-color: #e0e0e0">
+        <div style="width: 1055px;color:black;margin: auto;border-radius: 10px;background-color: #e0e0e0">
             <div style="height: 20px"></div>
             <div class="carousel-body">
                 <div class="m-ad clearbox">
@@ -52,13 +63,43 @@
                                 </li>
                             </ul>
                         </div>
-                        <router-link :to="{name:'ShoppingCart',params:{user_id:this.game_id}}">
-                            <a href="#" @click="click2Add()">
+	<div style="height: 100px;line-height: 120px;text-align: center">
+                            <span style="color: #666666;font-size: 24px">用户测评：</span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#ffd700" v-if="recRank===rankMap[0]">
+                                {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#00ffff"  v-if="recRank===rankMap[1]">
+                                 {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#00ffff"  v-if="recRank===rankMap[2]">
+                                {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#daa520" v-if="recRank===rankMap[3]">
+                                 {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#b22222" v-if="recRank===rankMap[4]">
+                                {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#b22222" v-if="recRank===rankMap[5]">
+                                {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#000000" v-if="recRank===rankMap[6]">
+                                {{recRank}}
+                            </span>
+                            <span style="font-size: 24px;font-weight: bolder;color:#a9a9a9" v-if="recRank===rankMap[7]">
+                                {{recRank}}
+                            </span>
+                        </div>
+                       <div v-if="this.$store.state.isUser === 'User'">
+                            <a v-if="published===false">即将上架</a>
+                            <router-link :to="{name:'ShoppingCart',params:{user_id:this.game_id}}" v-else>
+                            <a href="#" @click="click2Add()" >
                                 加入购物车
-                                <span v-if="discount!==100" style="text-decoration: line-through;color: #aaaaaa">￥{{price}}</span>
-                                <span>&nbsp;￥{{price*discount/100}}</span>
+                                <span v-if="discount!==1" style="text-decoration: line-through;color: #aaaaaa">￥{{price}}</span>
+                                <span>&nbsp;￥{{price*discount}}</span>
                             </a>
                         </router-link>
+	    </div>
                     </div>
                 </div>
             </div>
@@ -73,9 +114,20 @@ export default {
     props:['game_id'],
     data() {
         return {
-            basic_source_path:"../../../ExGame-Asset/",
+             recRank:'特别好评',
+            rankMap:[
+                '好评如潮',
+                '特别好评',
+                '多半好评',
+                '褒贬不一',
+                '特别差评',
+                '多半差评',
+                '差评如潮',
+                '暂无评论',
+            ],
             showNum: 6,
             launched:false,
+            published:true,
             onPlay: 0,
             anchorPos:0,
             mediaStart:0,
@@ -120,7 +172,7 @@ export default {
             developer: '',
             publisher: '',
             price: 0,
-            discount:100,
+            discount:1,
             videoList:[],
             imageList:[],
             tagList:[],
@@ -133,6 +185,7 @@ export default {
         setTimeout(this.fun,400)
     },
     methods:{
+        tempF:function(){this.$router.push({name:'GameColumn',query:{game_id:this.game_id}})},
         getInfo:function (gid){
             var self = this;
             console.log('++++++')
@@ -150,11 +203,15 @@ export default {
                             console.log('GameCarousel 请求失败')
                             break;
                     }
+                    self.published = res.data.is_launched
                     self.gameName = res.data.game_name;
                     self.developer = res.data.developer;
                     self.publisher = res.data.publisher;
                     self.publishDate = res.data.publish_date;
                     self.price = res.data.price;
+	    console.log('测评---' +res.data.rateResult )
+                    self.recRank = res.data.rateResult;
+                    console.log('打折' + res.data.discount)
                     self.discount = res.data.discount;
                     for(i in res.data.image_list)
                     {
@@ -187,7 +244,7 @@ export default {
             }
             // var self = this;
             this.$axios.post('api/shopingcart/modifyUserShoppingCart', {
-                user_id:'0000000001',
+                user_id:this.$store.state.userID,
                 game_id:gid,
                 op_type:op
             }).then( res => {
@@ -197,11 +254,12 @@ export default {
             })
         },
         click2Add:function (){
-          this.add2Cart('0000000003',1)
+          this.add2Cart(this.game_id,1)
         },
         init:function (){
             var that = this;
             var cut = this.videoList.length;
+            console.log('video-length' + cut.toString())
             for(let i =0;i<this.imageList.length;i++)
             {
                 this.sourceList.push({
@@ -237,6 +295,14 @@ export default {
             return pre  + index.toString();
         },
         click2Choose:function (pos){
+            if(this.launched===false) {
+                this.init();
+                this.launched = true;
+                console.log(this.imageList.length + '*')
+                console.log(this.videoList.length + '*')
+                console.log(this.showNum + '*')
+                console.log(this.mediaEnd + '*')
+            }
             console.log('choose = ' + pos.toString())
             this.onPlay = this.mediaMap[pos].index;
             this.anchorPos = pos;
@@ -255,14 +321,7 @@ export default {
             else
                 this.$refs["main-player-2"].src = require('../../../ExGame-Asset/' + this.getSourcePath(this.onPlay + 1,this.mediaMap[pos].srcType));
 
-            if(this.launched===false) {
-                this.init();
-                this.launched = true;
-                console.log(this.imageList.length + '*')
-                console.log(this.videoList.length + '*')
-                console.log(this.showNum + '*')
-                console.log(this.mediaEnd + '*')
-            }
+
         },
         click2Before:function (){
             if(this.onPlay===0)
@@ -368,6 +427,20 @@ a{
 }
 .clearbox{
     clear:both;
+}
+.to-column{
+    font-size: 16px;
+    height: 30px;
+    width: 90px;
+    line-height: 25px;
+    font-weight: bolder;
+    border-radius: 13px;
+    border: white 2px solid;
+    background-color: #eeeeee;
+    /*color: #666666;*/
+    text-align: center;
+    position: relative;
+    top:10px;
 }
 .carousel-body{
     width: 1005px;
@@ -475,7 +548,7 @@ a{
 }
 .tag-box{
     margin-left: 13px;
-    height: 260px;
+    height: 160px;
     color: black;
 }
 .m-ad-right p {

@@ -64,11 +64,13 @@
         <button class="logout" @click="logout">登出</button>
       </div>
     </div>
+<GamePageFooter/>
   </div>
 </template>
 
 <script>
 import GamePageHeader from "@/views/GamePageHeader";
+import GamePageFooter from "@/views/GamePageFooter";
 export default {
   name: "home-page",
   provide(){
@@ -77,7 +79,8 @@ export default {
     }
   },
   components: {
-    GamePageHeader
+    GamePageHeader,
+GamePageFooter
   },
   data(){
     return {
@@ -109,6 +112,9 @@ export default {
               case 1:
                 alert("登出成功！");
                 self.form.status = 0
+                this.$store.commit('changeValue_Name','');
+                this.$store.commit('changeValue_ID','');
+                this.$router.push({name:'GamePage'})
                 // this.$router.push({name:'login'})
                 break;
               case 0:
@@ -177,6 +183,7 @@ export default {
   }
   /* 主体 */
   .container{
+    position:relative;
     padding: 0 0 0 20%;
     overflow: hidden;
     margin: 3% 10% 4%;
@@ -204,7 +211,7 @@ export default {
     height: 80px;
     width: 80px;
     object-fit: cover;/*图片完全填充*/
-    margin: 35px 0 20px 40px;
+    margin: 35px 0 20px 60px;
     border: black solid 1px;
     border-radius: 50%;
   }

@@ -20,78 +20,47 @@ y<template>
                 clickMode="repulse">
             </vue-particles>
             <div class="addBorder" style="margin: auto;">
-                <p class="lib-title clearbox">我的游戏库</p>
+                <p class="lib-title clearbox">用户游戏库</p>
                 <div class="container clearbox">
                     <div class="games-board addBorder">
                         <div class="cards-left fl"  v-if="showImg">
-                            <div>快速启动</div>
-                            <ul>
-                                <li class="cards_item-l" v-for="(item,index) in this.downLoadGame" :title="item" :key="index">
-                                    <div class="m-cards-left" @mouseleave="onLeave(index,'win-l-')" >
-                                        <img  class="fl" :src="require('../../../ExGame-Asset/Game/'+ item.id + '/Cover/anCover.jpg')  " alt="">
-                                        <span class="fl" style="display: inline-block;width: 140px">
-                                    <div class="fl" style="width: 120px;overflow: hidden;height: 40px;">
-                                        {{item.name}}
-                                    </div>
-                                    <div  @mouseenter="onHover(index,'win-l-')" class="fr" style="height: 40px;line-height: 40px;">
-                                         <svg   xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                         <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                        </svg>
-                                    </div>
-                                </span>
-                                        <div @mouseleave="onLeave(index,'win-l-')"  :id="getWinID(index,'win-l-')" class="c-win clearbox" style="width: 105px;margin-left: 95px;margin-top: 45px">
-                                            <div style="height: 5px"></div>
-                                            <ul>
-                                                <li>
-                                                    <div  @click="click2Detail(item.id)"> &nbsp;{{leftItem[0]}}</div>
-                                                </li>
-                                                <li>
-                                                    <div @click="click2DeleteGame(index)"> &nbsp;{{leftItem[1]}}</div>
-                                                </li>
-                                            </ul>
-                                            <div style="height: 5px"></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+<!--                            <div>添加游戏</div>-->
+                          <a href="#" style="cursor: pointer;color: #F0F0F0;top: 2px" @click="addUserGame()">添加游戏</a>
+                          <input id="user-game-id" placeholder="游戏id" type="text" autocomplete="off" style="width: 150px;left: 20px;position: relative;top: 2px">
+
                         </div>
                         <div  class="cards-right fr"  v-if="showImg">
-                            <div>我的游戏</div>
+                            <div>用户游戏</div>
                             <ul>
                                 <li class="cards_item-r" v-for="(item,index) in this.game_info_set" :title="item" :key="index">
- 		
-                                   <div class="m-cards-right fl" @mouseleave="onLeave(index,'win-r-')"  >
-                                <router-link :to="{name:'GameBaseDetail', query: {game_id: item.id,is_download:downLoadList[index]} }">
+                                    <div class="m-cards-right fl" @mouseleave="onLeave(index,'win-r-')"  >
                                         <img :src="require('../../../ExGame-Asset/Game/'+ item.id + '/Cover/anCover.jpg')  " alt="">
- 		</router-link>
-                                        <div class="m-game-name" style="color: white">
+                                        <div class="m-game-name">
                                             <div class="fl" style="width: 150px;overflow: hidden;height: 25px;line-height: 20px">
                                                 {{item.name}}
+
                                             </div>
                                             <svg  @mouseenter="onHover(index,'win-r-')"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                                             </svg>
                                         </div>
-                                        <div class="clearbox" style="color: white">
-                                            <div class="download-button clearbox" @click="click2DownLoad(index)" v-if="downLoadList[index]===false">
-                                                <svg  style="position: relative;top:3px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                                                </svg>
-                                                下载
-                                            </div>
-                                            <div class="download-button clearbox" v-else>
-                                                已下载
+                                        <div class="clearbox">
+                                            <div class="download-button clearbox" @click="click2DownLoad(index)">
+<!--                                                <svg  style="position: relative;top:3px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">-->
+<!--                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>-->
+<!--                                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>-->
+<!--                                                </svg>-->
+                                              {{item.id}}
                                             </div>
                                         </div>
-                                        <div @mouseleave="onLeave(index,'win-r-')"  :id="getWinID(index,'win-r-')" class="c-win clearbox" style="width: 105px;margin-left: 85px;top: -25px;color:white">
+                                        <div @mouseleave="onLeave(index,'win-r-')"  :id="getWinID(index,'win-r-')" class="c-win clearbox" style="width: 105px;margin-left: 85px;top: -25px">
                                             <div style="height: 5px"></div>
                                             <ul>
+<!--                                                <li>-->
+<!--                                                    <div @click="click2Detail(item.id)"> &nbsp;{{rightItem[0]}}</div>-->
+<!--                                                </li>-->
                                                 <li>
-                                                    <div @click="click2Detail(item.id)"> &nbsp;{{rightItem[0]}}</div>
-                                                </li>
-                                                <li>
-                                                    <div @click="click2RemoveGame(index)"> &nbsp;{{rightItem[1]}}</div>
+                                                    <div @click="deleteUserGame(item.id)"> {{rightItem[1]}}</div>
                                                 </li>
                                             </ul>
                                             <div style="height: 5px"></div>
@@ -104,7 +73,6 @@ y<template>
                 </div>
                 <div style="height: 100px"></div>
             </div>
-	<GamePageFooter/>
         </div>
     </div>
 </template>
@@ -112,12 +80,11 @@ y<template>
 <script>
 
 import GamePageHeader from "@/views/GamePageHeader";
-import GamePageFooter from "@/views/GamePageFooter";
+
 export default {
     name:'game-info',
     components: {
-        GamePageHeader,
-GamePageFooter
+        GamePageHeader
     },
     data(){
         return {
@@ -137,6 +104,76 @@ GamePageFooter
         },800)
     },
     methods:{
+      // 为一个用户增加一个游戏
+      async addUserGame(user_id) {
+        user_id = this.$route.query.userID;
+        let game_id = document.getElementById('user-game-id').value;
+        if (game_id === '')
+        {
+          alert("请输入内容");
+          return
+        }
+
+        console.log("为用户" + user_id + "增加游戏" + game_id);
+        let self = this;
+        await self.$axios({
+          method:'post',
+          url: 'api/user/addUserGame',
+          data: {
+            user_id:user_id,
+            game_id:game_id
+          }
+        })
+            .then(res=>{
+              switch (res.data.result){
+                case 0:
+                  alert("为用户" + user_id + "增加游戏" + game_id + "失败");
+                  break;
+                case -1:
+                  alert("为用户" + user_id + "增加游戏" + game_id +"数据库连接失败");
+                  break;
+                case 1:
+                  alert("为用户" + user_id + "增加游戏" + game_id + "成功");
+
+                  this.game_info_set = [];
+                  this.getgameinfo();
+
+                  break;
+              }
+            })
+      },
+
+      // 删除一个用户库里的一个游戏
+      async deleteUserGame(game_id){
+        let user_id = this.$route.query.userID;
+        console.log("为用户" + user_id + "删除游戏" + game_id);
+        let self = this;
+        await self.$axios({
+          method:'post',
+          url: 'api/user/deleteUserGame',
+          data: {
+            user_id:user_id,
+            game_id:game_id
+          }
+        })
+            .then(res=>{
+              switch (res.data.result){
+                case 0:
+                  alert("为用户" + user_id + "删除游戏" + game_id + "失败");
+                  break;
+                case -1:
+                  alert("为用户" + user_id + "删除游戏" + game_id +"数据库连接失败");
+                  break;
+                case 1:
+                  alert("为用户" + user_id + "删除游戏" + game_id + "成功");
+                  this.game_info_set = [];
+                  this.getgameinfo();
+
+                  break;
+              }
+            })
+      },
+
         getWinID(index ,pre){
             return pre + index.toString()
         },
@@ -152,7 +189,7 @@ GamePageFooter
             this.downLoadList[index] = false
         },
         click2Detail(id){
-             this.$router.push({name:'GameDetail',query: {game_id:id}});
+            console.log(id)
         },
         click2RemoveGame(index){
             var temp =[]
@@ -176,8 +213,7 @@ GamePageFooter
                 method:'post',
                 url: 'api/user/getUserGameInfo',
                 data: {
-	   
-                    id:this.$store.state.userID,
+                    id:this.$route.query.userID,
                 }
             }).then( res => {
                 if(res.data.result===1) {
@@ -212,12 +248,10 @@ GamePageFooter
                 method:'post',
                 url: 'api/user/deleteUserGame',
                 data: {
-	    
                     user_id:this.$store.state.userID,
                     game_id:gid
                 }
             }).then( res => {
-	console.log(res.data.result);
                 if(res.data.result===1) {
                     console.log("删除成功！")
                 }
@@ -254,6 +288,7 @@ GamePageFooter
     background-image:url(../assets/img/back.png) ;
     background-size:100%;
     overflow: hidden;
+    height: 100%;
 }
 *{
     margin: 0;
@@ -261,6 +296,14 @@ GamePageFooter
     box-sizing: border-box;
 }
 
+body{
+    font-family: 'Microsoft YaHei', sans-serif;
+    color: #333;
+    font-size: 12px;
+    min-height: 1000px;
+    min-width: 1400px;
+    box-sizing: border-box;
+}
 ul, ol{
     list-style: none;
 }

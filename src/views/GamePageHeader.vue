@@ -21,7 +21,7 @@
 <!--        <div class="line" id="tr-left"></div>-->
 <!--      </div>-->
       <div class="right-sec">
-        <i class="fas fa-globe"></i>
+        <i class="fas fa-globe" @click="ToAdmin"></i>
         <div class="sign" @click="ToLogin" v-if="this.$store.state.userID==''">
             <i class="fas fa-user"></i>
             <p>登录</p>
@@ -36,7 +36,7 @@
                   <div class="swiper-slide swiper-third">
                     <div class="car-tuning" @click="ToPublisherPage" v-if="this.$store.state.isUser=='Publisher'">
                       <div class="game-detail">
-                        <h66>形象主页</h66>
+                        <h66>账户信息</h66>
                       </div>
                     </div>
                     <div class="car-tuning" @click="ToLibrary" v-else>
@@ -44,32 +44,47 @@
                         <h66>已购游戏</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToAccount">
+                    <div class="car-tuning" @click="ToSelectGame" v-if="this.$store.state.isUser=='Publisher'">
+                      <div class="game-detail">
+                        <h66>精选游戏</h66>
+                      </div>
+                    </div>
+                    <div class="car-tuning" @click="ToAccount" v-else>
                       <div class="game-detail">
                         <h66>账户信息</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToProfile">
+                    <div class="car-tuning" @click="ToDiscountGame" v-if="this.$store.state.isUser=='Publisher'">
+                      <div class="game-detail">
+                        <h66>折扣游戏</h66>
+                      </div>
+                    </div>
+                    <div class="car-tuning" @click="ToProfile" v-else>
                       <div class="game-detail">
                         <h66>个人简介</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToSafety">
+                    <div class="car-tuning" @click="ToPublisherGame" v-if="this.$store.state.isUser=='Publisher'">
+                      <div class="game-detail">
+                        <h66>发行游戏</h66>
+                      </div>
+                    </div>
+                    <div class="car-tuning" @click="ToSafety" v-else>
                       <div class="game-detail">
                         <h66>安全设置</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToFriends">
+                    <div class="car-tuning" @click="ToFriends" v-if="this.$store.state.isUser=='User'">
                       <div class="game-detail">
                         <h66>好友列表</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToMyOrder">
+                    <div class="car-tuning" @click="ToMyOrder" v-if="this.$store.state.isUser=='User'">
                       <div class="game-detail">
                         <h66>我的订单</h66>
                       </div>
                     </div>
-                    <div class="car-tuning" @click="ToCDKey">
+                    <div class="car-tuning" @click="ToCDKey" v-if="this.$store.state.isUser=='User'">
                       <div class="game-detail">
                         <h66>CDKey兑换</h66>
                       </div>
@@ -130,14 +145,25 @@ export default {
           this.$router.push({name:'CDKey'});
       },
       ToPublisherPage(){
-          this.$router.push({name:'PublisherPage'});
+          this.$router.push({name:'PublisherProfile'});
+      },
+      ToSelectGame(){
+          this.$router.push({name:'SelectGame'});
+      },
+      ToDiscountGame(){
+          this.$router.push({name:'DiscountGame'});
+      },
+      ToPublisherGame(){
+          this.$router.push({name:'PublishGame'});
+      },
+      ToAdmin(){
+          this.$router.push({name:'AdminLogin'});
       },
       Logout(){
           if(this.$store.state.isUser == 'Publisher'){
              this.$store.commit('changeValue_Name','');
              this.$store.commit('changeValue_ID','');
              this.$store.commit('change_flag','');
-             this.$router.to(0);
              this.$router.push({name:'GamePage'})
           }
           else{
@@ -155,7 +181,6 @@ export default {
                      alert("登出成功！");
                      this.$store.commit('changeValue_Name','');
                      this.$store.commit('changeValue_ID','');
-                     this.$router.to(0);
                      this.$router.push({name:'GamePage'})
                      break;
                    case 0:

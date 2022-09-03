@@ -8,7 +8,8 @@ export default new Vuex.Store({
     userID:'',
     userName:'',
     isUser:'',
-    logo_type:''
+    logo_type:'',
+    pass_flag:false,
   },
   getters: {
   },
@@ -30,6 +31,9 @@ export default new Vuex.Store({
       else{
         state.logo_type = ''
       }
+    },
+    change_pass(state,newVal){
+      state.pass_flag = newVal
     },
   },
   actions: {

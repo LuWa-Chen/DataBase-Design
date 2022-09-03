@@ -2,24 +2,24 @@
   <div class = "home-page">
 
     <!-- 1.header头部 -->
-      <game-page-header></game-page-header>
-      <vue-particles
-          color="#409EFF"
-          :particleOpacity="0.7"
-          :particlesNumber="50"
-          shapeType="star"
-          :particleSize="6"
-          linesColor="#409EFF"
-          :linesWidth="1"
-          :lineLinked="true"
-          :lineOpacity="0.4"
-          :linesDistance="100"
-          :moveSpeed="1"
-          :hoverEffect="true"
-          hoverMode="grab"
-          :clickEffect="true"
-          clickMode="repulse">
-      </vue-particles>
+    <game-page-header></game-page-header>
+    <vue-particles
+        color="#409EFF"
+        :particleOpacity="0.7"
+        :particlesNumber="50"
+        shapeType="star"
+        :particleSize="6"
+        linesColor="#409EFF"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="100"
+        :moveSpeed="1"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="repulse">
+    </vue-particles>
     <!-- 2.content主体内容区 -->
     <div class="container">
       <div class="conculor content">
@@ -40,16 +40,23 @@
         </div>
         <!--个人信息-->
         <div class="side-choice">
+          <li><router-link class="lead-button" active-class="active" :to="{name:'PublisherProfile'}">
+            <font  class="leftbottomtext">账户信息</font>
+          </router-link></li>
           <li><router-link class="lead-button"  active-class="active" :to="{path:'/selectgame',query:{id:this.iframeData.id,}}" exact>
-            <font  class="leftbottomtext">精  选  游  戏</font>
+            <font  class="leftbottomtext">精选游戏</font>
           </router-link></li>
           <li><router-link class="lead-button" active-class="active" :to="{path:'/discountgame',query:{id:this.iframeData.id}}">
-            <font  class="leftbottomtext">折  扣  游  戏</font>
+            <font  class="leftbottomtext">折扣游戏</font>
           </router-link></li>
-          <li><router-link class="lead-button" active-class="active" to="/publishgame">
-            <font  class="leftbottomtext">发  行  游  戏</font>
+          <li><router-link class="lead-button" id="publish" active-class="active" to="/publishgame">
+            <font  class="leftbottomtext">发行游戏</font>
+          </router-link></li>
+          <li><router-link class="lead-button" id="publish" active-class="active" to="/ChangeGameInfo">
+            <font  class="leftbottomtext">修改游戏</font>
           </router-link></li>
         </div>
+        <button class="logout" @click="logout">登出</button>
       </div>
     </div>
   </div>
@@ -75,6 +82,13 @@ export default {
     GamePageHeader,
   },
   methods: {
+    logout(){
+      this.$store.commit('changeValue_Name','');
+      this.$store.commit('changeValue_ID','');
+      this.$store.commit('change_flag','');
+      this.$router.push({name:'GamePage'});
+      alert("登出成功！");
+    }
   },
   created() {
     const self = this;
@@ -88,7 +102,7 @@ export default {
         .then(res => {
           switch (res.data.result) {
             case 1:
-              alert("查询成功！");
+              console.log("查询成功！");
               break;
             case 0:
               alert("查询失败！");
@@ -110,6 +124,28 @@ export default {
   height: calc(100% - 100px);
   position: absolute;
 }
+.logout{
+  min-width: 60px;
+  margin: 60px 100px 25px;
+  width: 30%;
+  height: 40px;
+  outline: none;
+  color: rgba(0,0,0,.87);
+  font-size: 0.9em;
+  cursor: pointer;
+  line-height: 1rem;
+  white-space: normal;
+  border: thin solid #c8c8c8;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-color: #fff;
+}
+.logout:hover{
+  background-color: #F5F5F5;
+}
+.active{
+  background-color: #DCDCDC;
+}
 .home-page{
   margin: 0px;
   background-color: #121212;
@@ -120,27 +156,9 @@ body{
   min-width: 650px;
   position: fixed;
 }
-/* 头部 */
-.header{
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background-color: #000000;
-  text-align: center;
-  font-weight: bold;
-  max-width: 104rem;
-  min-width: 76rem;
-  position: relative;
-}
-.header-text{
-  color: #121212;
-  font-size: 22px;
-  left: 100px;
-  position: absolute;
-}
 /* 主体 */
 .container{
-  padding: 0 0 0 350px;
+  padding: 0 0 0 315px;
   overflow: hidden;
   margin: 10px 182px 100px;
   border-radius: 30px;
@@ -154,7 +172,7 @@ body{
 }
 /*侧边栏*/
 .left{
-  width: 280px;
+  width: 315px;
   background-color: #F0F0F0;
   margin-left: -100%;
   left: -315px;
@@ -173,7 +191,7 @@ body{
   border: 2px solid black;
 }
 .head-text{
-  padding: 25px;
+  padding: 28px;
   word-break: break-all;
   color:#121212;
   word-wrap: break-word;
@@ -194,13 +212,15 @@ body{
 li:hover{
   background-color: #E3E7EA;
 }
-#account{
-  margin: 20px 0 25px;
+#publish{
+  border: 1px solid #000;
+  border-right:none;
+  border-left:none;
 }
 
 .lead-button
 {
-  padding: 30px;
+  padding: 25px;
   display: block;
   color: #000;
   text-align: center;
@@ -214,7 +234,7 @@ li:hover{
 
 .content{
   width: 100%;
-  background-color: #fff;
+  background:url("../assets/background.jpg");
 }
 .line{
   float:right;

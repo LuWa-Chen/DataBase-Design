@@ -19,28 +19,27 @@
             fixed
             prop="order_id"
             label="订单号"
-            width="180">
+            width="200">
         </el-table-column>
         <el-table-column
             prop="game_name"
             label="游戏名称"
-            width="120">
+            width="200">
         </el-table-column>
         <el-table-column
             prop="order_time"
             label="下单日期"
-            width="180">
+            width="200">
         </el-table-column>
         <el-table-column
             prop="method"
             label="支付方式"
-            width="100">
+            width="200">
         </el-table-column>
         <el-table-column
-            fixed="right"
             prop="amount"
             label="实付金额"
-            width="120">
+            width="229">
         </el-table-column>
       </el-table>
     </el-card>
@@ -54,7 +53,7 @@ export default {
   data(){
     return{
       iframeData:{
-        id: this.$route.params.id
+        id: this.$store.state.userID
       },
       tableData:[{
         game_name: "荒野大镖客",

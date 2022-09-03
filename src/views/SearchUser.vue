@@ -148,10 +148,10 @@ export default {
                 console.log("查找成功！");
                 self.tableData_2[0].id = uid;
                 self.tableData_2[0].name = res.data.name;
-                self.tableData_2[0].profile_photo = require('../../../ExGame-Asset/User/' + uid +'/ProfilePhoto/ProfilePhoto.jpg');
+                self.tableData_2[0].profile_photo = require('../../../ExGame-Asset/User/' + uid +'/ProfilePhoto.jpg');
                 self.tableData = self.tableData_2
                 this.tableData.splice(1.0)//刷新表格视图
-                self.form.profile_photo = require('../../../ExGame-Asset/User/' + uid +'/ProfilePhoto/ProfilePhoto.jpg');
+                self.form.profile_photo = require('../../../ExGame-Asset/User/' + uid +'/ProfilePhoto.jpg');
                 self.form.id = uid;
                 self.form.name = res.data.name;
                 self.form.email = res.data.email;

@@ -1,25 +1,44 @@
 <!--1952168 张宇-->
 <template>
     <div class="canvas">
-        <div style="width: 1055px;margin:100px auto;border-radius: 10px;background-color: #e0e0e0;overflow: hidden" class="clearbox">
-            <div class="clearbox" style="display: flex">
-            <el-dialog width="350px"  :visible="dialogVisible" :modal-append-to-body='false' @close="click2Close()">
-                <div slot="title" class="header-title">
-                    <span> 臻Game 游戏购买 </span>
-                </div>
-                <p style="width: 220px;margin: auto;text-align: left">请选择支付方式：</p ><br/>
-                <div class="pay-button clearbox">
-                    <span id="ali-pay" class="fl" @click="click2ChoosePay(1)">支付宝支付</span>
-                    <span id="wechat-pay" class="fr"  @click="click2ChoosePay(2)">微信支付</span>
-                </div>
-                <div class="pay-amount clearbox">
-                    <img class="fl" :src="payIco.ico" height="18px">
-                    <span>&nbsp;{{payIco.name}}扫码，支付&nbsp;<span style="font-size: 18px;font-weight: bolder">{{sum-sub}}</span>&nbsp;元</span>
-                </div>
-                <span class="pay-done" v-if="this.sec<3">支付完成</span>
-                <div class="qr-code clearbox" id="qrcode" v-else> </div>
-            </el-dialog>
-        </div>
+          <game-page-header></game-page-header>
+        <vue-particles
+          color="#00FFFF"
+          :particleOpacity="0.7"
+          :particlesNumber="50"
+          shapeType="star"
+          :particleSize="6"
+          linesColor="#409EFF"
+          :linesWidth="1"
+          :lineLinked="true"
+          :lineOpacity="0.4"
+          :linesDistance="100"
+          :moveSpeed="1"
+          :hoverEffect="true"
+          hoverMode="grab"
+          :clickEffect="true"
+          clickMode="repulse">
+        </vue-particles>
+        <div style="position:relative;width: 1055px;margin:100px auto;border-radius: 10px;background-color: #e0e0e0;overflow: hidden" class="clearbox">
+          
+	<div class="clearbox" style="display: flex">
+                <el-dialog width="350px"  :visible="dialogVisible" :modal-append-to-body='false' @close="click2Close()">
+                    <div slot="title" class="header-title">
+                        <span> 臻Game 游戏购买 </span>
+                    </div>
+                    <p style="width: 220px;margin: auto;text-align: left">请选择支付方式：</p ><br/>
+                    <div class="pay-button clearbox">
+                        <span id="ali-pay" class="fl" @click="click2ChoosePay(1)">支付宝支付</span>
+                        <span id="wechat-pay" class="fr"  @click="click2ChoosePay(2)">微信支付</span>
+                    </div>
+                    <div class="pay-amount clearbox">
+                        <img class="fl" :src="payIco.ico" height="18px">
+                        <span>&nbsp;{{payIco.name}}扫码，支付&nbsp;<span style="font-size: 18px;font-weight: bolder">{{Math.abs((sum-sub).toFixed(2))}}</span>&nbsp;元</span>
+                    </div>
+                    <span class="pay-done" v-if="this.sec<3">支付完成</span>
+                    <div class="qr-code clearbox" id="qrcode" v-else> </div>
+                </el-dialog>
+            </div>
             <div class="shopping-cart">
                 <div class="cart-head">
                     您已选择{{num}}款内容
@@ -37,7 +56,10 @@
                             </div>
                             <div class="m-game fl">
                                 <div class="fl">
-                                    <img :src="require('../../../ExGame-Asset/' + game.poster)">
+
+		<router-link :to="{name:'GameDetail',query:{game_id:game.id}}">
+                                    <img :src="require('../../../ExGame-Asset/' + game.poster)" style="border-radius:5px">
+		</router-link>
                                 </div>
                                 <div class="game-name fl" v-if="game.isDLC===false">
                                     <span >{{game.name}}</span>
@@ -47,8 +69,8 @@
                                     <p>此DLC依赖本体才可运行，请先购买本体</p>
                                     <!--                                <a>前往购买</a>-->
                                 </div>
-                                <span class="game-price fr" v-if="game.discount!==100">￥{{game.price}}</span>
-                                <span class="game-discount fr">￥{{game.price * game.discount/100}}</span>
+                                <span class="game-price fr" v-if="game.discount!==1">￥{{game.price}}</span>
+                                <span class="game-discount fr">￥{{game.price*game.discount}}</span>
                             </div>
                             <span class="delete-button fr" @click="click2Delete(index)">移除</span>
                         </li>
@@ -60,40 +82,25 @@
                         <span class="fl" style="font-size: 12px;color: #666666">购买至：</span>
                         <div @click="click2OpenFriend()">
                             <div class="user-head fl">
-                                <img  :src="require('../assets/imgs/' + user.head)"  alt="" height="36" width="36" >
+                               
+		<img  :src="require('../../../ExGame-Asset/User/' + user.id +'/ProfilePhoto.jpg')" height="36">
                             </div>
                             <div class="user-info fl">
-<!--                                <span style="font-weight: bolder">{{user.name}}</span>-->
-<!--                                <span style="color: #666666">（id：{{user_id}}）</span>-->
-                                <div style="font-weight: bolder;width: 80px;display: inline-block;">{{user.name}}</div>
-                                <div style="color: #666666;display: inline;">（id：{{user.id}}）</div>
+                                <div style="font-weight: bolder;display: inline-block;">{{user.name}}</div>
+                                <div class="fr" style="color: #666666;display: inline;">（id：{{user.id}}）</div>
                             </div>
                         </div>
-                        <div>
-                            {{num}}&nbsp;款内容合计：￥{{sum}}
+                        <div class="fr" style="margin-right: 20px">
+                            {{num}}&nbsp;款内容合计：￥{{Math.abs(sum.toFixed(2))}}
                         </div>
-                    </div>
-                    <div id="s1" class="select-bar" style="z-index: 999;display: none;position: absolute">
-                        <p v-if="friendList.length===1">没有好友</p>
-                        <ul v-else>
-                            <li :id="getID(index+1,'s1l')" v-for="(friend,index) in friendList" :key="index" @click="click2ChooseFriend(index)" @mouseenter="onHover(getID(index+1,'s1l'))" @mouseleave="onLeave(getID(index+1,'s1l'))">
-                                <div class="friend-head fl">
-                                    <img  :src="require('../assets/imgs/' + friend.head)"  alt="" height="36" width="36" >
-                                </div>
-                                <div class="friend-info fl">
-                                    <div style="font-weight: bolder;width: 80px;display: inline-block;">{{friend.name}}</div>
-                                    <div style="color: #666666;display: inline;">（id：{{friend.id}}）</div>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                     <div class="buy-info clearbox">
                         <div class="fl">
-                            活动优惠￥ {{ sub }}
+                           活动优惠￥ {{ sub.toFixed(2) }}
                         </div>
                         <div class="fr" style="width: 350px">
                         <span class="fl" style="font-size: 14px">
-                            应付总金额：<span style="font-size: 20px;color: orange">￥{{sum-sub}}</span>
+                           应付总金额：<span style="font-size: 20px;color: orange">￥{{Math.abs((sum-sub).toFixed(2))}}</span>
                         </span>
                             <span class="buy-button fr" @click="click2Pay()">确认购买</span>
                         </div>
@@ -102,15 +109,36 @@
             </div>
             <div style="height: 20px"></div>
         </div>
+        <div id="s1" class="select-bar-s clearbox" style="z-index: 999;display: none;position: relative">
+            <div style="text-align: center;line-height: 50px" v-if="friendList.length===1">
+                没有好友
+            </div>
+            <ul v-else>
+                <li :id="getID(index+1,'s1l')" v-for="(friend,index) in friendList" :key="index" @click="click2ChooseFriend(index)" @mouseenter="onHover(getID(index+1,'s1l'))" @mouseleave="onLeave(getID(index+1,'s1l'))">
+                    <div class="friend-head fl">
+                        <img  :src="require('../../../ExGame-Asset/User/' + friend.id +'/ProfilePhoto.jpg')"  alt="" height="36" width="36" >
+                   
+                    </div>
+                    <div class="friend-info fl">
+                        <div class="clearbox" style="width: 350px">
+                            <div style="font-weight: bolder;display: inline-block;">{{friend.name}}</div>
+                            <div class="fr" style="color: #666666;display: inline;">（id：{{friend.id}}）</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <GamePageFooter/>
     </div>
 </template>
 
 <script>
 import QRCode from "qrcodejs2";
+import GamePageHeader from "@/views/GamePageHeader";
+import GamePageFooter from "@/components/GamePageFooter";
 
 export default {
     name: "ShoppingCart",
-    props:['user_id'],
     data() {
         return {
             sum:0,
@@ -119,9 +147,9 @@ export default {
             dialogVisible:false,
             sec:10,
             user:{
-                head:'h1.jpg',
-                name:'123456',
-                id:'1234567891',
+                head:require('../../../ExGame-Asset/' + this.$store.state.isUser +'/' + this.$store.state.userID + '/' + this.$store.state.logo_type),
+                name:this.$store.state.userName,
+                id:this.$store.state.userID,
             },
             payIco: {
                 name:"支付宝",
@@ -139,19 +167,60 @@ export default {
             ],
             chosenIndex:[],
             gameList:[],
-            friendList:[
-
-            ],
+            friendList:[],
+            ownedGame:[],
+             user_is :'',
         }
     },
+    components: {
+            GamePageHeader,
+            GamePageFooter
+        },
     mounted() {
         // console.log('+++++++++++++' + this.user_id)
-        this.getData('0000000001')
-        this.getFriend('0000000012')
+        this.user_is = this.$store.state.userID
+        this.getData(this.user_is)
+        this.getUserLib(this.user_is)
+        this.getFriend(this.user_is)
     },
-    methods:{
+methods:{
         getID:function (index,pre){
             return pre + index.toString()
+        }, getUserLib(uid){
+            const self = this;
+            self.$axios({
+                method:'post',
+                url: 'api/user/getUserGameInfo',
+                data: {
+                    id:uid,
+                }
+            }).then( res => {
+                if(res.data.result===1) {
+                    console.log("数据库连接正常！")
+                    console.log(self.num);
+                    self.ownedGame = []
+                    for(let i=0;i< res.data.game_num;i++)
+                    {
+                        console.log('用户已经有' + res.data.game_info_set[i].game_name)
+                        self.ownedGame.push(res.data.game_info_set[i].game_id)
+                    }
+                }
+                else{
+                    alert("数据库链接出错，请重试！");
+                }
+            }).catch( err => {
+                console.log(err);
+            })
+        },
+        checkUserLib(gid){
+          for(let i = 0;i<this.ownedGame.length;i++)
+          {
+              if(gid===this.ownedGame[i])
+              {
+                  alert('已拥有该游戏')
+                  return false
+              }
+          }
         },
         getData:function (uid){
             if(uid.length===0)
@@ -173,15 +242,14 @@ export default {
                 for(let i in res.data.game_list)
                 {
                     console.log(res.data.game_list[i].id)
-                    if(res.data.game_list[i].poster[0]!=='G')
-                        continue
+                    console.log('折扣' + res.data.game_list[i].discount.toString())
                     console.log(res.data.game_list[i].poster)
                     this.gameList.push({
                         id:res.data.game_list[i].id,
                         poster:res.data.game_list[i].poster,
                         name:res.data.game_list[i].name,
-                        price:res.data.game_list[i].discount,
-                        discount:60,
+                        price:res.data.game_list[i].price,
+                        discount:res.data.game_list[i].discount,
                         isDLC:res.data.game_list[i].is_dlc,
                     })
                     this.chosenIndex.push(false)
@@ -198,7 +266,7 @@ export default {
             }
             // var self = this;
             this.$axios.post('api/shopingcart/modifyUserShoppingCart', {
-                user_id:'0000000001',
+                user_id:this.$store.state.userID,
                 game_id:gid,
                 op_type:op
             }).then( res => {
@@ -207,26 +275,36 @@ export default {
                 console.log(err);
             })
         },
-        click2Choose:function (index){
-            console.log(index)
+      click2Choose:function (index){
+            if(this.checkUserLib(this.gameList[index].id)===false)
+            {
+                document.getElementById(this.getID(index,'checkbox-')).checked = false
+                return
+            }
             var box = document.getElementById(this.getID(index,'checkbox-'))
             if(this.chosenIndex[index] === false)
             {
+                console.log(index + '选中')
+                console.log( this.sum.toString() +'s+ ' + this.gameList[index].price.toString())
+                console.log( this.sub.toString() +'s- ' + this.gameList[index].price.toString() + " dis  " + (1-this.gameList[index].discount).toString())
                 this.chosenIndex[index] = true;
                 this.num++;
                 this.sum+=this.gameList[index].price;
-                this.sub+=this.gameList[index].price*(100-this.gameList[index].discount)/100;
+                this.sub+=this.gameList[index].price*(1-this.gameList[index].discount);
+
                 box.checked  = true;
             }
             else
             {
+                console.log(index + '取消')
+                console.log( this.sum.toString() +'s+ ' + this.gameList[index].price.toString())
+                console.log( this.sub.toString() +'s- ' + this.gameList[index].price.toString() + "   " + (1-this.gameList[index].discount).toString())
                 this.chosenIndex[index] = false;
                 this.num--;
                 this.sum-=this.gameList[index].price;
-                this.sub-=this.gameList[index].price*(100-this.gameList[index].discount)/100;
+                this.sub-=this.gameList[index].price*(1-this.gameList[index].discount);
                 box.checked  = false;
             }
-
         },
         click2Delete:function (index){
             console.log(index)
@@ -236,7 +314,7 @@ export default {
                 this.chosenIndex[index] = false;
                 this.num--;
                 this.sum-=this.gameList[index].price;
-                this.sub-=this.gameList[index].price*(100-this.gameList[index].discount)/100;
+                this.sub-=this.gameList[index].price*(1-this.gameList[index].discount);
             }
             // var box = document.getElementById(this.getID(index,'checkbox-'))
             // box.checked  = false;
@@ -288,6 +366,15 @@ export default {
             {
                 if(this.chosenIndex[i]===true)
                 {
+                    console.log(this.gameList[i].id)
+                    this.add2Library(this.$store.state.userID,this.gameList[i].id)
+                    this.createOrder(this.$store.state.userID,this.gameList[i].id,parseFloat((this.sum - this.sub).toFixed(2)),this.user.id)
+                }
+            }
+            for(let i=0;i<this.gameList.length;i++)
+            {
+                if(this.chosenIndex[i]===true)
+                {
                     console.log('success' + this.gameList[i].id)
                     this.click2Delete(i)
                 }
@@ -312,6 +399,7 @@ export default {
                 document.getElementById('ali-pay').style.backgroundColor = 'transparent'
             }
             this.sec=10;
+
         },
         createQRcode (url) {
             var qrcode = document.getElementById("qrcode");
@@ -350,6 +438,7 @@ export default {
         },
         click2ChooseFriend:function (index){
             this.user = this.friendList[index]
+            this.getUserLib(this.user.id)
             var ss  = document.getElementById('s1')
             if(ss.style.display === 'block')
             {
@@ -401,12 +490,78 @@ export default {
             }).catch( err => {
                 console.log(err);
             })
+        },
+        add2Library:function (uid,gid){
+            if(uid.length===0||gid.length===0)
+            {
+                alert('uid 不能为空')
+                return;
+            }
+            this.$axios.post('api/shopingcart/addToLibrary', {
+                user_id: uid,
+                game_id: gid,
+            }).then( res => {
+                switch(res.data.result){
+                    case 1:
+                        console.log("入库 请求成功");
+                        break;
+                    case -1:
+                        console.log('连接失败')
+                        break;
+                    default:
+                        console.log('入库 请求失败')
+                        break;
+                }
+            }).catch( err => {
+                console.log(err);
+            })
+        },
+        createOrder:function (uid,gid,pam,rid){
+            if(gid.length!==10)
+            {
+                console.log('gid 必须为10')
+            }
+            if(uid.length!==10)
+            {
+                console.log('uid 必须为10')
+            }
+            if(pam<0)
+            {
+                console.log('付款金额不小于0')
+            }
+            console.log(pam)
+            this.$axios.post('api/shopingcart/postOrders', {
+                user_id: uid,
+                game_id: gid,
+                via_cdk:1,
+                pay_amount:pam,
+                recept_id:rid
+            }).then( res => {
+                switch(res.data.result){
+                    case 1:
+                        console.log("订单 请求成功");
+                        break;
+                    case -1:
+                        console.log('连接失败')
+                        break;
+                    default:
+                        console.log('订单 请求失败')
+                        break;
+                }
+            }).catch( err => {
+                console.log(err);
+            })
         }
     }
 }
 </script>
 
 <style scoped>
+#particles-js {
+  width: 100%;
+  height: 174%;
+  position: absolute;
+}
 *{
     margin: 0;
     padding: 0;
@@ -425,15 +580,13 @@ ul, ol{
     clear:both;
 }
 .canvas {
-    position:fixed;
     width:100%;
-    height:100vh;
     background-color: black;
-    overflow: auto;
+    overflow: hidden;
+    color: black;
 }
 .shopping-cart{
     width: 1005px;
-    min-height: 500px;
     margin:  auto;
     /*border: black 2px solid;*/
 }
@@ -553,7 +706,7 @@ ul, ol{
 }
 .user-info{
     margin-left: 10px;
-    width: 670px;
+    width: 350px;
 }
 .friend-head{
     border:  white 2px solid;
@@ -565,16 +718,29 @@ ul, ol{
 }
 .friend-info{
     margin-left: 10px;
+    line-height: 40px;
     /*width: 200px;*/
 }
-.select-bar{
+.select-bar-s{
     border: #aaaaaa 1px solid;
-    width: 300px;
+    top:-190px;
+    right: -420px;
+    width: 430px;
+    height: 180px;
     border-radius: 8px;
     align-items: center;
-    margin-left: 70px;
     background-color: white;
-    box-shadow: darkgrey 1px 1px 1px 1px;
+    overflow-y: auto;
+}
+::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: #999;
 }
 .select-bar li{
     height: 40px;
@@ -668,5 +834,6 @@ ul, ol{
     line-height: 30px;
     /*border: red 1px solid;*/
 }
+
 
 </style>

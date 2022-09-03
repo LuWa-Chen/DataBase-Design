@@ -1,33 +1,33 @@
 <!--2052535 赵海博-->
 <template>
   <div>
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>臻Game</title>
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/sea_css/index-style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  </head>
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>臻Game</title>
+      <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="../assets/sea_css/index-style.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
 
     <body id="stop-scroll">
-<!--    header-->
+    <!--    header-->
     <game-page-header></game-page-header>
-<!--uerinfo-->
-<!--    <user-info style="display: inline-block"></user-info>-->
-<!--    左上角搜索栏-->
+    <!--uerinfo-->
+    <!--    <user-info style="display: inline-block"></user-info>-->
+    <!--    左上角搜索栏-->
     <div class="search-bar">
       <i class="fas fa-search search-icon-mobile"></i>
 
       <div class="search-bar-main">
         <div class="search-div">
           <i class="fas fa-search search-icon-pc" @click="search()"></i>
-          <form>
-            <input id="searchtext" placeholder="搜索" type="text" autocomplete="off">
+          <form onsubmit="return false;">
+            <input id="searchtext" placeholder="搜索"  style="color:white" type="text" autocomplete="off"  @keydown.enter="search()">
           </form>
 
         </div>
@@ -38,23 +38,23 @@
       </div>
     </div>
     <vue-particles
-      color="#00FFFF"
-      :particleOpacity="0.7"
-      :particlesNumber="50"
-      shapeType="star"
-      :particleSize="6"
-      linesColor="#409EFF"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.4"
-      :linesDistance="100"
-      :moveSpeed="1"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="true"
-      clickMode="repulse">
+        color="#00FFFF"
+        :particleOpacity="0.7"
+        :particlesNumber="50"
+        shapeType="star"
+        :particleSize="6"
+        linesColor="#409EFF"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="100"
+        :moveSpeed="1"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="repulse">
     </vue-particles>
-<!--    首页大swiper-->
+    <!--    首页大swiper-->
     <div class="pc-big-ca">
 
       <div class="swiper-container mySwiper pc-swiper-f" v-if="swiper_game_name">
@@ -63,79 +63,70 @@
 
           <div class="swiper-slide" v-for="index in swiper_game_name.length" :key="index" >
 
-<!--              <div class="container">-->
-              <div class="box">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+            <!--              <div class="container">-->
+            <div class="box">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               <img class="pc-swipe-img" :src="require('../../../ExGame-Asset/Game/' + swiper_cover[index - 1])" style="margin: 0; width: 100%; height: 100%" alt="">
 
               <div class="text-area">
                 <p class="r-date">{{ swiper_publish_date[index - 1] }}</p>
-                <p class="game-detal">{{ swiper_general_intro[index - 1] }}</p>
+                <p class="game-detal" style="width: 300px">{{ swiper_general_intro[index - 1] }}</p>
                 <div class="price-text">¥{{ swiper_price[index - 1] }}
                 </div>
-                </div>
-<!--              </div>-->
               </div>
+              <!--              </div>-->
+            </div>
+          </div>
         </div>
-      </div>
       </div>
 
       <div thumbsSlider="" class="swiper mySwiper3 pc-swiper-s" v-if="swiper_game_name">
         <div class="swiper-wrapper">
-<!--          <div class="swiper-slide">-->
+          <!--          <div class="swiper-slide">-->
           <div class="swiper-slide" v-for="index in swiper_game_name.length" :key="index" @click="jumpGame(swiper_game_id[index - 1])">
 
             <div class="container">
               <div class="box">
-<!--                <span></span>-->
-<!--                <span></span>-->
-<!--                <span></span>-->
-<!--                <span></span>-->
+                <!--                <span></span>-->
+                <!--                <span></span>-->
+                <!--                <span></span>-->
+                <!--                <span></span>-->
                 <img :src="require('../../../ExGame-Asset/Game/' + swiper_ancover[index - 1])" width="65" alt="缩略图1">
                 <p>{{ swiper_game_name[index - 1] }}</p>
               </div>
             </div>
-<!--              </div>-->
+            <!--              </div>-->
 
           </div>
         </div>
       </div>
     </div>
 
-<!--    正在打折的游戏-->
+    <!--    正在打折的游戏-->
     <div class="game-sale-pc">
       <div class="main">
         <div class="text-icon">
           <p>正在热销</p>
-
-<!--          <div class="icons">-->
-<!--            <div class="circle" @onclick="slideleft()">-->
-<!--              <i class="fas fa-chevron-left" ></i>-->
-<!--            </div>-->
-<!--            <div class="circle" @onclick="slideright()">-->
-<!--              <i class="fas fa-chevron-right" ></i>-->
-<!--            </div>-->
-<!--          </div>-->
         </div>
         <div class="cards" v-if="sale_ancover">
           <div class="allcards" id="asd">
-            <div class="card"  v-for="index in sale_ancover.length" :key="index" style="cursor: pointer" @click="jumpGame(sale_game_id[index - 1])">
+            <div class="card" v-for="index in sale_game_name.length" :key="index" style="cursor: pointer;" @click="jumpGame(sale_game_id[index - 1])">
 
               <div class="container" >
                 <div class="box" >
 
-              <img :src="require('../../../ExGame-Asset/Game/' + sale_ancover[index - 1])" alt="">
-              <div class="game-detail" >
-                <h6>{{sale_game_name[index - 1]}}</h6>
-                <div>
-                  <p class="p-sale-button">-{{100-sale_discount[index-1]*100}}%</p>
-                  <p class="sale-price-">{{sale_price[index - 1]}}</p>
-                  <p>{{numFilter(sale_price[index - 1] * sale_discount[index - 1])}}</p>
-                </div>
-              </div>
+                  <img :src="require('../../../ExGame-Asset/Game/' + sale_ancover[index - 1])" alt="" style="border-radius:5px;">
+                  <div class="game-detail" >
+                    <h6>{{sale_game_name[index - 1]}}</h6>
+                    <div>
+                      <p class="p-sale-button" v-if="sale_discount[index-1]<1">-{{100-sale_discount[index-1]*100}}%</p>
+                      <p class="sale-price-" v-if="sale_discount[index-1]<1">{{sale_price[index - 1]}}</p>
+                      <p style="font-size: 15px">¥{{numFilter(sale_price[index - 1] * sale_discount[index - 1])}}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -144,7 +135,7 @@
         </div>
       </div>
     </div>
-<!--    游戏列表-->
+    <!--    游戏列表-->
     <div class="swiper third-swipe">
       <div class="swiper-wrapper">
         <div class="swiper-slide swiper-third">
@@ -152,22 +143,22 @@
             <div class="icon-text">
               <h6>新品榜</h6>
             </div>
-            <a href="#">查看更多</a>
+            <a style="cursor: pointer" @click="jumpViewMore('new')">查看更多</a>
           </div>
-          <div class="car-tuning" v-for="index in newrelease.length" :key="index" style="cursor: pointer" @click="jumpGame(newrelease[index - 1])">
+          <div class="car-tuning" v-for="index in new_game_name.length" :key="index" style="cursor: pointer" @click="jumpGame(newrelease[index - 1])">
             <div class="container">
               <div class="box">
-            <img :src="require('../../../ExGame-Asset/Game/' + new_cover[index - 1])" alt="">
-            <!--          {{cover[index - 1]}}-->
-            <div class="game-detail">
-              <h6>{{ new_game_name[index - 1] }}</h6>
-              <p class="new-epic-button">新品</p>
-              <div>
-                <p class="p-sale-button">-20%</p>
-                <p class="sale-price-">¥{{ new_price[index - 1] }}</p>
-                <p class="sale-price">¥{{ new_price[index - 1] }}</p>
-              </div>
-            </div>
+                <img :src="require('../../../ExGame-Asset/Game/' + new_cover[index - 1])" alt=""  style="border-radius:5px;">
+                <!--          {{cover[index - 1]}}-->
+                <div class="game-detail">
+                  <h6>{{ new_game_name[index - 1] }}</h6>
+                  <p class="new-epic-button">新品</p>
+                  <div>
+                    <p class="p-sale-button" v-if="new_discount[index-1]<1">-{{100-new_discount[index-1]*100}}%</p>
+                    <p class="sale-price-" v-if="new_discount[index-1]<1">¥{{ new_price[index - 1] }}</p>
+                    <p class="sale-price">¥{{numFilter(new_price[index - 1] * new_discount[index - 1])}}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -178,18 +169,18 @@
             <div class="icon-text">
               <h6>热销榜</h6>
             </div>
-            <a href="#">查看更多</a>
+            <a style="cursor: pointer" @click="jumpViewMore('hot')">查看更多</a>
           </div>
           <div class="car-tuning" v-for="index in hotsale.length" :key="index" style="cursor: pointer" @click="jumpGame(hotsale[index - 1])">
             <div class="container">
               <div class="box">
-            <img :src="require('../../../ExGame-Asset/Game/' + hot_cover[index - 1])" alt="">
-            <div class="game-detail">
-              <h6>{{ hot_game_name[index - 1] }}</h6>
-              <div>
-                <p class="sale-price2">¥{{ hot_price[index - 1] }}</p>
-              </div>
-            </div>
+                <img :src="require('../../../ExGame-Asset/Game/' + hot_cover[index - 1])" alt="">
+                <div class="game-detail">
+                  <h6>{{ hot_game_name[index - 1] }}</h6>
+                  <div>
+                    <p class="sale-price2">¥{{ hot_price[index - 1] }}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -199,18 +190,18 @@
             <div class="icon-text">
               <h6>好评榜</h6>
             </div>
-            <a href="#">查看更多</a>
+            <a style="cursor: pointer" @click="jumpViewMore('praise')">查看更多</a>
           </div>
           <div class="car-tuning" v-for="index in praise.length" :key="index" style="cursor: pointer" @click="jumpGame(praise[index - 1])">
             <div class="container">
               <div class="box">
-            <img :src="require('../../../ExGame-Asset/Game/' + praise_cover[index - 1])" alt="">
-            <div class="game-detail">
-              <h6>{{praise_game_name[index - 1]}}</h6>
-              <div>
-                <p class="sale-price2">¥{{ praise_price[index - 1] }}</p>
-              </div>
-            </div>
+                <img :src="require('../../../ExGame-Asset/Game/' + praise_cover[index - 1])" alt="">
+                <div class="game-detail">
+                  <h6>{{praise_game_name[index - 1]}}</h6>
+                  <div>
+                    <p class="sale-price2">¥{{ praise_price[index - 1] }}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -220,7 +211,7 @@
       <!--    <div class="swiper-pagination"></div>-->
 
     </div>
-<!--    底栏-->
+    <!--    底栏-->
     <div class="swiper third-swipe">
 
       <div class="swiper fourth-swipe">
@@ -230,13 +221,13 @@
           <div class="swiper-slide swiper-fourth" v-for="index in recommend.length" :key="index" style="cursor: pointer" @click="jumpGame(recommend[index - 1])">
             <div class="container">
               <div class="box">
-            <img :src="require('../../../ExGame-Asset/Game/' + recommend_cover[index - 1])" alt="">
-            <div class="game-detail">
-              <h6>{{ recommend_game_name[index - 1] }}</h6>
-              <div>
-                <p>¥{{recommend_price[index - 1]}}</p>
-              </div>
-            </div>
+                <img :src="require('../../../ExGame-Asset/Game/' + recommend_cover[index - 1])" alt=""  style="border-radius:5px;">
+                <div class="game-detail">
+                  <h6>{{ recommend_game_name[index - 1] }}</h6>
+                  <div>
+                    <p>¥{{recommend_price[index - 1]}}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -247,19 +238,24 @@
         <h6 class="rec-text">即将上架</h6>
         <div class="swiper-wrapper">
           <div class="swiper-slide swiper-fourth" v-for="index in later.length" :key="index" style="cursor: pointer" @click="jumpGame(later[index - 1])">
-            <img :src="require('../../../ExGame-Asset/Game/' + later_cover[index - 1])" alt="">
-            <div class="game-detail">
-              <h6>{{later_game_name[index - 1]}}</h6>
-              <div>
-                <p class="grey-text">¥{{later_price[index - 1]}}</p>
+            <div class="container">
+              <div class="box">
+                <img :src="require('../../../ExGame-Asset/Game/' + later_cover[index - 1])" alt=""  style="border-radius:5px;">
+                <div class="game-detail">
+                  <h6>{{later_game_name[index - 1]}}</h6>
+                  <div>
+                    <p class="grey-text">¥{{later_price[index - 1]}}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-<!--    <buttom-list></buttom-list>-->
+    <!--    <buttom-list></buttom-list>-->
     </body>
+    <GamePageFooter/>
   </div>
 </template>
 
@@ -268,7 +264,7 @@
 
 import GamePageHeader from "@/views/GamePageHeader";
 import Swiper from 'swiper'; // 注意引入的是Swiper
-
+import GamePageFooter from "@/views/GamePageFooter";
 // import 'swiper/css/swiper.min.css'
 // import 'swiper/swiper-bundle.css'
 import 'swiper/dist/css/swiper.min.css'
@@ -281,10 +277,11 @@ export default {
   components: {
     // UserInfo,
     GamePageHeader,
-
+    GamePageFooter
   },
   data(){
     return{
+      ipsearchData:"tp",
       game_id: "",
       search_choice:0,
       // big swiper
@@ -307,24 +304,29 @@ export default {
       new_game_name:[],
       new_cover:[],
       new_price:[],
+      new_discount:[],
       hotsale: [], // 列表2的id
       hot_game_name:[],
       hot_cover:[],
       hot_price:[],
+      hot_discount:[],
       praise: [], // 列表3的id
       praise_game_name:[],
       praise_cover:[],
       praise_price:[],
+      praise_discount:[],
 
       // buttom list
       recommend:[],
       recommend_game_name:[],
       recommend_cover:[],
       recommend_price:[],
+      recommend_discount:[],
       later:[],
       later_game_name:[],
       later_cover:[],
       later_price:[],
+      later_discount:[]
     }
   },
   mounted:function() {
@@ -341,6 +343,11 @@ export default {
     msg: String
   },
   methods:{
+    jumpViewMore(rank_condition){
+      console.log('跳转到条件为' + rank_condition +'的ViewMore');
+      this.$router.push({name:'ViewMore', query: {rank_condition:rank_condition}});
+    },
+
     jumpGame(game_id) {
       console.log('跳转到' + game_id +'detail');
       // alert('跳转到' + game_id +'detail');
@@ -457,7 +464,7 @@ export default {
 
                 for(i in res.data.discount)
                 {
-                  console.log('get sale ' + res.data.discount[i])
+                  console.log('get sale discount ' + res.data.discount[i])
                   this.sale_discount.push(res.data.discount[i]) ;
                 }
 
@@ -470,7 +477,7 @@ export default {
     },
 
     //game list
-    async getGameRank(rankname, number=4, ranklist, game_name, price, cover){
+    async getGameRank(rankname, number=4, ranklist, game_name, price, cover, discount){
       const self = this;
       await self.$axios({
         method:'post',
@@ -500,13 +507,13 @@ export default {
       if( ranklist == null)
         return;
 
-      this.getGameListInfo(ranklist, game_name, price);
+      this.getGameListInfo(ranklist, game_name, price, discount);
       let i;
       for(i of ranklist){
         cover.push(i + '/Cover/anCover.jpg');
       }
     },
-    getGameListInfo(game_id, game_name, price){
+    getGameListInfo(game_id, game_name, price, discount){
       const self = this;
       let i;
       self.$axios({
@@ -541,6 +548,13 @@ export default {
                   price.push(res.data.price[i]) ;
                 }
 
+                for(i in res.data.discount)
+                {
+                  console.log('get  discount ' + res.data.discount[i])
+                  discount.push(res.data.discount[i]) ;
+                }
+
+
                 break;
 
             }
@@ -552,8 +566,8 @@ export default {
   },
   created() {
     // bigswiper取数据
-    for (let i = 1 ; i <= 6; i++){
-      let game_id = '000000000' + i.toString();
+    for (let i = 0 ; i <= 5; i++){
+      let game_id = '100000019' + i.toString();
       this.swiper_game_id.push(game_id);
       this.swiper_cover.push(game_id + '/Cover/Cover.jpg');
       this.swiper_ancover.push(game_id + '/Cover/anCover.jpg')
@@ -561,21 +575,21 @@ export default {
     this.getSwiperInfo(this.swiper_game_id);
 
     // game取数据
-    for (let i = 2 ; i <= 6; i++){
-      let game_id = '000000000' + i.toString();
+    for (let i = 1 ; i <= 6; i++){
+      let game_id = '100000019' + i.toString();
       this.sale_game_id.push(game_id);
       this.sale_ancover.push(game_id + '/Cover/anCover.jpg');
     }
     this.getSaleInfo(this.sale_game_id);
 
     // game list取数据
-    this.getGameRank("hot", 5, this.hotsale, this.hot_game_name, this.hot_price, this.hot_cover);
-    this.getGameRank("new", 5, this.newrelease, this.new_game_name, this.new_price, this.new_cover);
-    this.getGameRank("praise", 5, this.praise, this.praise_game_name, this.praise_price, this.praise_cover);
+    this.getGameRank("hot", 5, this.hotsale, this.hot_game_name, this.hot_price, this.hot_cover, this.hot_discount);
+    this.getGameRank("new", 5, this.newrelease, this.new_game_name, this.new_price, this.new_cover, this.new_discount);
+    this.getGameRank("praise", 5, this.praise, this.praise_game_name, this.praise_price, this.praise_cover, this.praise_discount);
 
     //buttom list取数据
-    this.getGameRank("recommend", 4, this.recommend, this.recommend_game_name, this.recommend_price, this.recommend_cover);
-    this.getGameRank("later", 4, this.later, this.later_game_name, this.later_price, this.later_cover);
+    this.getGameRank("recommend", 4, this.recommend, this.recommend_game_name, this.recommend_price, this.recommend_cover, this.recommend_discount);
+    this.getGameRank("later", 4, this.later, this.later_game_name, this.later_price, this.later_cover, this.later_discount);
   }
 
 }
@@ -588,9 +602,10 @@ export default {
 @import "../assets/sea_css/mixins.css";
 @import "../assets/sea_css/cards.css";
 @import "../assets/sea_css/variables.css";
+
 #particles-js {
   width: 100%;
-  height: calc(320% - 100px);
+  height: calc(320% - 185px);
   position: absolute;
 }
 

@@ -25,7 +25,7 @@
 					<div class="bform">
 						<input type="email" placeholder="邮箱" v-model="form.useremail">
 						<span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
-						<input type="password" placeholder="密码" v-model="form.userpwd">
+						<input type="password" placeholder="密码" v-model="form.userpwd" @keydown.enter="login">
 						<span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
 					</div>
 					<button class="bbutton" @click="login">登录</button>
@@ -37,7 +37,7 @@
 						<span class="errTips" v-if="name_existed">* 用户名已经存在！ *</span>
 						<input type="email" placeholder="邮箱" v-model="form.useremail">
 						<span class="errTips" v-if="email_existed">* 邮箱已经存在！ *</span>
-						<input type="password" placeholder="密码" v-model="form.userpwd">
+						<input type="password" placeholder="密码" v-model="form.userpwd" @keydown.enter="register">
 					</div>
 					<button class="bbutton" @click="register">注册</button>
 				</div>
@@ -240,7 +240,7 @@ export default{
 }
 .bform input{
 	width: 50%;
-	height: 30px;
+	height: 40px;
 	border: none;
 	outline: none;
 	border-radius: 10px;

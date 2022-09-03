@@ -1,17 +1,17 @@
 <!--1952168 张宇-->
 <template>
-    <div style="width: 1055px;height:280px;margin: auto;border-radius: 10px;background-color: #e0e0e0" class="clearbox">
+    <div style="width: 1055px;height:300px;color:black;margin: auto;border-radius: 10px;background-color: #e0e0e0" class="clearbox">
     <div class="m-recommended clearbox">
             <div class="m-tt fl">推荐</div>
-            <ul style="margin: auto;width: 1000px;" class="clearbox">
+            <ul style="margin: auto;width: 1000px;" class="clearbox" v-if=" gameList.length===gameNum">
                 <li v-for="(game,index) in gameList" :key="index">
                     <div class="m-game-rec fl">
-                        <router-link :to="{name:'GameDetail',params:{game_id:'0000000001'}}">
+                        <router-link :to="{name:'GameDetail',query:{game_id:gameList[index]}}">
                             <div style="height: 125px;overflow: hidden">
-                                <img :src="require('../../../ExGame-Asset/Game/' +  gameIntro[index].coverPath)">
+                                <img :src="require('../../../ExGame-Asset/' +  gameIntro[index].coverPath)">
                             </div>
                             <p class="game-name"> {{ gameInfo[index].gameName}}</p>
-                            <p class="game-price">￥{{  gameInfo[index].price * (gameInfo[index].discount)/100 }}</p>
+                            <p class="game-price">￥{{ (gameInfo[index].price * gameInfo[index].discount).toFixed(2)}}</p>
                         </router-link>
                     </div>
                 </li>
@@ -29,10 +29,11 @@ export default {
             gameList:[],
             gameInfo:[],
             gameIntro:[],
+            gameNum:0,
         }
     },
     mounted() {
-        this.getData('0000000002');
+        this.getData(this.game_id);
         setTimeout(this.fun,800)
     },
     methods:{
@@ -59,13 +60,7 @@ export default {
                 {
                     console.log(res.data.game_list[i])
                     this.gameList.push(
-                        {
-                            gid:'',
-                            coverPath:"ring.jpg",
-                            gameName:'ring',
-                            price:0,
-                            discount:100,
-                        },
+                        res.data.game_list[i]
                     )
                 }
             }).catch( err => {
@@ -124,12 +119,11 @@ export default {
                     }
                     for(i in res.data.about_game)
                     {
-                        i;
                         self.gameIntro.push({
-                            coverPath:'0000000006/Cover/cover.gif',
+                            coverPath:res.data.about_game[i].poster,
                             intro:res.data.about_game[i].content
                         }) ;
-                        break;
+                        this.gameNum++
                     }
                 }).catch( err => {
                     console.log(err);
@@ -142,8 +136,8 @@ export default {
         fun(){
             for(let i = 0;i<this.gameList.length;i++)
             {
-                this.getGameInfo(this.game_id);
-                this.getAboutInfo(this.game_id);
+                this.getGameInfo(this.gameList[i]);
+                this.getAboutInfo(this.gameList[i]);
             }
         }
     }
@@ -186,7 +180,7 @@ a{
     overflow:hidden;
 }
 .m-game-rec{
-    height: 200px;
+    height: 220px;
     width: 230px;
     margin: 10px 10px;
     border-radius: 10px;
@@ -207,6 +201,7 @@ a{
 .game-name{
     margin-left: 20px;
     margin-top: 15px;
+    margin-right: 10px;
     font-weight: bolder;
     font-size: 20px;
     text-align: left;

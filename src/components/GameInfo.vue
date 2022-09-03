@@ -4,31 +4,31 @@
         <div class="m-content clearbox">
             <!--			应用特性-->
             <div class="m-content-right fr">
-                <div class="panel">
-                    <h2>应用特性</h2>
-                    <table>
-                        <tr>
-                            <td><span class="iconfont icon-gouwucheman"></span></td>
-                            <td>{{ gameFeatures[0] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="iconfont icon-duoren"></span></td>
-                            <td>{{ gameFeatures[1] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="iconfont icon-youxiguanli"></span></td>
-                            <td>{{ gameFeatures[2] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="iconfont icon-bi"></span></td>
-                            <td>{{ gameFeatures[3] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="iconfont icon-lianjiezhuangtai"></span></td>
-                            <td>{{ gameFeatures[4] }}</td>
-                        </tr>
-                    </table>
-                </div>
+                <!--                <div class="panel">-->
+                <!--                    <h2>应用特性</h2>-->
+                <!--                    <table>-->
+                <!--                        <tr>-->
+                <!--                            <td><span class="iconfont icon-gouwucheman"></span></td>-->
+                <!--                            <td>{{ gameFeatures[0] }}</td>-->
+                <!--                        </tr>-->
+                <!--                        <tr>-->
+                <!--                            <td><span class="iconfont icon-duoren"></span></td>-->
+                <!--                            <td>{{ gameFeatures[1] }}</td>-->
+                <!--                        </tr>-->
+                <!--                        <tr>-->
+                <!--                            <td><span class="iconfont icon-youxiguanli"></span></td>-->
+                <!--                            <td>{{ gameFeatures[2] }}</td>-->
+                <!--                        </tr>-->
+                <!--                        <tr>-->
+                <!--                            <td><span class="iconfont icon-bi"></span></td>-->
+                <!--                            <td>{{ gameFeatures[3] }}</td>-->
+                <!--                        </tr>-->
+                <!--                        <tr>-->
+                <!--                            <td><span class="iconfont icon-lianjiezhuangtai"></span></td>-->
+                <!--                            <td>{{ gameFeatures[4] }}</td>-->
+                <!--                        </tr>-->
+                <!--                    </table>-->
+                <!--                </div>-->
                 <!--				配置需求-->
                 <div class="panel">
                     <h2>最低配置要求</h2>
@@ -100,37 +100,26 @@
                 </div>
             </div>
             <div class="m-content-left fl">
-                <!--            <div class="m-tt fl">测评</div>-->
-                <!--            <div class="m-evaluation">-->
-                <!--                <ul>-->
-                <!--                    <li v-for="(evaluation,index) in evaluationList" :key="index" style="margin-bottom: 30px">-->
-                <!--                        <p>{{evaluation.content}}</p>-->
-                <!--                        <p>{{evaluation.score}}-<span>{{evaluation.host}}</span></p>-->
-                <!--                    </li>-->
-                <!--                </ul>-->
-                <!--            </div>-->
-                <!--关于这款游戏-->
-                <!-- DLC -->
                 <div class="m-tt fl">游戏拓展包</div>
-                <ul>
-                    <li v-for="(dlc,index) in 3" :key="index">
-                        <div class="m-hot clearbox">
-                            <div class="m-hot-left fl">
-                                <router-link :to="{name:'GameDetail',params:{game_id:'0000000001'}}">
-                                    <img  :src="require('../../../ExGame-Asset/Game/'+ dlcIntro[index].poster)" alt=""  height="128" width="128">
-                                </router-link>
+                <ul  v-if="dlcList.length===dlcNum">
+                    <li v-for="(dlc,index) in dlcList.length" :key="index" >
+                        <div class="m-hot clearbox" ref="dlcwin">
+		<router-link :to="{name:'GameDetail',query:{game_id:dlcList[index]}}">
+                            <div class="m-hot-left fl" >
+                                    <img class="hot-img" ref="dlcimg" id="dlcimg" :src="require('../../../ExGame-Asset/'+ dlcIntro[index].poster)" >
                             </div>
-                            <div class="m-hot-right fr">
+                                </router-link>
+                            <div class="m-hot-right fr" @change="modDlcHeight">
                                 <div class="dlc-content">
-                                    <p class="dlc-name">{{ dlcInfo[index].dlcName }}<p>
-                                    <p class="dlc-intro">{{ dlcIntro[index].content }}</p>
+                                    <p class="dlc-name" @click="modDlcHeight">{{ dlcInfo[index].dlcName }}<p>
+                                   <p class="dlc-intro">{{ dlcIntro[index].content }}</p>
                                 </div>
                                 <div>
                                     <div class="dlc-publish-time">发布于 {{ dlcInfo[index].dlcPublishDate }}</div>
                                     <router-link :to="{name:'ShoppingCart',params:{user_id:'000000001'}}">
-                                        <div class="dlc-add" @click="click2Cart()">加入购物车
-                                            <span v-if="dlcInfo[index].dlcDiscount!==100" style="text-decoration: line-through;color: #aaaaaa">￥{{ dlcInfo[index].dlcPrice}}</span>
-                                            <span>&nbsp;￥{{ dlcInfo[index].dlcPrice * dlcInfo[index].dlcDiscount/100}}</span>
+                                        <div class="dlc-add" @click="click2Cart(dlcList[index])">加入购物车
+                                            <span v-if="dlcInfo[index].dlcDiscount!==1" style="text-decoration: line-through;color: #aaaaaa">￥{{ dlcInfo[index].dlcPrice}}</span>
+                                            <span>&nbsp;￥{{ dlcInfo[index].dlcPrice * dlcInfo[index].dlcDiscount}}</span>
                                         </div>
                                     </router-link>
                                 </div>
@@ -138,14 +127,18 @@
                         </div>
                     </li>
                 </ul>
+                <div  v-if="dlcList.length===0" class="clearbox"
+                      style="height: 60px;line-height: 30px;margin-left: 30px;font-weight: bolder;font-size: 18px;color: #666666"
+                >
+                    当前游戏没有拓展包</div>
                 <div class="m-tt fl">关于这款游戏</div>
-                <div class="m-introduction">
-                    <ul>
+                <div class="m-introduction" style="min-height: 200px">
+                    <ul v-if="launchedIntro">
                         <li v-for="(intro,index) in aboutGame" :key="index">
-                            <a href="#">
-                                <img class='game-poster' :src="require('../../../ExGame-Asset/Game/'+ intro.poster)" alt="">
-                            </a>
+                            <img class='game-poster' :src="require('../../../ExGame-Asset/Game/' +game_id + '/Cover/Cover.jpg')" alt="">
+                            <div class="about-title">{{intro.title}}</div>
                             <div class="about-content">{{intro.content}}</div>
+                            <div style="height: 20px"></div>
                         </li>
                     </ul>
                 </div>
@@ -161,6 +154,7 @@ export default {
     props:['game_id'],
     data() {
         return {
+            uid:this.$store.state.userID,
             launchedIntro:false,
             launchedDLC:false,
             aboutGame:[],
@@ -173,6 +167,7 @@ export default {
             uiLanguage:[],
             soundLanguage:[],
             textLanguage:[],
+            dlcNum:0
         }
     },
     mounted() {
@@ -182,7 +177,24 @@ export default {
         fun(){
             this.getConfigData(this.game_id);
             this.getAboutData(this.game_id);
-            this.getDLC();
+            setTimeout(this.getDLC,600)
+        },
+         modDlcHeight() {
+            var boxHeight = []
+            console.log('modify-height')
+            for(let i in this.$refs.dlcwin)
+            {
+                console.log(this.$refs.dlcwin[i].offsetHeight)
+                boxHeight.push( this.$refs.dlcwin[i].offsetHeight)
+            }
+            for(let i in this.$refs.dlcimg)
+            {
+                console.log( this.$refs.dlcimg[i].offsetHeight)
+                console.log(((boxHeight[i] - this.$refs.dlcimg[i].offsetHeight)/2).toString() + 'px')
+                this.$refs.dlcimg[i].style.marginTop = ((boxHeight[i] - this.$refs.dlcimg[i].offsetHeight)/2).toString() + 'px'
+                //this.$refs.dlcimg[i].style.marginTop ='89px'
+                console.log( this.$refs.dlcimg[i].offsetHeight)
+            }
         },
         add2Cart:function (gid,op){
             if(gid===null)
@@ -192,7 +204,7 @@ export default {
             }
             // var self = this;
             this.$axios.post('api/shopingcart/modifyUserShoppingCart', {
-                user_id:'0000000001',
+                user_id:this.$store.state.userID,
                 game_id:gid,
                 op_type:op
             }).then( res => {
@@ -201,9 +213,9 @@ export default {
                 console.log(err);
             })
         },
-        click2Cart(){
+        click2Cart(id){
             console.log('++++++++++++++++++++++++++++++++')
-            this.add2Cart('0000000003',1)
+            this.add2Cart(id,1)
         },
         getConfigData:function (gid){
             var self = this;
@@ -248,8 +260,6 @@ export default {
                     {
                         self.textLanguage.push(res.data.text_language[i]);
                     }
-
-
                 }).catch( err => {
                     console.log(err);
                 })
@@ -270,27 +280,33 @@ export default {
                     let i;
                     switch(res.data.result){
                         case 1:
-                            console.log("GameCarousel 请求成功");
+                            console.log("Into 请求成功");
                             break;
                         default:
-                            console.log('GameCarousel 请求失败')
+                            console.log('Into 请求失败')
                             break;
                     }
+                    console.log(res.data.about_game)
                     for(i in res.data.about_game)
                     {
-                        console.log('get   ' + res.data.about_game[i].poster)
-                        console.log('get   ' + res.data.about_game[i].content)
+                        console.log('get  intro title ' + res.data.about_game[i].title)
+                        console.log('get  intro content ' + res.data.about_game[i].content)
                         // var path = res.data.about_game[i].poster + '.gif'
-                        self.aboutGame.push({
-                            poster:this.game_id + '/Cover/cover.gif',
+                         self.aboutGame.push({
+                            poster:res.data.about_game[i].poster,
+                            title:res.data.about_game[i].title,
                             content: res.data.about_game[i].content,
                         }) ;
                     }
+                    console.log('dlc-list' + res.data.dlc_list)
                     for(i in res.data.dlc_list)
                     {
-                        console.log('get  dlc  ' + res.data.dlc_list[i])
+                        console.log('get  dlc ++++++ ' + res.data.dlc_list[i])
                         self.dlcList.push(res.data.dlc_list[i]) ;
                     }
+                    this.launchedIntro = true
+                    // console.log('dlc' + '0000000006')
+                    // self.dlcList.push('0000000006')
                 }).catch( err => {
                     console.log(err);
                 })
@@ -338,7 +354,7 @@ export default {
         },
         getAboutInfo:function (gid){
             var self = this;
-            console.log('++++++ getAboutData')
+            console.log('++++++ getAboutInfo')
             if(gid.length !== 0)
             {
                 this.$axios.post('api/gamedetail/getGameIntro', {
@@ -353,17 +369,17 @@ export default {
                             console.log('GameCarousel 请求失败')
                             break;
                     }
+                    
                     for(i in res.data.about_game)
-                    {
-                        console.log('get   ' + res.data.about_game[i].poster)
-                        console.log('get   ' + res.data.about_game[i].content)
-                        // var path = res.data.about_game[i].poster + '.gif'
-                        self.dlcIntro.push({
-                            poster:this.game_id + '/Cover/cover.gif',
-                            content: res.data.about_game[i].content,
+                    {    
+                         console.log("dlc-content    + " + res.data.about_game[i].content)
+                         self.dlcIntro.push({
+                            isPub : res.data.about_game[i].is_launched,
+                            poster:res.data.about_game[i].poster,
+                            content: res.data.about_game[i].title,
                         }) ;
-                        break;
                     }
+                    this.dlcNum++
                 }).catch( err => {
                     console.log(err);
                 })
@@ -373,17 +389,14 @@ export default {
             }
         },
         getDLC:function (){
-            // for(let i in this.dlcList)
-            // {
-            //     console.log(this.dlcList[i]);
-            //     this.getGameInfo(this.dlcList[i])
-            // }
-            this.getGameInfo(this.game_id);
-            this.getAboutInfo(this.game_id);
-            this.getGameInfo(this.game_id);
-            this.getAboutInfo(this.game_id);
-            this.getGameInfo(this.game_id);
-            this.getAboutInfo(this.game_id);
+            for(let i in this.dlcList) {
+                console.log('get dlc -info' + this.dlcList[i]);
+                var self = this
+                setTimeout(function(){
+                    self.getGameInfo(self.dlcList[i])
+                    self.getAboutInfo(self.dlcList[i])
+                },200)
+            }
         },
     }
 }
@@ -418,25 +431,37 @@ a{
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 50px;
+    color:black;
 }
 
-/*游戏详情*/
 .m-content-left{
     width: 705px;
 }
 .game-poster{
     width: 100%;
-    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.about-title{
+    white-space: pre-wrap;   /*这是重点。文本换行*/
+    margin-bottom: 20px;
+    font-size: 22px;
+    line-height:40px;
+    margin-left: 10px;
 }
 .about-content{
+    margin-left: 10px;
+    line-height:25px;
     white-space: pre-wrap;   /*这是重点。文本换行*/
     min-height: 200px;
+   color:#666666;
 }
 .m-tt{
     font-weight: normal;
     margin-bottom: 20px;
     margin-top: 20px;
     font-size: 20px;
+    color: black;
 }
 .m-evaluation{
     width:703px;
@@ -451,10 +476,11 @@ a{
     width:703px;
     /*height:305px;*/
     height: auto;
-    background-color: #fff;
+    background-color: transparent;
     overflow: hidden;
     position: relative;
     border-radius: 10px;
+color:black;
     /*border: black 2px solid;*/
 }
 .m-introduction p{
@@ -555,14 +581,21 @@ a{
 /*更新与活动*/
 .m-hot{
     width: 703px;
-    height: 148px;
+    min-height: 148px;
     background-color: #fff;
     margin-bottom: 20px;
     border-radius: 10px;
+    overflow: hidden;
     /*border: black 1px solid;*/
 }
 .m-hot-left{
     height: 148px;
+}
+.hot-img{
+    width: 200px;
+    border-radius: 5px;
+    margin-top: 30px;
+    margin-left:5px;
 }
 .m-hot-left a{
     display: block;
@@ -572,8 +605,8 @@ a{
     margin-top: 10px;
 }
 .m-hot-right{
-    height: 148px;
-    width: 505px;
+    min-height: 148px;
+    width: 485px;
     border: black 1px solid;
     border-radius: 5px;
 }
@@ -587,9 +620,18 @@ a{
 .dlc-intro{
     text-align: left;
     white-space: pre-wrap;
+    height: 90px;
+    line-height: 18px;
+    overflow: hidden;
+    color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 .dlc-content{
-    height: 105px;
+    min-height: 105px;
     margin-top: 10px;
     margin-left: 10px;
 }
