@@ -123,6 +123,7 @@ namespace GameColumnReplies.Helpers
                         cr.name = name;
                         cr.content = reader[1].ToString();
                         cr.release_time = reader[2].ToString();
+                        cr.user_id = reader[0].ToString();
                         resp.CR.Add(cr);
                     }
                     resp.result = 1;
