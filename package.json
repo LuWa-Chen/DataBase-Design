@@ -14,7 +14,6 @@
     "element-ui": "^2.15.9",
     "jwchat": "^1.0.10",
     "qrcodejs2": "^0.0.2",
-    "swiper": "^5.4.5",
     "vue": "^2.6.14",
     "vue-image-crop-upload": "^3.0.3",
     "vue-layer": "^1.2.5",
@@ -36,6 +35,7 @@
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "style-loader": "^3.3.1",
+    "swiper": "^4.5.1",
     "vue-particles": "^1.0.9",
     "vue-template-compiler": "^2.6.14"
   },
