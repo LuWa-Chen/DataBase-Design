@@ -58,11 +58,43 @@ namespace GameColumnReplies.Helpers
             }
             return name;
         }
+        public int UpdateNum(string id)
+        {
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE COLUMNS SET COMMENT_NUM = COMMENT_NUM + 1 WHERE COLUMN_ID = '" + id + "'";
+            int cen = 0;
+            try
+            {
+                cen = cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                resp.message = e.Message;
+                resp.result = 0;
+                return 0;
+            }
+
+            try
+            {
+                cmd.CommandText = "COMMIT";
+                cen = cmd.ExecuteNonQuery();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                resp.message = e.Message;
+                resp.result = 0;
+                return 0;
+            }
+        }
         public getGameColumnRepliesResponse getReply(getGameColumnRepliesRequest req)
         {
             resp.result = 0;
             openConn();
             if (resp.result == -1)
+                return resp;
+
+            if (UpdateNum(req.column_id) == 0)
                 return resp;
 
             string name = "";
