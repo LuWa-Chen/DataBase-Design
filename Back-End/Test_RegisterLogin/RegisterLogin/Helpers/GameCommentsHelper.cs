@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameColumnReplies.Models;
+using System.Xml.Linq;
 using Oracle.ManagedDataAccess.Client;
 using RegisterLogin.Models;
 
@@ -137,6 +139,7 @@ namespace RegisterLogin.Helpers
             string[] sqls = { command1, command2 };
             return sqls;
         }
+
         public GameCommentsResponse GetGameCommentsResponse(GameCommentsRequest req)
         {
             GameCommentsResponse resp = new GameCommentsResponse();
@@ -176,7 +179,6 @@ namespace RegisterLogin.Helpers
 
                     resp.result++;
                 }
-
                 /* check is the last page or not */
                 cmd.CommandText = commands[1];
                 reader = cmd.ExecuteReader();

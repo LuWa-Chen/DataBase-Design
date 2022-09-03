@@ -58,6 +58,35 @@ namespace GameColumnReplies.Helpers
             }
             return name;
         }
+        public int UpdateNum(string id)
+        {
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE COLUMNS SET COMMENT_NUM = COMMENT_NUM + 1 WHERE COLUMN_ID = '" + id + "'";
+            int cen = 0;
+            try
+            {
+                cen = cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                postresp.message = e.Message;
+                postresp.result = 0;
+                return 0;
+            }
+
+            try
+            {
+                cmd.CommandText = "COMMIT";
+                cen = cmd.ExecuteNonQuery();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                postresp.message = e.Message;
+                postresp.result = 0;
+                return 0;
+            }
+        }
         public getGameColumnRepliesResponse getReply(getGameColumnRepliesRequest req)
         {
             resp.result = 0;
@@ -91,6 +120,7 @@ namespace GameColumnReplies.Helpers
                         cr.name = name;
                         cr.content = reader[1].ToString();
                         cr.release_time = reader[2].ToString();
+                        cr.user_id = reader[0].ToString();
                         resp.CR.Add(cr);
                     }
                     resp.result = 1;
@@ -110,6 +140,9 @@ namespace GameColumnReplies.Helpers
             resp.result = 0;
             openConn();
             if (resp.result == -1)
+                return postresp;
+
+            if (UpdateNum(req.column_id) == 0)
                 return postresp;
 
             OracleCommand cmd = con.CreateCommand();

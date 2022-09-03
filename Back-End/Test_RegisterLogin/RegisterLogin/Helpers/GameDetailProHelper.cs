@@ -27,7 +27,90 @@ namespace RegisterLogin.Helpers
                 con.Close();
             }
         }
+        public int GetCommentNum(GameDetailProRequest req)
+        {
+            int comment_num = 0;
 
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT COUNT(USER_ID) FROM COMMENTS WHERE GAME_ID = '" + req.game_id + "'";
+            OracleDataReader reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                comment_num = 0;
+            }
+            else
+            {
+                try
+                {
+                    //查找成功，赋值变量
+                    if (reader.Read())
+                    {
+                        comment_num = System.Convert.ToInt32(reader[0].ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return 0;
+                }
+            }
+            return comment_num;
+        }
+        public string GetRateResult(GameDetailProRequest req)
+        {
+            int ratesum = 0;
+            double ratedbl = 0;
+            string RateResult = "";
+            int comment_num = GetCommentNum(req);
+
+            OracleCommand cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT RATING FROM COMMENTS WHERE GAME_ID = '" + req.game_id + "'";
+            OracleDataReader reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                comment_num = 0;
+            }
+            else
+            {
+                try
+                {
+                    //查找成功，赋值变量
+                    while (reader.Read())
+                    {
+                        ratesum += System.Convert.ToInt32(reader[0].ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return "暂无评论";
+                }
+            }
+
+            ratedbl = System.Convert.ToDouble(ratesum) / (System.Convert.ToDouble(comment_num));
+            if (comment_num != 0)
+            {
+                if (ratedbl >= 4.5)
+                    RateResult = "好评如潮";
+                else if (ratedbl >= 4.0)
+                    RateResult = "特别好评";
+                else if (ratedbl >= 3.0)
+                    RateResult = "多半好评";
+                else if (ratedbl >= 2.0)
+                    RateResult = "褒贬不一";
+                else if (ratedbl >= 1.0)
+                    RateResult = "多半差评";
+                else if (ratedbl >= 0.5)
+                    RateResult = "特别差评";
+                else
+                    RateResult = "差评如潮";
+            }
+            else
+                RateResult = "暂无评论";
+            return RateResult;
+        }
         public GameDetailProResponse getGameDetailPro(GameDetailProRequest req)
         {
             GameDetailProResponse resp = new GameDetailProResponse();
@@ -102,6 +185,8 @@ namespace RegisterLogin.Helpers
                     reader = cmd.ExecuteReader();
                     if (reader.Read())
                         resp.is_launched = int.Parse(reader[0].ToString()) > 0 ? true : false;
+
+                    resp.RateResult = GetRateResult(req);
                 }
                 catch (Exception e)
                 {
