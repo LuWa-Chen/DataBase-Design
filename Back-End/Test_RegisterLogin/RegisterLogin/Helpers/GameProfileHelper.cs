@@ -42,7 +42,7 @@ namespace RegisterLogin.Helpers
             try
             {
                 /* get profile of subject */
-                cmd.CommandText = $"SELECT COVER, SPECIFIC_INTRO FROM GAME WHERE ID='{req.game_id}'";
+                cmd.CommandText = $"SELECT COVER, GENERAL_INTRO, SPECIFIC_INTRO FROM GAME WHERE ID='{req.game_id}'";
                 reader = cmd.ExecuteReader();
 /*                if (!reader.HasRows)
                 {
@@ -53,7 +53,8 @@ namespace RegisterLogin.Helpers
                 if (reader.Read())
                 {
                     profile["poster"] = reader[0].ToString();
-                    profile["content"] = reader[1].ToString();
+                    profile["title"] = reader[1].ToString();
+                    profile["content"] = reader[2].ToString();
                 }
                 resp.about_game.Add(profile);
 
